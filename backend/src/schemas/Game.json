@@ -1,0 +1,32 @@
+{
+  "players": {
+    "type": "Object",
+    "required": true,
+    "properties": {
+      "white": {
+        "type": "String",
+        "required": true
+      },
+      "black": {
+        "type": "String",
+        "required": true
+      }
+    }
+  },
+  "boardState": {
+    "type": "String",
+    "required": true
+  },
+  "moves": {
+    "type": "Array",
+    "items": "String"
+  },
+  "status": {
+    "type": "String",
+    "default": "in_progress"
+  },
+  "createdAt": {
+    "type": "Date",
+    "default": "Date.now"
+  }
+}
