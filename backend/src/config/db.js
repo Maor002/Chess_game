@@ -1,4 +1,4 @@
-const mongoose = require('C');
+const mongoose = require('mongoose');
 
 // פונקציה לחיבור למסד הנתונים
 const connectDB = async () => {
