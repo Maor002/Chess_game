@@ -15,18 +15,36 @@
   },
   "boardState": {
     "type": "String",
-    "required": true
+    "required": true,
+    "description": "ייצוג מצב הלוח בפורמט FEN"
   },
   "moves": {
     "type": "Array",
-    "items": "String"
+    "items": {
+      "type": "String"
+    },
+    "description": "רשימת המהלכים שבוצעו במשחק"
   },
   "status": {
     "type": "String",
-    "default": "in_progress"
+    "enum": ["in_progress", "white_won", "black_won", "draw"],
+    "default": "in_progress",
+    "description": "מצב המשחק הנוכחי"
+  },
+  "winner": {
+    "type": "String",
+    "enum": ["white", "black", "draw", null],
+    "default": null,
+    "description": "המנצח במשחק, אם הסתיים"
   },
   "createdAt": {
     "type": "Date",
-    "default": "Date.now"
+    "default": "Date.now",
+    "description": "תאריך יצירת המשחק"
+  },
+  "updatedAt": {
+    "type": "Date",
+    "default": "Date.now",
+    "description": "תאריך עדכון אחרון של המשחק"
   }
 }
