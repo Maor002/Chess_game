@@ -1,0 +1,32 @@
+{
+    "properties": {
+        "title": "Room",
+        "type": "object",
+      "_id": {
+        "type": "string",
+        "description": "Unique identifier for the room (MongoDB ObjectId)."
+      },
+      "code": {
+        "type": "string",
+        "pattern": "^[0-9]{6}$",
+        "description": "A unique 6-digit room code."
+      },
+      "players": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "description": "Player identifiers or usernames."
+        },
+        "maxItems": 2,
+        "description": "List of players in the room (max 2 players)."
+      },
+      "createdAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of when the room was created."
+      }
+    },
+    "required": ["code", "players", "createdAt"],
+    "behaviors": ["generateRoomCode"]   
+  }
+  

@@ -1,4 +1,5 @@
 {
+  
   "players": {
     "type": "Object",
     "required": true,

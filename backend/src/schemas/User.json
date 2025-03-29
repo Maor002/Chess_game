@@ -1,4 +1,5 @@
 {
+  
   "username": {
     "type": "String",
     "required": true,
@@ -14,14 +15,12 @@
     "required": true,
     "unique": true,
     "trim": true,
-    "lowercase ": true
+    "lowercase": true
   },
   "status": {
     "type": "String",
-    "enum": [
-      "online",
-      "offline"
-    ],
+    "enum": ["online", "offline"],
     "default": "offline"
-  }
+  },
+  "behaviors": ["preSave", "print", "isOnline"]
 }
