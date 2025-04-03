@@ -5,6 +5,7 @@ const User = models.User; // מודל משתמש
 
 const User = require('../models/User'); // לוודא שזה הנתיב הנכון
 
+// פונקציה ליצירת משתמש חדש
 exports.register = async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -34,7 +35,7 @@ exports.register = async (req, res) => {
     }
 };
 
-
+// פונקציה להתחברות של משתמש קיים
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;

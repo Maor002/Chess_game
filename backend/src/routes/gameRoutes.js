@@ -9,6 +9,6 @@ if (!Game) {
 }
 
 // יצירת משחק חדש
-router.post('/createGame',gameFnuctions.createGame ); 
+router.post('/api/game/createGame',gameFnuctions.createGame ); 
 
 module.exports = router;

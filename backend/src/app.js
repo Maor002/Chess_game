@@ -6,6 +6,7 @@ app.use(express.json());
 // רישום מסלולים (Routes)
 const gameRoutes = require('./routes/gameRoutes');
 const userRoutes = require('./routes/userRoutes');
+const roomRoutes = require('./routes/roomroutes');
 
 app.use('/api/game', gameRoutes);
 app.use('/api/users', userRoutes);

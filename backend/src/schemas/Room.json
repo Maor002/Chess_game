@@ -6,6 +6,10 @@
         "type": "string",
         "description": "Unique identifier for the room (MongoDB ObjectId)."
       },
+      "name":{
+        "type": "string",
+        "description": "Name of the room."
+    },
       "code": {
         "type": "string",
         "pattern": "^[0-9]{6}$",

@@ -9,9 +9,8 @@ if (!Room) {
   console.error("❌ User model is not loaded correctly!");
 }
 
-// יצירת משתמש חדש
-router.post('/register',userFunctions.register);
-router.post('/login',userFunctions.login);
-router.post('/createRoom', roomFunctions.createRoom); // יצירת חדר חדש
-router.post('/joinRoom', roomFunctions.joinRoom); // הצטרפות לחדר קיים
+router.post('/api/rooms/createRoom', roomFunctions.createRoom); // יצירת חדר חדש
+router.post('/api/rooms/joinRoom', roomFunctions.joinRoom); // הצטרפות לחדר קיים
+router.get('/api/rooms/getAllRooms', roomFunctions.getAllRooms); // קבלת כל החדרים
+
 module.exports = router;

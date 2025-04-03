@@ -5,7 +5,7 @@ const Room = models.Room; // מודל חדר
 
 
 //יצירת חדר עם קוד
-app.post("/api/rooms", async (req, res) => {
+exports.post = async (req, res) => {
     try {
       const code = await generateRoomCode();
       const room = new Room({ code });
@@ -14,10 +14,10 @@ app.post("/api/rooms", async (req, res) => {
     } catch (error) {
       res.status(500).json({ success: false, message: "Error creating room", error });
     }
-  });
+  };
   
   // 🔹 הצטרפות לחדר
-  app.post("/api/rooms/join", async (req, res) => {
+  exports.post = async (req, res) => {
     try {
       const { code, player } = req.body; // קבלת קוד החדר ושם השחקן
       const room = await Room.findOne({ code });
@@ -36,6 +36,16 @@ app.post("/api/rooms", async (req, res) => {
     } catch (error) {
       res.status(500).json({ success: false, message: "Error joining room", error });
     }
-  });
-
+  };
+ 
+//קבלת כל החדרים
+  exports.getAllrooms = async (req, res) => {
+    try {
+        const rooms = await Room.find({},{_id:1,name:1,code:1}); // קבלת כל החדרים
+        res.status(200).json(rooms);
+    } catch (error) {
+        console.error("❌ Error fetching rooms:", error);
+        res.status(500).json({ message: error.message });
+    }
+  }
 

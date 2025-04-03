@@ -10,6 +10,7 @@ if (!User) {
 }
 
 // יצירת משתמש חדש
-router.post('/register',userFunctions.register);
-router.post('/login',userFunctions.login);
+router.post('/api/users/register',userFunctions.register);
+router.post('/api/users/login',userFunctions.login);
+
 module.exports = router;
