@@ -1,10 +1,6 @@
-const models = require('../models/generateschema.js'); // ייבוא מודלים
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const models = require('../models/generateSchemas'); // ייבוא מודלים
 const Game = models.Game; // מודל משחק
-const User = models.User; // מודל משתמש
 
-const User = require('../models/User'); // לוודא שזה הנתיב הנכון
 
 exports.createGame = async (req, res) => {
     try {

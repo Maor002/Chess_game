@@ -1,11 +1,9 @@
-const models = require('../models/generateschema.js'); // ייבוא מודלים
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const models = require('../models/generateSchemas'); // ייבוא מודלים
 const Room = models.Room; // מודל חדר
 
 
 //יצירת חדר עם קוד
-exports.post = async (req, res) => {
+exports.createRoom = async (req, res) => {
     try {
       const code = await generateRoomCode();
       const room = new Room({ code });
@@ -17,7 +15,7 @@ exports.post = async (req, res) => {
   };
   
   // 🔹 הצטרפות לחדר
-  exports.post = async (req, res) => {
+  exports.joinRoom = async (req, res) => {
     try {
       const { code, player } = req.body; // קבלת קוד החדר ושם השחקן
       const room = await Room.findOne({ code });
@@ -48,4 +46,3 @@ exports.post = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
   }
-

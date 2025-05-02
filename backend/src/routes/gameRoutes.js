@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models/generateSchemas'); // טעינת כל המודלים
-const gameFnuctions = require('../routesFunc/gameFunc'); // טעינת הפונקציות של המשחק
+const gameFnuctions = require('../Controller/gameFunc'); // טעינת הפונקציות של המשחק
 const Game = models.Game; // קבלת המודל של המשחק
 
 if (!Game) {
@@ -9,6 +9,6 @@ if (!Game) {
 }
 
 // יצירת משחק חדש
-router.post('/api/game/createGame',gameFnuctions.createGame ); 
+router.post('/createGame',gameFnuctions.createGame ); 
 
 module.exports = router;
