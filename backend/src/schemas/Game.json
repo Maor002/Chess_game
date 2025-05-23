@@ -1,5 +1,8 @@
 {
-  
+  "_id": {
+    "type": "string",
+    "description": "Unique identifier for the room (MongoDB ObjectId)."
+  },
   "players": {
     "type": "Object",
     "required": true,
@@ -38,14 +41,5 @@
     "default": null,
     "description": "המנצח במשחק, אם הסתיים"
   },
-  "createdAt": {
-    "type": "Date",
-    "default": "Date.now",
-    "description": "תאריך יצירת המשחק"
-  },
-  "updatedAt": {
-    "type": "Date",
-    "default": "Date.now",
-    "description": "תאריך עדכון אחרון של המשחק"
-  }
+"useFieldsFrom": ["detail"]
 }

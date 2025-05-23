@@ -1,5 +1,8 @@
 {
-  
+  "_id": {
+    "type": "string",
+    "description": "Unique identifier for the room (MongoDB ObjectId)."
+  },
   "username": {
     "type": "String",
     "required": true,
@@ -22,5 +25,6 @@
     "enum": ["online", "offline"],
     "default": "offline"
   },
+  "useFieldsFrom": ["detail"],
   "behaviors": ["preSave", "print", "isOnline"]
 }

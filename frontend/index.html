@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחק שחמט</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1>♔ משחק שחמט ♛</h1>
+            <div class="game-modes">
+                <button id="playVsComputer" class="mode-btn">משחק נגד המחשב</button>
+                <button id="playVsPlayer" class="mode-btn">משחק נגד שחקן</button>
+            </div>
+        </header>
+        
+        <div class="game-info">
+            <div class="turn-indicator" id="turnIndicator">תור הלבן</div>
+            <div class="game-status" id="gameStatus">מוכן למשחק</div>
+            <div class="captured-pieces">
+                <div>כלים שנתפסו: <span id="capturedPieces"></span></div>
+            </div>
+        </div>
+
+        <div class="board-container">
+            <div class="chess-board" id="chessBoard"></div>
+        </div>
+
+        <div class="game-controls">
+            <button class="control-btn" id="newGameBtn">משחק חדש</button>
+            <button class="control-btn" id="resetBtn">איפוס</button>
+            <button class="control-btn" id="undoBtn">ביטול מהלך</button>
+        </div>
+
+        <div class="connection-status" id="connectionStatus">
+            מתחבר לשרת...
+        </div>
+    </div>
+
+    <!-- טעינת הסקריפטים -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/config/chessConfig.js"></script>
+    <script src="js/engine/chessEngine.js"></script>
+    <script src="js/ui/chessUI.js"></script>
+    <script src="js/api/apiClient.js"></script>
+    <script src="js/socket/socketClient.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
