@@ -3,49 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>משחק שחמט</title>
+    <title>משחק שחמט - גרסה מודולרית</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <!-- מבנה HTML עיקרי של המשחק -->
     <div class="game-container">
-        <header class="game-header">
-            <h1>♔ משחק שחמט ♛</h1>
-            <div class="game-modes">
-                <button id="playVsComputer" class="mode-btn">משחק נגד המחשב</button>
-                <button id="playVsPlayer" class="mode-btn">משחק נגד שחקן</button>
-            </div>
-        </header>
+        <h1>♔ משחק שחמט ♛</h1>
         
+        <!-- אזור מידע על המשחק -->
         <div class="game-info">
             <div class="turn-indicator" id="turnIndicator">תור הלבן</div>
-            <div class="game-status" id="gameStatus">מוכן למשחק</div>
             <div class="captured-pieces">
                 <div>כלים שנתפסו: <span id="capturedPieces"></span></div>
             </div>
         </div>
 
+        <!-- אזור לוח השחמט -->
         <div class="board-container">
             <div class="chess-board" id="chessBoard"></div>
         </div>
 
+        <!-- כפתורי בקרה -->
         <div class="game-controls">
-            <button class="control-btn" id="newGameBtn">משחק חדש</button>
-            <button class="control-btn" id="resetBtn">איפוס</button>
-            <button class="control-btn" id="undoBtn">ביטול מהלך</button>
+            <button class="new-game-btn" onclick="gameController.startNewGame()">משחק חדש</button>
+            <button class="reset-btn" onclick="gameController.resetBoard()">איפוס לוח</button>
         </div>
 
-        <div class="connection-status" id="connectionStatus">
-            מתחבר לשרת...
-        </div>
+        <!-- הודעות מצב המשחק -->
+        <div class="status-message" id="statusMessage"></div>
     </div>
 
-    <!-- טעינת הסקריפטים -->
-    <script src="/socket.io/socket.io.js"></script>
     <script src="js/config/chessConfig.js"></script>
     <script src="js/engine/chessEngine.js"></script>
     <script src="js/ui/chessUI.js"></script>
-    <script src="js/api/apiClient.js"></script>
-    <script src="js/socket/socketClient.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
