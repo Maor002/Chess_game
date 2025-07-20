@@ -33,7 +33,10 @@ class ChessGameController {
     resetBoard() {
         this.startNewGame();
     }
+    //שחזור המהלך האחרון
+    undoLastMove() {}
 }
 
 // יצירת מופע של בקר המשחק
 const gameController = new ChessGameController();
+
