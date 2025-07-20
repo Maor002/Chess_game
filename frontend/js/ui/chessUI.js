@@ -39,6 +39,7 @@ class ChessUI {
         square.className = `square ${(row + col) % 2 === 0 ? 'light' : 'dark'}`;
         square.dataset.row = row;
         square.dataset.col = col;
+        
         square.onclick = () => this.handleSquareClick(row, col);
         
         if (piece) {
