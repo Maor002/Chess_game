@@ -1,42 +1,69 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>משחק שחמט - גרסה מודולרית</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css" />
+    
+  </head>
+  <body>
     <!-- מבנה HTML עיקרי של המשחק -->
     <div class="game-container">
-        <h1>♔ משחק שחמט ♛</h1>
+      <h1>♔ משחק שחמט ♛</h1>
+
+      <!-- אזור מידע על המשחק -->
+      <div class="game-info">
+        <div class="turn-indicator" id="turnIndicator">תור הלבן</div>
+      </div>
+
+      <!-- אזור המשחק הראשי - פריסה של שני עמודים -->
+      <div class="main-game-area">
         
-        <!-- אזור מידע על המשחק -->
-        <div class="game-info">
-            <div class="turn-indicator" id="turnIndicator">תור הלבן</div>
-            <div class="captured-pieces">
-                <div>כלים שנתפסו: <span id="capturedPieces"></span></div>
+        <!-- פאנל שמאל - רשימת המהלכים -->
+        <div class="left-panel">
+          <div class="moves-panel">
+            <h3>📝 רשימת המהלכים</h3>
+            <div class="moves-list" id="movesList"></div>
+          </div>
+        </div>
+
+        <!-- פאנל ימין - לוח השחמט וכלים שנתפסו -->
+        <div class="right-panel">
+          <!-- כלים שנתפסו -->
+          <div class="captured-pieces-display">
+            <h3>♜ כלים שנתפסו ♜</h3>
+            <div class="captured-list" id="capturedPieces"></div>
+          </div>
+
+          <!-- לוח השחמט -->
+          <div class="board-container">
+            <div class="board-with-coordinates">
+              <div class="coordinates numbers-left">
+                <span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+              </div>
+              <div class="chess-board" id="chessBoard"></div>
+              <div class="coordinates letters-bottom">
+                <span>H</span><span>G</span><span>F</span><span>E</span><span>D</span><span>C</span><span>B</span><span>A</span>
+              </div>
             </div>
+          </div>
         </div>
 
-        <!-- אזור לוח השחמט -->
-        <div class="board-container">
-            <div class="chess-board" id="chessBoard"></div>
-        </div>
+      </div>
 
-        <!-- כפתורי בקרה -->
-        <div class="game-controls">
-            <button class="new-game-btn" onclick="gameController.startNewGame()">משחק חדש</button>
-            <button class="reset-btn" onclick="gameController.resetBoard()">איפוס לוח</button>
-        </div>
+      <!-- כפתורי בקרה -->
+      <div class="game-controls">
+        <button class="new-game-btn">משחק חדש</button>
+        <button class="btn" id="undo-btn">מהלך קודם</button>
+        <button class="btn" id="redo-btn">מהלך הבא</button>
+      </div>
 
-        <!-- הודעות מצב המשחק -->
-        <div class="status-message" id="statusMessage"></div>
+      <!-- הודעות מצב המשחק -->
+      <div class="status-message" id="statusMessage"></div>
     </div>
 
-    <script src="js/config/chessConfig.js"></script>
-    <script src="js/engine/chessEngine.js"></script>
-    <script src="js/ui/chessUI.js"></script>
-    <script src="js/main.js"></script>
-</body>
+    <!-- קישור לקבצי JavaScript -->
+    <script type="module" src="./js/main.js"></script>
+  </body>
 </html>

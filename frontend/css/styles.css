@@ -1,167 +1,428 @@
-/* ===== עיצוב כללי ===== */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+ body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-.game-container {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 30px 50px rgba(0,0,0,0.1);
-    max-width: 800px;
-    width: 100%;
-}
+      .game-container {
+        background: transparent;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
+        max-width: 1200px;
+        width: 100%;
+      }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-    font-size: 2.5em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-}
+      h1 {
+        text-align: center;
+        color: #fff;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
 
-/* ===== עיצוב לוח השחמט ===== */
-.board-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-}
+      /* ===== פריסה של שני עמודים ===== */
+      .main-game-area {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+        margin-bottom: 30px;
+      }
 
-.chess-board {
-    display: grid;
-    grid-template-columns: repeat(8, 60px);
-    grid-template-rows: repeat(8, 60px);
-    border: 3px solid #8B4513;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
+      .left-panel {
+        flex: 0 0 350px;
+        min-height: 500px;
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
 
-.square {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
+      .right-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
 
-.square:hover {
-    transform: scale(1.05);
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
-}
+      /* ===== עיצוב לוח השחמט ===== */
+      .board-container {
+        display: flex;
+        justify-content: center;
+        position: relative;
+      }
 
-.light {
-    background-color: #f0d9b5;
-}
+      .chess-board {
+        display: grid;
+        grid-template-rows: repeat(8, 60px);
+        grid-template-columns: repeat(8, 60px);
+        border: 25px solid #8b4513;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        direction: ltr;
+      }
 
-.dark {
-    background-color: #b58863;
-}
+      /* Container for the board with coordinates */
+      .board-with-coordinates {
+        position: relative;
+        display: inline-block;
+      }
 
-.selected {
-    background-color: #ffff99 !important;
-    box-shadow: inset 0 0 15px rgba(255,215,0,0.8);
-}
+      /* Coordinate labels */
+      .coordinates {
+        position: absolute;
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        user-select: none;
+      }
 
-.possible-move {
-    position: relative;
-}
+      /* Letters (a-h) on bottom */
+      .coordinates.letters-bottom {
+        display: flex;
+        justify-content: space-between;
+        width: calc(60px * 8);
+        bottom: 5px;
+        left: 25px;
+      }
 
-.possible-move::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: rgba(0,255,0,0.5);
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+      .coordinates.letters-bottom span {
+        width: 60px;
+        text-align: center;
+      }
 
-/* ===== עיצוב מידע המשחק ===== */
-.game-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-    border-radius: 10px;
-}
+      /* Numbers (1-8) on left */
+      .coordinates.numbers-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(60px * 8);
+        left: 7px;
+        top: 25px;
+      }
 
-.turn-indicator {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-}
+      .coordinates.numbers-left span {
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+      }
 
-.captured-pieces {
-    display: flex;
-    gap: 5px;
-}
+      .square {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
 
-/* ===== עיצוב כפתורים ===== */
-.game-controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
+      .square:hover {
+        transform: scale(1.05);
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+      }
 
-button {
-    padding: 12px 24px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-}
+      .light {
+        background-color: #f0d9b5;
+      }
 
-.new-game-btn {
-    background: linear-gradient(45deg, #28a745, #20c997);
-    color: white;
-}
+      .dark {
+        background-color: #b58863;
+      }
 
-.new-game-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(40,167,69,0.4);
-}
+      .selected {
+        background-color: #ffff99 !important;
+        box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.8);
+      }
 
-.reset-btn {
-    background: linear-gradient(45deg, #dc3545, #fd7e14);
-    color: white;
-}
+      .possible-move {
+        position: relative;
+      }
 
-.reset-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(220,53,69,0.4);
-}
+      /* ===== כלים שנתפסו ===== */
+      .captured-pieces-display {
+        background: rgba(250, 250, 250, 0.95);
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+      }
 
-/* ===== הודעות מצב ===== */
-.status-message {
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: bold;
-}
+      .captured-pieces-display h3 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 8px;
+        margin-top: 0;
+      }
 
-.check {
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeaa7;
-}
+      .captured-pieces-container {
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+      }
 
-.checkmate {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
+      .captured-white,
+      .captured-black {
+        flex: 1;
+        text-align: center;
+      }
+
+      .captured-white h4,
+      .captured-black h4 {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 10px;
+        margin-top: 0;
+      }
+
+      .captured-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        min-height: 40px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 8px;
+        border: 2px dashed #ddd;
+      }
+
+      .captured-piece {
+        font-size: 24px;
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+      }
+
+      .possible-move::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: rgba(0, 255, 0, 0.5);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      /* ===== עיצוב מידע המשחק ===== */
+      .game-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 30px 0 20px 0;
+        padding: 15px 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .turn-indicator {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #333;
+      }
+
+      /* ===== לוח מהלכים ===== */
+      .moves-panel {
+        background: rgba(240, 240, 240, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-height: 500px;
+        overflow-y: auto;
+        height: 100%;
+        margin: 0;
+      }
+
+      .moves-panel h3 {
+        color: #333;
+        margin-bottom: 15px;
+        text-align: center;
+        font-size: 1.3rem;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-top: 0;
+      }
+
+      .moves-list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .move-pair:hover {
+        background-color: rgba(103, 126, 234, 0.1);
+      }
+
+      .move-number {
+        font-weight: bold;
+        color: #666;
+        min-width: 30px;
+        margin-left: 10px;
+      }
+
+      .move-white,
+      .move-black {
+        flex: 1;
+        padding: 5px 10px;
+        border-radius: 3px;
+        text-align: center;
+        font-family: monospace;
+        font-size: 0.9rem;
+        margin: 0 2px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .move-white {
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ddd;
+      }
+
+      .move-black {
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+      }
+
+      .move-white:hover,
+      .move-black:hover {
+        background-color: rgba(103, 126, 234, 0.2);
+      }
+
+      /* ===== עיצוב כפתורים ===== */
+      .game-controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+      }
+
+      button {
+        padding: 12px 24px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: bold;
+      }
+
+      /* כפתור כללי */
+      .btn {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      /* כפתור התחלה */
+      .new-game-btn {
+        background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      }
+
+      .new-game-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+      }
+
+      /* כפתור איפוס */
+      .reset-btn {
+        background: linear-gradient(45deg, #dc3545, #fd7e14);
+        color: white;
+      }
+
+      .reset-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+      }
+
+      /* ===== הודעות מצב ===== */
+      .status-message {
+        text-align: center;
+        margin-top: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .check {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+      }
+
+      .checkmate {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      /* ===== עיצוב כללי של הודעות ===== */
+      .message {
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        font-size: 1.1em;
+      }
+
+      /* ===== התאמות למכשירים קטנים ===== */
+      @media (max-width: 768px) {
+        .game-container {
+          margin: 10px;
+          padding: 20px;
+          max-width: 100%;
+        }
+        
+        .main-game-area {
+          flex-direction: column-reverse;
+          gap: 20px;
+        }
+        
+        .left-panel {
+          flex: none;
+          width: 100%;
+        }
+        
+        .right-panel {
+          flex: none;
+          width: 100%;
+        }
+
+        .moves-panel {
+          max-height: 300px;
+        }
+      }

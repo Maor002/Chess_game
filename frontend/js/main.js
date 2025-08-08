@@ -2,41 +2,61 @@
  * ===== בקר המשחק הראשי =====
  * מתאם בין מנוע השחמט לממשק המשתמש
  */
-class ChessGameController {
-    constructor() {
-        this.engine = new ChessEngine();
-        this.ui = new ChessUI(this.engine);
-        this.initialize();
-    }
+import { ChessEngine } from "./engine/chessEngine.js";
+import { logger } from "./Logger/logger.js";
+import { ChessUI } from "./ui/chessUI.js";
 
-    /**
-     * אתחול המשחק
-     */
-    initialize() {
-        this.ui.updateDisplay();
-        this.ui.clearStatusMessage();
-    }
+export class ChessGameController {
+  constructor() {
+    this.engine = new ChessEngine();
+    this.ui = new ChessUI(this.engine);
+    this.initialize();
+  }
 
-    /**
-     * התחלת משחק חדש
-     */
-    startNewGame() {
-        this.engine.initializeBoard();
-        this.ui.clearSelection();
-        this.ui.updateDisplay();
-        this.ui.clearStatusMessage();
-    }
+  /**
+   * אתחול המשחק
+   */
+  initialize() {
+    this.ui.updateDisplay();
+    this.ui.clearStatusMessage();
+  }
 
-    /**
-     * איפוס הלוח
-     */
-    resetBoard() {
-        this.startNewGame();
-    }
-    //שחזור המהלך האחרון
-    undoLastMove() {}
+  /**
+   * התחלת משחק חדש
+   */
+  startNewGame() {
+    this.engine.initializeBoard();
+    this.ui.clearHistoryMoves();
+    this.ui.clearSelection();
+    this.ui.updateDisplay();
+    this.ui.clearStatusMessage();
+    logger.debug("New game started.");
+  }
+
+  /**
+   * איפוס הלוח
+   */
+  resetBoard() {
+    this.startNewGame();
+    logger.debug("Board has been reset.");
+  }
+  //שחזור המהלך האחרון
+  undoLastMove() {
+    logger.debug("Undoing last move");
+  }
+  redoLastMove() {
+    logger.debug("Redoing last move");
+  }
 }
 
+document.querySelector(".new-game-btn").addEventListener("click", () => {
+  gameController.startNewGame();
+});
+document.querySelector("#undo-btn").addEventListener("click", () => {
+  gameController.undoLastMove();
+});
+document.querySelector("#redo-btn").addEventListener("click", () => {
+  gameController.redoLastMove();
+});
 // יצירת מופע של בקר המשחק
 const gameController = new ChessGameController();
-
