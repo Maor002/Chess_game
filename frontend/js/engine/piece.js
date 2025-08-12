@@ -4,6 +4,7 @@ export class Piece {
     this.type = type; // סוג הכלי (P, R, N, B, Q, K)
     this.row = row; // מיקום השורה של הכלי בלוח
     this.col = col; // מיקום העמודה של הכלי בלוח
+    this.previousPosition = { row, col }; // מיקום קודם של הכלי
     this.grade = grade; // דרגה של הכלי, 0 אם לא מוגדר
   }
 

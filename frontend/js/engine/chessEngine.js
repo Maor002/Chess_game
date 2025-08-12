@@ -141,7 +141,7 @@ export class ChessEngine {
           ` Capturing piece: ${capturedPiece.constructor.name} (${capturedPiece.color})`
         );
         this.capturedPiecesArray.push(
-          ChessConfig.pieces[capturedPiece.color + capturedPiece.type]
+          this.board[toRow][toCol]
         );
       }
       if (capturedPiece.type === "K") {
@@ -166,6 +166,8 @@ export class ChessEngine {
       const move = {
         from: { row: fromRow, col: fromCol },
         to: { row: toRow, col: toCol },
+        pieceColor: movingPiece.color,
+        pieceType: movingPiece.type,
       };
       this.historyMoves.push(move);
     } catch (error) {

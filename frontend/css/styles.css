@@ -1,428 +1,537 @@
- body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+   /* Language and Text Configuration */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --accent-gradient: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            --success-gradient: linear-gradient(45deg, #28a745, #20c997);
+            --danger-gradient: linear-gradient(45deg, #dc3545, #fd7e14);
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.2);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --border-radius: 15px;
+            --transition: all 0.3s ease;
+        }
 
-      .game-container {
-        background: transparent;
-        border-radius: 0;
-        padding: 0;
-        box-shadow: none;
-        max-width: 1200px;
-        width: 100%;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      h1 {
-        text-align: center;
-        color: #fff;
-        margin-bottom: 30px;
-        font-size: 2.5em;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      }
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            padding: 10px;
+            transition: var(--transition);
+        }
 
-      /* ===== פריסה של שני עמודים ===== */
-      .main-game-area {
-        display: flex;
-        gap: 30px;
-        align-items: flex-start;
-        margin-bottom: 30px;
-      }
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
 
-      .left-panel {
-        flex: 0 0 350px;
-        min-height: 500px;
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: var(--transition);
+            box-shadow: var(--shadow-light);
+        }
 
-      .right-panel {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
 
-      /* ===== עיצוב לוח השחמט ===== */
-      .board-container {
-        display: flex;
-        justify-content: center;
-        position: relative;
-      }
+        .lang-btn.active {
+            background: white;
+            color: #667eea;
+        }
 
-      .chess-board {
-        display: grid;
-        grid-template-rows: repeat(8, 60px);
-        grid-template-columns: repeat(8, 60px);
-        border: 25px solid #8b4513;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        direction: ltr;
-      }
-
-      /* Container for the board with coordinates */
-      .board-with-coordinates {
-        position: relative;
-        display: inline-block;
-      }
-
-      /* Coordinate labels */
-      .coordinates {
-        position: absolute;
-        font-size: 14px;
-        font-weight: bold;
-        color: #fff;
-        user-select: none;
-      }
-
-      /* Letters (a-h) on bottom */
-      .coordinates.letters-bottom {
-        display: flex;
-        justify-content: space-between;
-        width: calc(60px * 8);
-        bottom: 5px;
-        left: 25px;
-      }
-
-      .coordinates.letters-bottom span {
-        width: 60px;
-        text-align: center;
-      }
-
-      /* Numbers (1-8) on left */
-      .coordinates.numbers-left {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: calc(60px * 8);
-        left: 7px;
-        top: 25px;
-      }
-
-      .coordinates.numbers-left span {
-        height: 60px;
-        line-height: 60px;
-        text-align: center;
-      }
-
-      .square {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 32px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-      }
-
-      .square:hover {
-        transform: scale(1.05);
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-      }
-
-      .light {
-        background-color: #f0d9b5;
-      }
-
-      .dark {
-        background-color: #b58863;
-      }
-
-      .selected {
-        background-color: #ffff99 !important;
-        box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.8);
-      }
-
-      .possible-move {
-        position: relative;
-      }
-
-      /* ===== כלים שנתפסו ===== */
-      .captured-pieces-display {
-        background: rgba(250, 250, 250, 0.95);
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 600px;
-      }
-
-      .captured-pieces-display h3 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 8px;
-        margin-top: 0;
-      }
-
-      .captured-pieces-container {
-        display: flex;
-        gap: 20px;
-        justify-content: space-between;
-      }
-
-      .captured-white,
-      .captured-black {
-        flex: 1;
-        text-align: center;
-      }
-
-      .captured-white h4,
-      .captured-black h4 {
-        font-size: 1rem;
-        color: #555;
-        margin-bottom: 10px;
-        margin-top: 0;
-      }
-
-      .captured-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 5px;
-        min-height: 40px;
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 8px;
-        border: 2px dashed #ddd;
-      }
-
-      .captured-piece {
-        font-size: 24px;
-        padding: 5px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease;
-      }
-
-      .possible-move::after {
-        content: "";
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background-color: rgba(0, 255, 0, 0.5);
-        border-radius: 50%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      /* ===== עיצוב מידע המשחק ===== */
-      .game-info {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 30px 0 20px 0;
-        padding: 15px 20px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      .turn-indicator {
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #333;
-      }
-
-      /* ===== לוח מהלכים ===== */
-      .moves-panel {
-        background: rgba(240, 240, 240, 0.9);
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        max-height: 500px;
-        overflow-y: auto;
-        height: 100%;
-        margin: 0;
-      }
-
-      .moves-panel h3 {
-        color: #333;
-        margin-bottom: 15px;
-        text-align: center;
-        font-size: 1.3rem;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
-        margin-top: 0;
-      }
-
-      .moves-list {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-      }
-
-      .move-pair:hover {
-        background-color: rgba(103, 126, 234, 0.1);
-      }
-
-      .move-number {
-        font-weight: bold;
-        color: #666;
-        min-width: 30px;
-        margin-left: 10px;
-      }
-
-      .move-white,
-      .move-black {
-        flex: 1;
-        padding: 5px 10px;
-        border-radius: 3px;
-        text-align: center;
-        font-family: monospace;
-        font-size: 0.9rem;
-        margin: 0 2px;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-      }
-
-      .move-white {
-        background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid #ddd;
-      }
-
-      .move-black {
-        background-color: rgba(0, 0, 0, 0.1);
-        border: 1px solid #ccc;
-      }
-
-      .move-white:hover,
-      .move-black:hover {
-        background-color: rgba(103, 126, 234, 0.2);
-      }
-
-      /* ===== עיצוב כפתורים ===== */
-      .game-controls {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        margin: 20px 0;
-      }
-
-      button {
-        padding: 12px 24px;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: bold;
-      }
-
-      /* כפתור כללי */
-      .btn {
-        background: linear-gradient(45deg, #667eea, #764ba2);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      }
-
-      /* כפתור התחלה */
-      .new-game-btn {
-        background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-      }
-
-      .new-game-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
-      }
-
-      /* כפתור איפוס */
-      .reset-btn {
-        background: linear-gradient(45deg, #dc3545, #fd7e14);
-        color: white;
-      }
-
-      .reset-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
-      }
-
-      /* ===== הודעות מצב ===== */
-      .status-message {
-        text-align: center;
-        margin-top: 20px;
-        padding: 15px 20px;
-        border-radius: 8px;
-        font-weight: bold;
-        background: white;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      .check {
-        background-color: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeaa7;
-      }
-
-      .checkmate {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-      }
-
-      /* ===== עיצוב כללי של הודעות ===== */
-      .message {
-        padding: 10px;
-        border-radius: 5px;
-        margin-top: 10px;
-        font-size: 1.1em;
-      }
-
-      /* ===== התאמות למכשירים קטנים ===== */
-      @media (max-width: 768px) {
         .game-container {
-          margin: 10px;
-          padding: 20px;
-          max-width: 100%;
-        }
-        
-        .main-game-area {
-          flex-direction: column-reverse;
-          gap: 20px;
-        }
-        
-        .left-panel {
-          flex: none;
-          width: 100%;
-        }
-        
-        .right-panel {
-          flex: none;
-          width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 10px;
+            width: 100%;
         }
 
-        .moves-panel {
-          max-height: 300px;
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            padding: 0 10px;
         }
-      }
+
+        /* Main Game Layout */
+        .main-game-area {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: start;
+        }
+
+        .left-panel, .right-panel {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .left-panel {
+            min-height: 500px;
+        }
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Game Info Bar */
+        .game-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow-light);
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 20px auto;
+        }
+
+        .turn-indicator {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Chess Board */
+        .board-container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        .board-with-coordinates {
+            position: relative;
+            display: inline-block;
+        }
+
+        .chess-board {
+            display: grid;
+            grid-template-rows: repeat(8, min(7vw, 60px));
+            grid-template-columns: repeat(8, min(7vw, 60px));
+            border: min(3vw, 25px) solid #8b4513;
+            box-shadow: var(--shadow-medium);
+            direction: ltr;
+            max-width: 100%;
+        }
+
+        .coordinates {
+            position: absolute;
+            font-size: clamp(10px, 2vw, 14px);
+            font-weight: bold;
+            color: #fff;
+            user-select: none;
+        }
+
+        .coordinates.letters-bottom {
+            display: flex;
+            justify-content: space-between;
+            width: calc(min(7vw, 60px) * 8);
+            bottom: 5px;
+            left: min(3vw, 25px);
+        }
+
+        .coordinates.letters-bottom span {
+            width: min(7vw, 60px);
+            text-align: center;
+        }
+
+        .coordinates.numbers-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: calc(min(7vw, 60px) * 8);
+            left: 7px;
+            top: min(3vw, 25px);
+        }
+
+        .coordinates.numbers-left span {
+            height: min(7vw, 60px);
+            line-height: min(7vw, 60px);
+            text-align: center;
+        }
+
+        .square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(20px, 4vw, 32px);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .square:hover {
+            transform: scale(1.05);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .light {
+            background-color: #f0d9b5;
+        }
+
+        .dark {
+            background-color: #b58863;
+        }
+
+        .selected {
+            background-color: #ffff99 !important;
+            box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.8);
+        }
+
+        .possible-move {
+            position: relative;
+        }
+
+        .possible-move::after {
+            content: "";
+            position: absolute;
+            width: min(3vw, 20px);
+            height: min(3vw, 20px);
+            background-color: rgba(0, 255, 0, 0.5);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Captured Pieces */
+        .captured-pieces-display {
+            background: rgba(250, 250, 250, 0.95);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--shadow-light);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .captured-pieces-display h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 8px;
+        }
+
+        .captured-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            min-height: 60px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+        }
+
+        .captured-piece {
+            font-size: clamp(18px, 3vw, 24px);
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+        }
+
+        .captured-piece:hover {
+            transform: scale(1.1);
+        }
+
+        /* Moves Panel */
+        .moves-panel {
+            background: rgba(240, 240, 240, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow-light);
+            max-height: 500px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .moves-panel h3 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .moves-list {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 5px;
+        }
+
+        .move-pair {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .move-pair:hover {
+            background-color: rgba(103, 126, 234, 0.1);
+        }
+
+        .move-number {
+            font-weight: bold;
+            color: #666;
+            min-width: 30px;
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
+
+        .move-white, .move-black {
+            flex: 1;
+            padding: 5px 10px;
+            border-radius: 3px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 0 2px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .move-white {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+        }
+
+        .move-black {
+            background-color: rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+        }
+
+        .move-white:hover, .move-black:hover {
+            background-color: rgba(103, 126, 234, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* Buttons */
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-light);
+            margin: 20px auto;
+            max-width: 600px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: var(--transition);
+            box-shadow: var(--shadow-light);
+            min-width: 120px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .new-game-btn {
+            background: var(--accent-gradient);
+        }
+
+        .reset-btn {
+            background: var(--danger-gradient);
+        }
+
+        /* Status Messages */
+        .status-message {
+            text-align: center;
+            margin: 20px auto;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            background: white;
+            box-shadow: var(--shadow-light);
+            max-width: 600px;
+        }
+
+        .check {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .checkmate {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-game-area {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .left-panel {
+                order: 2;
+                min-height: 300px;
+            }
+            
+            .right-panel {
+                order: 1;
+            }
+            
+            .moves-panel {
+                max-height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 10px 5px;
+            }
+            
+            .left-panel, .right-panel {
+                padding: 15px;
+            }
+            
+            .game-controls {
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+            
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+            
+            .chess-board {
+                grid-template-rows: repeat(8, min(10vw, 50px));
+                grid-template-columns: repeat(8, min(10vw, 50px));
+                border: min(4vw, 20px) solid #8b4513;
+            }
+            
+            .coordinates.letters-bottom {
+                width: calc(min(10vw, 50px) * 8);
+                left: min(4vw, 20px);
+            }
+            
+            .coordinates.letters-bottom span {
+                width: min(10vw, 50px);
+            }
+            
+            .coordinates.numbers-left {
+                height: calc(min(10vw, 50px) * 8);
+                top: min(4vw, 20px);
+            }
+            
+            .coordinates.numbers-left span {
+                height: min(10vw, 50px);
+                line-height: min(10vw, 50px);
+            }
+            
+            .game-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        /* RTL/LTR Support */
+        .ltr {
+            direction: ltr;
+        }
+
+        .ltr .language-switcher {
+            left: 20px;
+            right: auto;
+        }
+
+        .ltr .move-number {
+            margin-right: 10px;
+            margin-left: 0;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
