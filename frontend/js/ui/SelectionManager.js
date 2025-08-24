@@ -1,7 +1,7 @@
 // ===== מודול לניהול בחירת ריבועים בלוח השחמט =====
-// מודול זה אחראי על ניהול בחירת ריבועים בלוח השחמט
-// הוא מספק פונקציות לבחירת ריבוע, ניקוי הבחירה, קבלת הריבוע הנבחר ובדיקת אם ריבוע נבחר
-// הוא גם מספק פונקציה לקבלת אלמנט הריבוע לפי מיקום השורה והעמודה
+// זוכרת איזה כלי השחקן בחר
+// מדגישה את הכלי הנבחר
+// מנקה בחירות קודמות
 
 export class SelectionManager {
   constructor(boardRenderer) {
@@ -9,7 +9,7 @@ export class SelectionManager {
     this.selectedSquare = null;
     this.selectedElement = null;
   }
-  
+  // פונקציה לבחירת אריח
   select(row, col) {
     this.clear(); // נקה בחירה קודמת
     
@@ -20,7 +20,7 @@ export class SelectionManager {
       this.selectedElement.classList.add("selected");
     }
   }
-  
+  // פונקציה לניקוי הבחירה
   clear() {
     if (this.selectedElement) {
       this.selectedElement.classList.remove("selected");
@@ -34,11 +34,11 @@ export class SelectionManager {
     this.selectedSquare = null;
     this.selectedElement = null;
   }
-  
+  // פונקציה לקבלת הריבוע הנבחר
   getSelected() {
     return this.selectedSquare;
   }
-  
+  // פונקציה לבדוק אם ריבוע נבחר    
   isSelected(row, col) {
     return this.selectedSquare && 
            this.selectedSquare[0] === row && 

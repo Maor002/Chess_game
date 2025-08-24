@@ -1,7 +1,7 @@
-/**
- * ===== מודול ממשק המשתמש =====
- * מטפל בתצוגה ובאינטראקציה עם המשתמש
- */
+// מארגנת את כל המנהלים
+// מספקת API פשוט לשימוש חיצוני
+// מתאמת בין כל החלקים
+// מנהלת את מחזור החיים של הממשק
 
 import { logger } from "../Logger/logger.js";
 import { BoardRenderer } from "./BoardRenderer.js";
@@ -10,12 +10,12 @@ import { MovesHighlighter } from "./MovesHighlighter.js";
 import { SelectionManager } from "./SelectionManager.js";
 import { MovesDisplayManager } from "./MovesDisplayManager.js";
 import { GameStatusManager } from "./GameStatusManager.js";
+import { LanguageManager } from "../config/Language.js";
 
 export class ChessUI {
   constructor(engine) {
     this.engine = engine;
     this.currentMoveIndex = -1;
-
     this.initializeElements();
     this.initializeManagers();
     this.bindEvents();
@@ -36,6 +36,7 @@ export class ChessUI {
     this.selectionManager = new SelectionManager(this.boardRenderer);
     this.movesHighlighter = new MovesHighlighter(this.boardRenderer);
     this.movesDisplay = new MovesDisplayManager(this.elements.movesList);
+    this.langManager = new LanguageManager();
     this.gameStatus = new GameStatusManager(
       this.elements.turnIndicator,
       this.elements.capturedPieces,
@@ -85,7 +86,7 @@ export class ChessUI {
     }
   }
 
-  // ממשק פשוט לפונקציות חיצoniות
+  // פונקציות לניהול מצב המשחק
   showStatusMessage(message, type = "") {
     this.gameStatus.showMessage(message, type);
   }

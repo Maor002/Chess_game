@@ -1,13 +1,14 @@
 // ===== מודול עזר להדגשת מהלכים =====
-// מודול זה אחראי על הדגשת המהלכים האפשריים בלוח השחמט
-// הוא מספק פונקציות להדגשת המהלכים האפשריים ולניקוי ההדגשות הקודמות
+// מקבלת רשימת מהלכים אפשריים
+// מדגישה אותם על הלוח
+// זוכרת מה הודגש כדי לנקות אחר כך
 import {logger} from "../Logger/logger.js";
 export class MovesHighlighter {
   constructor(boardRenderer) {
     this.boardRenderer = boardRenderer;
     this.highlightedSquares = [];
   }
-  
+  // פונקציה להדגשת מהלכים אפשריים
   highlight(validMoves) {
     this.clear();
     

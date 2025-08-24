@@ -1,6 +1,8 @@
-// ===== מודול לניהול תצוגת המהלכים =====
-// מודול זה אחראי על ניהול תצוגת המהלכים ההיסטוריים של המשחק
-// הוא מספק פונקציות ליצירת אלמנטים גרפיים עבור המהלכים ולרענון התצוגה של המהלכים
+// ===== מחלקה לתצוגת היסטוריית המהלכים ======
+// מציגה את כל המהלכים שהיו במשחק
+// מארגנת אותם בזוגות (לבן-שחור)
+// מאפשרת הדגשה של מהלך נוכחי
+// מעצבת את התצוגה (מספור, צבעים)
 import  ChessNotationHelper  from "./ChessNotationHelper.js";
 
 export class MovesDisplayManager {
@@ -8,7 +10,7 @@ export class MovesDisplayManager {
     this.element = element;
     this.moveElements = [];
   }
-
+// פונקציה ליצירת אלמנט מהלך
   createMoveElement(move, className, isActive = false) {
     const element = document.createElement("div");
     element.className = className;
@@ -20,7 +22,7 @@ export class MovesDisplayManager {
 
     return element;
   }
-
+// עדכן את התצוגה של כל המהלכים
   update(historyMoves, currentMoveIndex = -1) {
     const fragment = document.createDocumentFragment();
     this.moveElements = [];
@@ -75,7 +77,7 @@ export class MovesDisplayManager {
 
     return movePair;
   }
-
+// פונקציה להדגשת מהלך ספציפי
   highlightMove(moveIndex) {
     // הסר הדגשה קודמת
     this.moveElements.forEach((el) => el.classList.remove("move-active"));

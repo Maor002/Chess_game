@@ -1,4 +1,8 @@
-// ===== מודול לטיפול בפעולות המשחק =====
+// ===== מחלקה לטיפול בפעולות השחקן =====
+// מטפלת בלחיצות על הלוח
+// מחליטה מה לעשות בכל מצב (בחירה, מהלך, ביטול)
+// מתאמת בין השחקן למנוע המשחק
+// מנהלת את זרימת המשחק
 import {logger} from "../Logger/logger.js";
 export class GameActionHandler {
   constructor(engine, selectionManager, movesHighlighter) {
@@ -6,7 +10,7 @@ export class GameActionHandler {
     this.selectionManager = selectionManager;
     this.movesHighlighter = movesHighlighter;
   }
-  
+  // פונקציה לטיפול בלחיצות על משבצות הלוח
   handleSquareClick(row, col) {
     if (!this.engine.gameActive) {
       logger.debug("Click ignored, game not active");
@@ -16,7 +20,7 @@ export class GameActionHandler {
     const gameState = this.getGameState(row, col);
     return this.processClick(gameState);
   }
-  
+  // פונקציה לקבלת מצב המשחק הנוכחי
   getGameState(row, col) {
     const board = this.engine.getBoard();
     return {
@@ -27,7 +31,7 @@ export class GameActionHandler {
       currentPlayer: this.engine.getCurrentPlayer()
     };
   }
-  
+  // פונקציה לעיבוד לחיצות על משבצות הלוח
   processClick({ row, col, clickedPiece, selectedSquare, currentPlayer }) {
     if (selectedSquare) {
       return this.handleSelectedSquareClick(row, col, selectedSquare, clickedPiece, currentPlayer);
@@ -35,7 +39,7 @@ export class GameActionHandler {
       return this.handleInitialClick(row, col, clickedPiece, currentPlayer);
     }
   }
-  
+ // פונקציה לטיפול בלחיצה על משבצת שנבחרה 
   handleSelectedSquareClick(row, col, selectedSquare, clickedPiece, currentPlayer) {
     const [selectedRow, selectedCol] = selectedSquare;
     
@@ -52,7 +56,7 @@ export class GameActionHandler {
       return this.handleInvalidMove(row, col, clickedPiece, currentPlayer);
     }
   }
-  
+  // פונקציה לטיפול בלחיצה על משבצת ראשונית
   handleInitialClick(row, col, clickedPiece, currentPlayer) {
     if (clickedPiece && clickedPiece.color === currentPlayer) {
       this.selectPiece(row, col);
@@ -60,7 +64,7 @@ export class GameActionHandler {
     }
     return { action: "no_action" };
   }
-  
+
   executeMove(fromRow, fromCol, toRow, toCol) {
     logger.info(`Executing move from [${fromRow}, ${fromCol}] to [${toRow}, ${toCol}]`);
     
@@ -75,7 +79,7 @@ export class GameActionHandler {
       moveResult 
     };
   }
-  
+  // פונקציה לטיפול במהלכים לא חוקיים
   handleInvalidMove(row, col, clickedPiece, currentPlayer) {
     this.selectionManager.clear();
     
@@ -86,7 +90,7 @@ export class GameActionHandler {
     
     return { action: "invalid_move" };
   }
-  
+  // פונקציה לבחירת כלי
   selectPiece(row, col) {
     this.selectionManager.select(row, col);
     const validMoves = this.engine.getAllValidMoves(row, col);

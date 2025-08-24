@@ -1,46 +1,6 @@
- const translations = {
-            he: {
-                'page-title': 'משחק שחמט - גרסה מודולרית',
-                'game-title': '♔ משחק שחמט ♛',
-                'white-turn': 'תור הלבן',
-                'black-turn': 'תור השחור',
-                'moves-list': '📝 רשימת המהלכים',
-                'captured-pieces': '♜ כלים שנתפסו ♜',
-                'white-pieces': 'כלי לבן',
-                'black-pieces': 'כלי שחור',
-                'new-game': 'משחק חדש',
-                'undo-move': 'מהלך קודם',
-                'redo-move': 'מהלך הבא',
-                'check': 'שח!',
-                'checkmate': 'מט! המשחק נגמר',
-                'stalemate': 'תיקו! אין מהלכים חוקיים',
-                'white-wins': 'הלבן ניצח!',
-                'black-wins': 'השחור ניצח!',
-                'game-over': 'המשחק נגמר'
-            },
-            en: {
-                'page-title': 'Chess Game - Modular Version',
-                'game-title': '♔ Chess Game ♛',
-                'white-turn': "White's Turn",
-                'black-turn': "Black's Turn",
-                'moves-list': '📝 Moves List',
-                'captured-pieces': '♜ Captured Pieces ♜',
-                'white-pieces': 'White Pieces',
-                'black-pieces': 'Black Pieces',
-                'new-game': 'New Game',
-                'undo-move': 'Undo Move',
-                'redo-move': 'Redo Move',
-                'check': 'Check!',
-                'checkmate': 'Checkmate! Game Over',
-                'stalemate': 'Stalemate! No Legal Moves',
-                'white-wins': 'White Wins!',
-                'black-wins': 'Black Wins!',
-                'game-over': 'Game Over'
-            }
-        };
-
+import { translations } from "./translationsConfig.js";
         // Language Management
-        class LanguageManager {
+       export class LanguageManager {
             constructor() {
                 this.currentLanguage = this.detectLanguage();
                 this.init();
@@ -119,4 +79,3 @@
         }
 
         // Initialize Language Manager
-        const langManager = new LanguageManager()
