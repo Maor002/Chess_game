@@ -9,8 +9,8 @@ export class MovesHighlighter {
     this.highlightedSquares = [];
   }
   // פונקציה להדגשת מהלכים אפשריים
-  highlight(validMoves) {
-    this.clear();
+  highlightPossibleMoves(validMoves) {
+    this.clearHighlightedSquares();
     
     if (!validMoves) return;
     
@@ -24,8 +24,8 @@ export class MovesHighlighter {
     
     logger.debug(`Highlighted ${validMoves.length} possible moves`);
   }
-  
-  clear() {
+
+  clearHighlightedSquares() {
     this.highlightedSquares.forEach(square => {
       square.classList.remove("possible-move");
     });

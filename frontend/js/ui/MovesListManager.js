@@ -5,22 +5,22 @@
 // מעצבת את התצוגה (מספור, צבעים)
 import  ChessNotationHelper  from "./ChessNotationHelper.js";
 
-export class MovesDisplayManager {
-  constructor(element) {
-    this.element = element;
+export class MovesListManager {
+  constructor(ListElement) {
+    this.ListElement = ListElement;
     this.moveElements = [];
   }
 // פונקציה ליצירת אלמנט מהלך
   createMoveElement(move, className, isActive = false) {
-    const element = document.createElement("div");
-    element.className = className;
-    element.textContent = ChessNotationHelper.formatMove(move);
+    const moveElement = document.createElement("div");
+    moveElement.className = className;
+    moveElement.textContent = ChessNotationHelper.formatMove(move);
 
     if (isActive) {
-      element.classList.add("move-active");
+      moveElement.classList.add("move-active");
     }
 
-    return element;
+    return moveElement;
   }
 // עדכן את התצוגה של כל המהלכים
   update(historyMoves, currentMoveIndex = -1) {
@@ -38,8 +38,8 @@ export class MovesDisplayManager {
       fragment.appendChild(movePair);
     }
 
-    this.element.innerHTML = "";
-    this.element.appendChild(fragment);
+    this.ListElement.innerHTML = "";
+    this.ListElement.appendChild(fragment);
   }
 
   createMovePair(historyMoves, index, moveNumber, currentMoveIndex) {
@@ -88,8 +88,8 @@ export class MovesDisplayManager {
     }
   }
 
-  clear() {
-    this.element.innerHTML = "";
+  clearMovesList() {
+    this.ListElement.innerHTML = "";
     this.moveElements = [];
   }
 }

@@ -27,25 +27,25 @@ export class GameActionHandler {
       row,
       col,
       clickedPiece: board[row][col],
-      selectedSquare: this.selectionManager.getSelected(),
+      selectedSquare: this.selectionManager.getSelectedTail(),
       currentPlayer: this.engine.getCurrentPlayer()
     };
   }
   // פונקציה לעיבוד לחיצות על משבצות הלוח
   processClick({ row, col, clickedPiece, selectedSquare, currentPlayer }) {
     if (selectedSquare) {
-      return this.handleSelectedSquareClick(row, col, selectedSquare, clickedPiece, currentPlayer);
+      return this.handleSecondClick(row, col, selectedSquare, clickedPiece, currentPlayer);
     } else {
-      return this.handleInitialClick(row, col, clickedPiece, currentPlayer);
+      return this.handleFirstClick(row, col, clickedPiece, currentPlayer);
     }
   }
  // פונקציה לטיפול בלחיצה על משבצת שנבחרה 
-  handleSelectedSquareClick(row, col, selectedSquare, clickedPiece, currentPlayer) {
+  handleSecondClick(row, col, selectedSquare, clickedPiece, currentPlayer) {
     const [selectedRow, selectedCol] = selectedSquare;
     
     // בחירה מחדש של אותה משבצת
     if (this.selectionManager.isSelected(row, col)) {
-      this.selectionManager.clear();
+      this.selectionManager.clearSelectTail();
       return { action: "deselected" };
     }
     
@@ -57,9 +57,9 @@ export class GameActionHandler {
     }
   }
   // פונקציה לטיפול בלחיצה על משבצת ראשונית
-  handleInitialClick(row, col, clickedPiece, currentPlayer) {
+  handleFirstClick(row, col, clickedPiece, currentPlayer) {
     if (clickedPiece && clickedPiece.color === currentPlayer) {
-      this.selectPiece(row, col);
+      this.selectPieceAndHighlightMoves(row, col);
       return { action: "selected", row, col };
     }
     return { action: "no_action" };
@@ -69,7 +69,7 @@ export class GameActionHandler {
     logger.info(`Executing move from [${fromRow}, ${fromCol}] to [${toRow}, ${toCol}]`);
     
     const moveResult = this.engine.makeMove(fromRow, fromCol, toRow, toCol);
-    this.selectionManager.clear();
+    this.selectionManager.clearSelectTail();
     this.engine.switchPlayer();
     
     return { 
@@ -81,20 +81,20 @@ export class GameActionHandler {
   }
   // פונקציה לטיפול במהלכים לא חוקיים
   handleInvalidMove(row, col, clickedPiece, currentPlayer) {
-    this.selectionManager.clear();
+    this.selectionManager.clearSelectTail();
     
     if (clickedPiece && clickedPiece.color === currentPlayer) {
-      this.selectPiece(row, col);
+      this.selectPieceAndHighlightMoves(row, col);
       return { action: "reselected", row, col };
     }
     
     return { action: "invalid_move" };
   }
   // פונקציה לבחירת כלי
-  selectPiece(row, col) {
-    this.selectionManager.select(row, col);
+  selectPieceAndHighlightMoves(row, col) {
+    this.selectionManager.selectTile(row, col);
     const validMoves = this.engine.getAllValidMoves(row, col);
-    this.movesHighlighter.highlight(validMoves);
+    this.movesHighlighter.highlightPossibleMoves(validMoves);
     logger.debug(`Selected piece at [${row}, ${col}] with ${validMoves?.length || 0} possible moves`);
   }
 }

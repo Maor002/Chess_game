@@ -4,7 +4,6 @@
 // מציגה הודעות חשובות (שח, מט)
 // מעצבת את ההודעות (צבעים, אנימציות)
 import { ChessConfig } from "../config/chessConfig.js";
-import ChessNotationHelper from "./ChessNotationHelper.js";
 
 export class GameStatusManager {
   constructor(turnElement, capturedElement, statusElement) {

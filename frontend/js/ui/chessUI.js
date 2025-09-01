@@ -8,7 +8,7 @@ import { BoardRenderer } from "./BoardRenderer.js";
 import { GameActionHandler } from "./GameActionHandler.js";
 import { MovesHighlighter } from "./MovesHighlighter.js";
 import { SelectionManager } from "./SelectionManager.js";
-import { MovesDisplayManager } from "./MovesDisplayManager.js";
+import { MovesListManager } from "./MovesListManager.js";
 import { GameStatusManager } from "./GameStatusManager.js";
 import { LanguageManager } from "../config/Language.js";
 
@@ -32,25 +32,25 @@ export class ChessUI {
   }
 
   initializeManagers() {
-    this.boardRenderer = new BoardRenderer(this.elements.board);
-    this.selectionManager = new SelectionManager(this.boardRenderer);
-    this.movesHighlighter = new MovesHighlighter(this.boardRenderer);
-    this.movesDisplay = new MovesDisplayManager(this.elements.movesList);
-    this.langManager = new LanguageManager();
+    this.boardRenderer = new BoardRenderer(this.elements.board);//מנהל תצוגת הלוח
+    this.selectionManager = new SelectionManager(this.boardRenderer);//מנהל הבחירה אריח על הלוח
+    this.movesHighlighter = new MovesHighlighter(this.boardRenderer);//מנהל הדגשת מהלכים
+    this.MovesListManager = new MovesListManager(this.elements.movesList);//מנהל תצוגת היסטוריית מהלכים
+    this.langManager = new LanguageManager();// מנהל השפה
     this.gameStatus = new GameStatusManager(
       this.elements.turnIndicator,
       this.elements.capturedPieces,
       this.elements.statusMessage
-    );
+    );// מנהל מצב שבדף המשחק
     this.actionHandler = new GameActionHandler(
       this.engine,
       this.selectionManager,
       this.movesHighlighter
-    );
+    );//פונקצייה לטיפול בפעולות משתמש על הלוח 
   }
 
   bindEvents() {
-    this.handleSquareClick = this.handleSquareClick.bind(this);
+    this.handleSquareClick = this.handleSquareClick.bind(this);//קישור לפונקציית לחיצה על ריבוע
   }
 
   createBoard() {
@@ -80,7 +80,7 @@ export class ChessUI {
       this.createBoard();
       this.gameStatus.updateTurn(this.engine.getCurrentPlayer());
       this.gameStatus.updateCapturedPieces(this.engine.getCapturedPieces());
-      this.movesDisplay.update(this.engine.historyMoves, this.currentMoveIndex);
+      this.MovesListManager.update(this.engine.historyMoves, this.currentMoveIndex);
     } catch (error) {
       logger.error("Error updating display:", error);
     }
@@ -96,19 +96,19 @@ export class ChessUI {
   }
 
   clearSelection() {
-    this.selectionManager.clear();
+    this.selectionManager.clearSelectTail();
   }
 
   clearHistoryMoves() {
     this.engine.historyMoves = [];
-    this.movesDisplay.clear();
+    this.MovesListManager.clearMovesList();
     logger.debug("History of moves cleared");
   }
 
   // פונקציות חדשות לניווט במהלכים
   goToMove(moveIndex) {
     this.currentMoveIndex = moveIndex;
-    this.movesDisplay.highlightMove(moveIndex);
+    this.MovesListManager.highlightMove(moveIndex);
     // כאן אפשר להוסיף לוגיקה לשחזור מצב הלוח
   }
 

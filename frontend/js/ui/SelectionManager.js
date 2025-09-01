@@ -9,10 +9,10 @@ export class SelectionManager {
     this.selectedSquare = null;
     this.selectedElement = null;
   }
-  // פונקציה לבחירת אריח
-  select(row, col) {
-    this.clear(); // נקה בחירה קודמת
-    
+  //  פונקציה לבחירת והדגשה אריח
+  selectTile(row, col) {
+    this.clearSelectTail(); // נקה בחירה קודמת
+
     this.selectedSquare = [row, col];
     this.selectedElement = this.boardRenderer.getSquare(row, col);
     
@@ -21,7 +21,7 @@ export class SelectionManager {
     }
   }
   // פונקציה לניקוי הבחירה
-  clear() {
+  clearSelectTail() {
     if (this.selectedElement) {
       this.selectedElement.classList.remove("selected");
     }
@@ -35,10 +35,10 @@ export class SelectionManager {
     this.selectedElement = null;
   }
   // פונקציה לקבלת הריבוע הנבחר
-  getSelected() {
+  getSelectedTail() {
     return this.selectedSquare;
   }
-  // פונקציה לבדוק אם ריבוע נבחר    
+  // לבדוק אם הריבוע נלחץ כבר     
   isSelected(row, col) {
     return this.selectedSquare && 
            this.selectedSquare[0] === row && 
