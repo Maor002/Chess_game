@@ -12,12 +12,17 @@ export class GameActionHandler {
   }
   // פונקציה לטיפול בלחיצות על משבצות הלוח
   handleSquareClick(row, col) {
-    if (!this.engine.gameActive) {
+    if (!this.engine.getGameStatus()) {
       logger.debug("Click ignored, game not active");
       return false;
     }
     
     const gameState = this.getGameState(row, col);
+    if(!this.selectionManager.getSelectedTail() && !gameState.clickedPiece) {
+      logger.debug("Click on empty square with no selection, ignoring");
+      return false;
+    }
+    
     return this.processClick(gameState);
   }
   // פונקציה לקבלת מצב המשחק הנוכחי
@@ -50,7 +55,7 @@ export class GameActionHandler {
     }
     
     // ניסיון לבצע מהלך
-    if (this.engine.isValidMove(selectedRow, selectedCol, row, col)) {
+    if (this.engine.moveValidator.isValidMove(selectedRow, selectedCol, row, col)) {
       return this.executeMove(selectedRow, selectedCol, row, col);
     } else {
       return this.handleInvalidMove(row, col, clickedPiece, currentPlayer);
@@ -67,8 +72,8 @@ export class GameActionHandler {
 
   executeMove(fromRow, fromCol, toRow, toCol) {
     logger.info(`Executing move from [${fromRow}, ${fromCol}] to [${toRow}, ${toCol}]`);
-    
-    const moveResult = this.engine.makeMove(fromRow, fromCol, toRow, toCol);
+
+    const moveResult = this.engine.moveExecutor.executeMove(fromRow, fromCol, toRow, toCol);
     this.selectionManager.clearSelectTail();
     this.engine.switchPlayer();
     
@@ -93,7 +98,7 @@ export class GameActionHandler {
   // פונקציה לבחירת כלי
   selectPieceAndHighlightMoves(row, col) {
     this.selectionManager.selectTile(row, col);
-    const validMoves = this.engine.getAllValidMoves(row, col);
+    const validMoves = this.engine.moveValidator.getAllValidMoves(row, col);
     this.movesHighlighter.highlightPossibleMoves(validMoves);
     logger.debug(`Selected piece at [${row}, ${col}] with ${validMoves?.length || 0} possible moves`);
   }

@@ -23,7 +23,7 @@ export class MovesListManager {
     return moveElement;
   }
 // עדכן את התצוגה של כל המהלכים
-  update(historyMoves, currentMoveIndex = -1) {
+  updateListofMoves(historyMoves, currentMoveIndex = -1) {
     const fragment = document.createDocumentFragment();
     this.moveElements = [];
 

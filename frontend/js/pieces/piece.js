@@ -1,3 +1,7 @@
+//  * ===== מודול כלי השחמט =====
+//  * מגדיר את מבנה כלי השחמט
+//  * כולל סוג, צבע, מיקום ודרגה
+//  * כולל פונקציות בסיסיות לכלי
 export class Piece {
   constructor(color,type, row, col, grade = 0) {
     this.color = color; // 'w' או 'b'

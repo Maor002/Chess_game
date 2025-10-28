@@ -1,7 +1,8 @@
 import { translations } from "./translationsConfig.js";
         // Language Management
        export class LanguageManager {
-            constructor() {
+            constructor(chessUI) {
+                this.chessUI = chessUI;
                 this.currentLanguage = this.detectLanguage();
                 this.init();
             }

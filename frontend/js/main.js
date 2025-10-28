@@ -2,9 +2,9 @@
  * ===== בקר המשחק הראשי =====
  * מתאם בין מנוע השחמט לממשק המשתמש
  */
-import { ChessEngine } from "./engine/chessEngine.js";
+import { ChessEngine } from "./engine/ManagerChessEngine.js";
 import { logger } from "./Logger/logger.js";
-import { ChessUI } from "./ui/chessUI.js";
+import { ChessUI } from "./ui/ManagerChessUI.js";
 
 
 export class ChessGameController {
@@ -26,7 +26,7 @@ export class ChessGameController {
    * התחלת משחק חדש
    */
   startNewGame() {
-    this.engine.initializeBoard();
+    this.engine.startNewGame();
     this.ui.clearHistoryMoves();
     this.ui.clearSelection();
     this.ui.updateDisplay();

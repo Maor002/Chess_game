@@ -19,6 +19,7 @@ export class ChessUI {
     this.initializeElements();
     this.initializeManagers();
     this.bindEvents();
+    
   }
 
   initializeElements() {
@@ -36,7 +37,7 @@ export class ChessUI {
     this.selectionManager = new SelectionManager(this.boardRenderer);//מנהל הבחירה אריח על הלוח
     this.movesHighlighter = new MovesHighlighter(this.boardRenderer);//מנהל הדגשת מהלכים
     this.MovesListManager = new MovesListManager(this.elements.movesList);//מנהל תצוגת היסטוריית מהלכים
-    this.langManager = new LanguageManager();// מנהל השפה
+    this.langManager = new LanguageManager(this);// מנהל השפה
     this.gameStatus = new GameStatusManager(
       this.elements.turnIndicator,
       this.elements.capturedPieces,
@@ -49,10 +50,6 @@ export class ChessUI {
     );//פונקצייה לטיפול בפעולות משתמש על הלוח 
   }
 
-  bindEvents() {
-    this.handleSquareClick = this.handleSquareClick.bind(this);//קישור לפונקציית לחיצה על ריבוע
-  }
-
   createBoard() {
     try {
       this.boardRenderer.render(this.engine.getBoard(), this.handleSquareClick);
@@ -61,6 +58,11 @@ export class ChessUI {
     }
   }
 
+  bindEvents() {
+    this.handleSquareClick = this.handleSquareClick.bind(this);//קישור לפונקציית לחיצה על ריבוע
+  }
+
+//פעולה בעת לחיצה על אריח
   handleSquareClick(row, col) {
     try {
       const result = this.actionHandler.handleSquareClick(row, col);
@@ -80,7 +82,7 @@ export class ChessUI {
       this.createBoard();
       this.gameStatus.updateTurn(this.engine.getCurrentPlayer());
       this.gameStatus.updateCapturedPieces(this.engine.getCapturedPieces());
-      this.MovesListManager.update(this.engine.historyMoves, this.currentMoveIndex);
+      this.MovesListManager.updateListofMoves(this.engine.getHistoryMoves(), this.currentMoveIndex);
     } catch (error) {
       logger.error("Error updating display:", error);
     }
@@ -100,7 +102,7 @@ export class ChessUI {
   }
 
   clearHistoryMoves() {
-    this.engine.historyMoves = [];
+    this.engine.getHistoryMoves().length = 0;
     this.MovesListManager.clearMovesList();
     logger.debug("History of moves cleared");
   }
@@ -113,7 +115,7 @@ export class ChessUI {
   }
 
   nextMove() {
-    if (this.currentMoveIndex < this.engine.historyMoves.length - 1) {
+    if (this.currentMoveIndex < this.engine.getHistoryMoves().length - 1) {
       this.goToMove(this.currentMoveIndex + 1);
     }
   }
