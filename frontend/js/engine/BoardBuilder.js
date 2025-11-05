@@ -9,6 +9,7 @@ export class BoardBuilder {
   }
   //יוצר את הלוח ומחזיר אותו
   initializeBoard() {
+    try {
     logger.debug("Initializing chess board");
     for (let row = 0; row < ChessConfig.BOARD_SIZE; row++) {
       for (let col = 0; col < ChessConfig.BOARD_SIZE; col++) {
@@ -22,6 +23,10 @@ export class BoardBuilder {
     logger.info(` Board initialized successfully `);
 
     return this.board; // מחזיר את הלוח
+    } catch (error) {
+      logger.error(" Error initializing board:", error);
+      throw new Error(`Failed to initialize board: ${error.message}`);
+    }
   }
   //יוצר את הכלים על הלוח
   createPiece(piece, row, col) {

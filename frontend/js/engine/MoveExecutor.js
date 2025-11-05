@@ -1,10 +1,9 @@
 import { logger } from "../Logger/logger.js";
 export class MoveExecutor {
-  constructor(board,gameActive) {
-    this.board = board;
+  constructor(engine) {
+    this.engine = engine;
     this.capturedPiecesArray = [];
     this.historyMoves = [];
-    this.gameActive = gameActive;
   }
 
   executeMove(fromRow, fromCol, toRow, toCol) {
@@ -12,12 +11,12 @@ export class MoveExecutor {
       ` Making move from [${fromRow},${fromCol}] to [${toRow},${toCol}]`
     );
     try {
-      const movingPiece = this.board[fromRow][fromCol];
+      const movingPiece = this.engine.board[fromRow][fromCol];
       if (!movingPiece) {
         throw new Error("No piece at source position");
       }
 
-      const capturedPiece = this.board[toRow][toCol];
+      const capturedPiece = this.engine.board[toRow][toCol];
 
       if (this.isCapturedPiece(capturedPiece)) {
         logger.info(
@@ -27,10 +26,10 @@ export class MoveExecutor {
       }
       if (this.isKingCaptured(capturedPiece)) {
         logger.info("King has been captured, ending game");
-        this.gameActive = false;
+        this.engine.gameActive = false;
       }
       if (this.isKingMoved(movingPiece)) {
-        this.board[fromRow][fromCol].hasMoved = true; // עדכון אם המלך זז
+        this.engine.board[fromRow][fromCol].hasMoved = true; // עדכון אם המלך זז
         logger.debug("King has moved, updating state");
 
       }
@@ -50,8 +49,8 @@ export class MoveExecutor {
     piece.col = toCol; // עדכון מיקום העמודה של הכלי
   }
   makeMove(fromRow, fromCol, toRow, toCol) {
-    this.board[toRow][toCol] = this.board[fromRow][fromCol];
-    this.board[fromRow][fromCol] = "";
+    this.engine.board[toRow][toCol] = this.engine.board[fromRow][fromCol];
+    this.engine.board[fromRow][fromCol] = "";
   }
   isKingCaptured(capturedPiece) {
     if (capturedPiece.type === "K") {

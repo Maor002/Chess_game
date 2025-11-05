@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>משחק שחמט - גרסה מודולרית</title>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/alert.css" />
   </head>
   <body>
     <!-- Language Switcher -->
@@ -38,13 +39,12 @@
         </div>
 
         <!-- Right Panel - Chess Board and Captured Pieces -->
-        <!-- Right Panel - Chess Board and Captured Pieces -->
-            <div class="right-panel">
-                <!-- Captured Pieces -->
-                <div class="captured-pieces-display">
-                    <h3 data-translate="captured-pieces">♜ כלים שנתפסו ♜</h3>
-                    <div class="captured-list" id="capturedPieces"></div>
-                </div>
+        <div class="right-panel">
+          <!-- Captured Pieces -->
+          <div class="captured-pieces-display">
+            <h3 data-translate="captured-pieces">♜ כלים שנתפסו ♜</h3>
+            <div class="captured-list" id="capturedPieces"></div>
+          </div>
 
           <!-- Chess Board -->
           <div class="board-container">
@@ -80,8 +80,10 @@
       <div class="status-message" id="statusMessage"></div>
     </div>
 
+    <!-- Alert Modal Container (will be created by AlertUI class) -->
+    <div id="alertContainer"></div>
+
     <!-- קישור לקבצי JavaScript -->
     <script type="module" src="./js/main.js"></script>
-
   </body>
 </html>

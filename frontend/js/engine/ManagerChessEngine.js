@@ -10,7 +10,6 @@ export class ChessEngine {
   constructor() {
     this.gameActive = true;
     this.currentPlayer = ChessConfig.WHITE_PLAYER;
-    this.board = [];
     this.startNewGame();
     this.initializeManager();
     logger.debug("Creating new chess engine");
@@ -19,42 +18,36 @@ export class ChessEngine {
     this.currentPlayer = ChessConfig.WHITE_PLAYER; // הגדרת השחקן הנוכחי כלבן
     this.gameActive = true; // הגדרת המשחק כפעיל
     this.boardBuilder = new BoardBuilder();
-    this.board =  this.boardBuilder.initializeBoard();
+    this.board = this.boardBuilder.initializeBoard();
     logger.debug("starting new game");
   }
   initializeManager() {
-    this.moveExecutor = new MoveExecutor(this.board, this.gameActive);
+    this.moveExecutor = new MoveExecutor(this);
     this.moveValidator = new MoveValidator(this.board);
   }
   switchPlayer() {
     logger.debug(` Switching player from ${this.currentPlayer}`);
+    const previousPlayer = this.currentPlayer;
+    this.currentPlayer =
+      this.currentPlayer === ChessConfig.WHITE_PLAYER
+        ? ChessConfig.BLACK_PLAYER
+        : ChessConfig.WHITE_PLAYER;
 
-    try {
-      const previousPlayer = this.currentPlayer;
-      this.currentPlayer =
-        this.currentPlayer === ChessConfig.WHITE_PLAYER
-          ? ChessConfig.BLACK_PLAYER
-          : ChessConfig.WHITE_PLAYER;
-
-      logger.info(
-        ` Current player updated to ${this.currentPlayer} (previous: ${previousPlayer})`
-      );
-    } catch (errofr) {
-      logger.error(" Error switching player:", error);
-      throw new Error(`Failed to switch player: ${error.message}`);
-    }
+    logger.info(
+      ` Current player updated to ${this.currentPlayer} (previous: ${previousPlayer})`
+    );
   }
   getBoard() {
- return this.board
+    return this.board;
   }
 
   getCapturedPieces() {
-    logger.debug(
-      ` Returning captured pieces list (${
-        this.moveExecutor.getCapturedPieces().length
-      } pieces)`
-    );
     try {
+      logger.debug(
+        ` Returning captured pieces list (${
+          this.moveExecutor.getCapturedPieces().length
+        } pieces)`
+      );
       return this.moveExecutor.getCapturedPieces();
     } catch (error) {
       logger.error(" Error returning captured pieces:", error);

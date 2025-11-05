@@ -43,19 +43,19 @@ export class BoardRenderer {
     return square;
   }
 
-    // פונקציה לעדכון תוכן המשבצת
-    updateSquareContent(square, piece) {
-    square.textContent = piece 
-      ? ChessConfig.pieces[piece.color + piece.type] 
-      : "";
-  }
-
   // עדכון מהיר של משבצת בודדת במקום כל הלוח
   updateSquare(row, col, piece) {
     const square = this.getSquare(row, col);
     if (square) {
       this.updateSquareContent(square, piece);
     }
+  }
+
+      // פונקציה לעדכון תוכן המשבצת
+    updateSquareContent(square, piece) {
+    square.textContent = piece 
+      ? ChessConfig.pieces[piece.color + piece.type] 
+      : "";
   }
 // פונקציה לקבלת אלמנט המשבצת לפי מיקום השורה והעמודה
    getSquare(row, col) {

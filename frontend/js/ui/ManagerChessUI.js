@@ -11,6 +11,9 @@ import { SelectionManager } from "./SelectionManager.js";
 import { MovesListManager } from "./MovesListManager.js";
 import { GameStatusManager } from "./GameStatusManager.js";
 import { LanguageManager } from "../config/Language.js";
+import {UIAlert } from "./UIAlert.js";
+import {translations} from"../config/translationsConfig";
+
 
 export class ChessUI {
   constructor(engine) {
@@ -37,7 +40,6 @@ export class ChessUI {
     this.selectionManager = new SelectionManager(this.boardRenderer);//מנהל הבחירה אריח על הלוח
     this.movesHighlighter = new MovesHighlighter(this.boardRenderer);//מנהל הדגשת מהלכים
     this.MovesListManager = new MovesListManager(this.elements.movesList);//מנהל תצוגת היסטוריית מהלכים
-    this.langManager = new LanguageManager(this);// מנהל השפה
     this.gameStatus = new GameStatusManager(
       this.elements.turnIndicator,
       this.elements.capturedPieces,
@@ -48,6 +50,9 @@ export class ChessUI {
       this.selectionManager,
       this.movesHighlighter
     );//פונקצייה לטיפול בפעולות משתמש על הלוח 
+    this.langManager = new LanguageManager(this);// מנהל השפה
+     this.alert = new UIAlert(this.langManager);// מנהל התראות ופופאפים
+
   }
 
   createBoard() {
@@ -69,6 +74,7 @@ export class ChessUI {
 
       if (result && result.action === "move_executed") {
         this.updateDisplay();
+        this.alertManager(this.engine.gameActive);
       }
 
       return result;
@@ -124,5 +130,19 @@ export class ChessUI {
     if (this.currentMoveIndex > 0) {
       this.goToMove(this.currentMoveIndex - 1);
     }
+  }
+  alertManager(gameActive) {
+    if (!gameActive) {
+      const savedLang = this.getLanguage();
+      this.alert.show({
+        title: translations[savedLang]['game-over'],
+        message: translations[savedLang]['exceptionOccurred'],
+        icon: "⚠️",
+        buttons: [{ text: translations[savedLang]['ok'], type: "primary" }],
+      });
+    }
+  }
+  getLanguage() {
+    return this.langManager.detectLanguage() || 'he';
   }
 }

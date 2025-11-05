@@ -16,7 +16,14 @@
                 'stalemate': 'תיקו! אין מהלכים חוקיים',
                 'white-wins': 'הלבן ניצח!',
                 'black-wins': 'השחור ניצח!',
-                'game-over': 'המשחק נגמר'
+                'game-over': 'המשחק נגמר',
+                'noMovesAvailable': 'אין מהלכים זמינים',
+                'ok': 'אישור',
+                'cancel': 'ביטול',
+                'error': 'שגיאה',
+                'exceptionOccurred': 'אירעה שגיאה: ',
+                'great': 'מעולה',
+                'understood': 'הבנתי'
             },
             en: {
                 'page-title': 'Chess Game - Modular Version',
@@ -35,6 +42,13 @@
                 'stalemate': 'Stalemate! No Legal Moves',
                 'white-wins': 'White Wins!',
                 'black-wins': 'Black Wins!',
-                'game-over': 'Game Over'
+                'game-over': 'Game Over',
+                'noMovesAvailable': 'No Moves Available',
+                'ok': 'OK',
+                'cancel': 'Cancel',
+                'error': 'Error',
+                'exceptionOccurred': 'An error occurred: ',
+                'great': 'Great',
+                'understood': 'Understood'
             }
         };

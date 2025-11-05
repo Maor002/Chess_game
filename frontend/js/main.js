@@ -6,7 +6,6 @@ import { ChessEngine } from "./engine/ManagerChessEngine.js";
 import { logger } from "./Logger/logger.js";
 import { ChessUI } from "./ui/ManagerChessUI.js";
 
-
 export class ChessGameController {
   constructor() {
     this.engine = new ChessEngine();
@@ -37,6 +36,7 @@ export class ChessGameController {
   /**
    * איפוס הלוח
    */
+   
   resetBoard() {
     this.startNewGame();
     logger.debug("Board has been reset.");
