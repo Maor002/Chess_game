@@ -28,6 +28,7 @@ export class BoardBuilder {
       throw new Error(`Failed to initialize board: ${error.message}`);
     }
   }
+ 
   //יוצר את הכלים על הלוח
   createPiece(piece, row, col) {
     try {

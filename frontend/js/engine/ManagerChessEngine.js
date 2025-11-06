@@ -5,26 +5,41 @@ import { logger } from "../Logger/logger.js";
 import { BoardBuilder } from "./BoardBuilder.js";
 import { MoveValidator } from "./MoveValidator.js";
 import { MoveExecutor } from "./MoveExecutor.js";
-
 export class ChessEngine {
   constructor() {
-    this.gameActive = true;
-    this.currentPlayer = ChessConfig.WHITE_PLAYER;
-    this.startNewGame();
-    this.initializeManager();
-    logger.debug("Creating new chess engine");
+    this.initializeGame();
+    logger.debug("Chess engine created successfully");
   }
-  startNewGame() {
-    this.currentPlayer = ChessConfig.WHITE_PLAYER; // הגדרת השחקן הנוכחי כלבן
-    this.gameActive = true; // הגדרת המשחק כפעיל
-    this.boardBuilder = new BoardBuilder();
-    this.board = this.boardBuilder.initializeBoard();
-    logger.debug("starting new game");
+  //  מאתחל את כל מערכות המשחק
+  initializeGame() {
+    this.resetGameState(); // אתחול מצב המשחק
+    this.initializeManagers(); // אתחול מנהלי המשחק
+    logger.debug("Game initialized and ready to start");
   }
-  initializeManager() {
+
+  // מאתחל את מנהלי הלוח והמהלכים
+
+  initializeManagers() {
+    this.board = new BoardBuilder().initializeBoard();
     this.moveExecutor = new MoveExecutor(this);
     this.moveValidator = new MoveValidator(this.board);
   }
+
+  // מאפס את מצב המשחק להתחלה חדשה
+  resetGameState() {
+    this.currentPlayer = ChessConfig.WHITE_PLAYER;
+    this.gameActive = true;
+  }
+
+  //   מתחיל משחק חדש - מאפס הכל ומאתחל מחדש
+  startNewGame() {
+    this.resetGameState();
+    this.board = new BoardBuilder().initializeBoard();
+    this.moveValidator = new MoveValidator(this.board);
+    this.moveExecutor = new MoveExecutor(this);
+    logger.debug("New game started successfully");
+  }
+
   switchPlayer() {
     logger.debug(` Switching player from ${this.currentPlayer}`);
     const previousPlayer = this.currentPlayer;
