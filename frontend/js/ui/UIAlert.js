@@ -1,10 +1,10 @@
 import { logger } from "../Logger/logger";
-import { translations} from "../config/translationsConfig.js";
 // מחלקת UIAlert - לניהול התראות ופופאפים
+
 export class UIAlert {
-  constructor(LanguageManager) {
+  constructor(languageManager) {
     this.createOverlay();
-    this.langManager = LanguageManager;
+    this.langManager = languageManager;
 
   }
 
@@ -135,7 +135,7 @@ export class UIAlert {
         title,
         message,
         icon,
-        buttons: [{ text: translations[this.savedLang]['ok'], type: "primary" }],
+        buttons: [{ text: this.langManager.translate('ok'), type: "primary" }],
       });
     } catch (error) {
       logger.error("Error displaying UIAlert info:", error);
@@ -152,7 +152,7 @@ export class UIAlert {
         title,
         message,
         icon,
-        buttons: [{ text: translations[this.savedLang]['great'], type: "success" }],
+        buttons: [{ text: this.langManager.translate('great'), type: "success" }],
       });
     } catch (error) {
       logger.error("Error displaying UIAlert success:", error);
@@ -168,7 +168,7 @@ export class UIAlert {
       title,
       message,
       icon,
-      buttons: [{ text: translations[this.savedLang]['great'], type: "success" }],
+      buttons: [{ text: this.langManager.translate('great'), type: "success" }],
     });
     logger.debug("UIAlert success displayed.");
   }
@@ -181,7 +181,7 @@ export class UIAlert {
       title,
       message,
       icon,
-      buttons: [{ text: translations[this.savedLang]['understood'], type: "danger" }],
+      buttons: [{ text: this.langManager.translate('understood'), type: "danger" }],
     });
     logger.debug("UIAlert error displayed.");
   }
@@ -194,7 +194,7 @@ export class UIAlert {
       title,
       message,
       icon,
-      buttons: [{ text: translations[this.savedLang]['understood'], type: "secondary" }],
+      buttons: [{ text: this.langManager.translate('understood'), type: "secondary" }],
     });
     logger.debug("UIAlert warning displayed.");
   }
@@ -209,12 +209,12 @@ export class UIAlert {
       icon,
       buttons: [
         {
-          text: translations[this.savedLang]['cancel'],
+          text: this.langManager.translate('cancel'),
           type: "secondary",
           onClick: onCancel,
         },
         {
-          text: translations[this.savedLang]['ok'],
+          text: this.langManager.translate('ok'),
           type: "primary",
           onClick: onConfirm,
         },

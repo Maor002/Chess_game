@@ -4,17 +4,19 @@
 // מציגה הודעות חשובות (שח, מט)
 // מעצבת את ההודעות (צבעים, אנימציות)
 import { ChessConfig } from "../config/chessConfig.js";
+import { LanguageManager } from "../config/Language.js";
 
 export class GameStatusManager {
-  constructor(turnElement, capturedElement, statusElement) {
+  constructor(turnElement, capturedElement, statusElement, languageManager) {
     this.turnElement = turnElement;
     this.capturedElement = capturedElement;
     this.statusElement = statusElement;
+    this.languageManager = languageManager;
   }
 // פונקציה לעדכון תור השחקן
   updateTurn(currentPlayer) {
     this.turnElement.textContent =
-      currentPlayer === ChessConfig.WHITE_PLAYER ? "תור הלבן" : "תור השחור";
+      currentPlayer === ChessConfig.WHITE_PLAYER ? this.languageManager.translate("white-turn") : this.languageManager.translate("black-turn");
   }
 // פונקציה לעדכון הכלים שנלכדו
   updateCapturedPieces(capturedPieces) {
