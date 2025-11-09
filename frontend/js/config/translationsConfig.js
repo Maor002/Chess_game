@@ -23,7 +23,8 @@
                 'error': 'שגיאה',
                 'exceptionOccurred': 'אירעה שגיאה: ',
                 'great': 'מעולה',
-                'understood': 'הבנתי'
+                'understood': 'הבנתי',
+                'start-new-game': 'התחל משחק חדש'
             },
             en: {
                 'page-title': 'Chess Game - Modular Version',
@@ -49,6 +50,7 @@
                 'error': 'Error',
                 'exceptionOccurred': 'An error occurred: ',
                 'great': 'Great',
-                'understood': 'Understood'
+                'understood': 'Understood',
+                'start-new-game': 'Start New Game'
             }
         };

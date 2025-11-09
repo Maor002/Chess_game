@@ -18,7 +18,6 @@ export class ChessEngine {
   }
 
   // מאתחל את מנהלי הלוח והמהלכים
-
   initializeManagers() {
     this.board = new BoardBuilder().initializeBoard();
     this.moveExecutor = new MoveExecutor(this);

@@ -11,8 +11,7 @@ import { SelectionManager } from "./SelectionManager.js";
 import { MovesListManager } from "./MovesListManager.js";
 import { GameStatusManager } from "./GameStatusManager.js";
 import { LanguageManager } from "../config/Language.js";
-import {UIAlert } from "./UIAlert.js";
-
+import { AlertManager } from "./AlertManager.js";
 
 export class ChessUI {
   constructor(engine) {
@@ -51,7 +50,7 @@ export class ChessUI {
       this.selectionManager,
       this.movesHighlighter
     );//פונקצייה לטיפול בפעולות משתמש על הלוח 
-     this.alert = new UIAlert(this.langManager);// מנהל התראות ופופאפים
+      this.alertManager = new AlertManager(this);// מנהל התראות ופופאפים
 
   }
 
@@ -74,7 +73,7 @@ export class ChessUI {
 
       if (result && result.action === "move_executed") {
         this.updateDisplay();
-        this.alertManager(this.engine.gameActive);
+        this.alertManager.alertGameOver();
       }
 
       return result;
@@ -131,18 +130,12 @@ export class ChessUI {
       this.goToMove(this.currentMoveIndex - 1);
     }
   }
-  alertManager(gameActive) {
-    if (!gameActive) {
-      // const savedLang = this.getLanguage();
-      this.alert.show({
-        title: this.langManager.translate('game-over'),
-        message: this.langManager.translate('exceptionOccurred'),
-        icon: "⚠️",
-        buttons: [{ text: this.langManager.translate('ok'), type: "primary" }],
-      });
-    }
-  }
-  getLanguage() {
-    return this.langManager.detectLanguage() || 'he';
+  startNewGame() {
+    this.engine.startNewGame();
+    this.clearHistoryMoves();
+    this.clearSelection();
+    this.updateDisplay();
+    this.clearStatusMessage();
+    logger.debug("New game started.");
   }
 }

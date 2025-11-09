@@ -194,7 +194,7 @@ export class UIAlert {
       title,
       message,
       icon,
-      buttons: [{ text: this.langManager.translate('understood'), type: "secondary" }],
+      buttons: [{ text: this.langManager.translate('understood'), type: "secondary", onClick: null }],
     });
     logger.debug("UIAlert warning displayed.");
   }

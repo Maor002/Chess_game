@@ -21,26 +21,6 @@ export class ChessGameController {
     this.ui.clearStatusMessage();
   }
 
-  /**
-   * התחלת משחק חדש
-   */
-  startNewGame() {
-    this.engine.startNewGame();
-    this.ui.clearHistoryMoves();
-    this.ui.clearSelection();
-    this.ui.updateDisplay();
-    this.ui.clearStatusMessage();
-    logger.debug("New game started.");
-  }
-
-  /**
-   * איפוס הלוח
-   */
-   
-  resetBoard() {
-    this.startNewGame();
-    logger.debug("Board has been reset.");
-  }
   //שחזור המהלך האחרון
   undoLastMove() {
     logger.debug("Undoing last move");
@@ -51,7 +31,7 @@ export class ChessGameController {
 }
 
 document.querySelector(".new-game-btn").addEventListener("click", () => {
-  gameController.startNewGame();
+  gameController.ui.startNewGame();
 });
 document.querySelector("#undo-btn").addEventListener("click", () => {
   gameController.undoLastMove();
