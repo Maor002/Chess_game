@@ -7,7 +7,10 @@ import { MoveValidator } from "./MoveValidator.js";
 import { MoveExecutor } from "./MoveExecutor.js";
 export class ChessEngine {
   constructor() {
+    this.currentPlayer = ChessConfig.WHITE_PLAYER;
+    this.gameActive = true;
     this.initializeGame();
+    this.isWhiteWin = null;
     logger.debug("Chess engine created successfully");
   }
   //  מאתחל את כל מערכות המשחק
@@ -28,6 +31,7 @@ export class ChessEngine {
   resetGameState() {
     this.currentPlayer = ChessConfig.WHITE_PLAYER;
     this.gameActive = true;
+    this.isWhiteWin = false;
   }
 
   //   מתחיל משחק חדש - מאפס הכל ומאתחל מחדש

@@ -1,4 +1,5 @@
 import { logger } from "../Logger/logger.js";
+import { ChessConfig } from "../config/chessConfig.js";
 export class MoveExecutor {
   constructor(engine) {
     this.engine = engine;
@@ -27,6 +28,11 @@ export class MoveExecutor {
       if (this.isKingCaptured(capturedPiece)) {
         logger.info("King has been captured, ending game");
         this.engine.gameActive = false;
+        if (movingPiece.color === ChessConfig.WHITE_PLAYER) {
+          this.engine.isWhiteWin = true;
+        } else {
+          this.engine.isWhiteWin = false;
+        }
       }
       if (this.isKingMoved(movingPiece)) {
         this.engine.board[fromRow][fromCol].hasMoved = true; // עדכון אם המלך זז

@@ -46,6 +46,28 @@ export const ChessConfig = {
   },
 };
 
+export const AlertIcons = {
+  info: "ℹ️",           // מידע
+  success: "✅",        // הצלחה
+  error: "❌",          // שגיאה
+  warning: "⚠️",        // אזהרה
+  question: "❓",       // שאלה / אישור פעולה
+  stop: "🛑",           // עצירה / ביטול
+  alert: "🚨",          // התרעה חמורה
+  time: "⏰",           // זמן / תזכורת
+  loading: "⏳",        // טעינה
+  gameOver: "🎮",       // סוף משחק
+  connection: "📶",     // תקשורת / רשת
+  update: "🔄",         // עדכון / ריענון
+  settings: "⚙️",       // הגדרות
+  lock: "🔒",           // נעילה
+  unlock: "🔓",         // פתיחה
+  infoBlue: "💡",       // טיפ / הסבר
+  star: "⭐",            // דירוג / הישג
+  fire: "🔥",           // הצלחה גדולה / משהו חם
+  victory: "👑",          // כתר / ניצחון / מלך
+};
+
 
 // pieces: {
 //     'wK': 'images/wK.png',
