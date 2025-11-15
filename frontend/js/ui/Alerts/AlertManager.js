@@ -1,10 +1,9 @@
 import { UIAlert } from "./UIAlert.js";
-import { AlertIcons } from "../config/chessConfig.js";
+import { AlertIcons } from "../../config/chessConfig.js";
 
 export class AlertManager {
   constructor(uiManager) {
     this.uiManager = uiManager;
-    this.alert = uiManager.alert;
     this.langManager = uiManager.langManager;
     this.engine = uiManager.engine;
     this.alert = new UIAlert(); // מנהל התראות ופופאפים
@@ -32,4 +31,25 @@ export class AlertManager {
       });
     }
   }
+  alertDraw() {
+   this.alert.show({
+        title: this.langManager.translate("game-draw"),
+        message: this.langManager.translate("draw-declared"),
+        icon: AlertIcons.draw,
+        buttons: [
+          {
+            text: this.langManager.translate("start-new-game"),
+            type: "primary",
+            onClick: () => {
+              this.uiManager.startNewGame();
+            },
+          },
+          {
+            text: this.langManager.translate("cancel"),
+            type: "secondary",
+            onClick: () => {},
+          },
+        ],
+      });
+    }
 }

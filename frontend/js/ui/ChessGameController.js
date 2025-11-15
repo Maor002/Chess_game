@@ -2,15 +2,16 @@
  * ===== בקר המשחק הראשי =====
  * מתאם בין מנוע השחמט לממשק המשתמש
  */
-import { ChessEngine } from "./engine/ManagerChessEngine.js";
-import { logger } from "./Logger/logger.js";
-import { ChessUI } from "./ui/ManagerChessUI.js";
+import { ChessEngine } from "../engine/ManagerChessEngine.js";
+import { logger } from "../Logger/logger.js";
+import { ChessUI } from "../ui/boardGame/ManagerChessUI.js";
 
 export class ChessGameController {
   constructor() {
     this.engine = new ChessEngine();
     this.ui = new ChessUI(this.engine);
     this.initialize();
+    logger.debug("ChessGameController initialized");
   }
 
   /**
@@ -39,5 +40,4 @@ document.querySelector("#undo-btn").addEventListener("click", () => {
 document.querySelector("#redo-btn").addEventListener("click", () => {
   gameController.redoLastMove();
 });
-// יצירת מופע של בקר המשחק
 const gameController = new ChessGameController();

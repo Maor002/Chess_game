@@ -3,15 +3,15 @@
 // מתאמת בין כל החלקים
 // מנהלת את מחזור החיים של הממשק
 
-import { logger } from "../Logger/logger.js";
+import { logger } from "../../Logger/logger.js";
 import { BoardRenderer } from "./BoardRenderer.js";
 import { GameActionHandler } from "./GameActionHandler.js";
 import { MovesHighlighter } from "./MovesHighlighter.js";
 import { SelectionManager } from "./SelectionManager.js";
 import { MovesListManager } from "./MovesListManager.js";
 import { GameStatusManager } from "./GameStatusManager.js";
-import { LanguageManager } from "../config/Language.js";
-import { AlertManager } from "./AlertManager.js";
+import { LanguageManager } from "../../language/Language.js";
+import { AlertManager } from "../Alerts/AlertManager.js";
 
 export class ChessUI {
   constructor(engine) {
@@ -87,6 +87,7 @@ export class ChessUI {
       this.createBoard();
       this.gameStatus.updateTurn(this.engine.getCurrentPlayer());
       this.gameStatus.updateCapturedPieces(this.engine.getCapturedPieces());
+      this.MovesListManager.clearMovesList();
       this.MovesListManager.updateListofMoves(this.engine.getHistoryMoves(), this.currentMoveIndex);
     } catch (error) {
       logger.error("Error updating display:", error);

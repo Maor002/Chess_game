@@ -1,10 +1,11 @@
 export class Logger {
   constructor(level = 'info') {
     this.levels = {
-      debug: 0,
-      info: 1,
-      warn: 2,
-      error: 3,
+      trace: 0,
+      debug: 1,
+      info: 2,
+      warn: 3,
+      error: 4,
     };
     this.setLevel(level);
   }
@@ -35,8 +36,12 @@ getCallerLocation() {
   } catch (e) {}
   return "unknown";
 }
-
-
+  trace(...args) {
+    if (this.currentLevel <= this.levels.trace) {
+      const location = this.getCallerLocation();
+      console.log(`[TRACE] [${location}]`, ...args);
+    }
+  }
 
   debug(...args) {
     if (this.currentLevel <= this.levels.debug) {

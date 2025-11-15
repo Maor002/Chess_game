@@ -2,7 +2,7 @@
 // יוצרת את הלוח הגרפי (64 משבצות)
 // שומרת הפניות למשבצות למהירות
 // מעדכנת משבצות בודדות במקום כל הלוח
-import { ChessConfig } from "../config/chessConfig.js";
+import { ChessConfig } from "../../config/chessConfig.js";
 export class BoardRenderer {
     constructor(boardElement) {
     this.boardElement = boardElement; // אלמנט הלוח

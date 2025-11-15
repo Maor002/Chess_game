@@ -1,4 +1,4 @@
-import { ChessConfig } from "../config/chessConfig.js";
+import { ChessConfig } from "../../config/chessConfig.js";
 // ===== מודול עזר להמרת מיקום ללוח שחמט =====
 // מודול זה מספק פונקציות להמרת מיקום (שורה, עמודה) לתצוגת שחמטית
 // כמו גם לפורמט המהלך בתצוגה גרפית

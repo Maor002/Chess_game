@@ -3,8 +3,8 @@
 // מציגה כלים שנתפסו
 // מציגה הודעות חשובות (שח, מט)
 // מעצבת את ההודעות (צבעים, אנימציות)
-import { ChessConfig } from "../config/chessConfig.js";
-import { LanguageManager } from "../config/Language.js";
+import { ChessConfig } from "../../config/chessConfig.js";
+import { LanguageManager } from "../../language/Language.js";
 
 export class GameStatusManager {
   constructor(turnElement, capturedElement, statusElement, languageManager) {

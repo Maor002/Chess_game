@@ -1,0 +1,263 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* כלי שחמט ברקע */
+.chess-pieces-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.chess-piece-float {
+    position: absolute;
+    font-size: 80px;
+    opacity: 0.1;
+    animation: float 20s infinite ease-in-out;
+}
+
+.chess-piece-float:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.chess-piece-float:nth-child(2) {
+    top: 20%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+.chess-piece-float:nth-child(3) {
+    bottom: 15%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+.chess-piece-float:nth-child(4) {
+    bottom: 25%;
+    right: 10%;
+    animation-delay: 6s;
+}
+
+.chess-piece-float:nth-child(5) {
+    top: 50%;
+    left: 50%;
+    animation-delay: 8s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(10deg); }
+}
+
+/* מכולת התפריט */
+.menu-container {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* כותרת */
+.menu-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.chess-icon {
+    font-size: 64px;
+    margin-bottom: 15px;
+}
+
+.menu-title {
+    font-size: 42px;
+    color: #333;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.menu-subtitle {
+    color: #666;
+    font-size: 16px;
+}
+
+/* כפתורים */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 24px;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    color: white;
+    text-align: center;
+    min-height: 60px;
+}
+
+.menu-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.menu-btn:active { transform: translateY(0); }
+
+.btn-icon { font-size: 26px; }
+.btn-text { flex-shrink: 0; }
+.btn-badge {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.menu-btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.menu-btn.success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+.menu-btn.info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.menu-btn.warning { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+/* תחתית */
+.menu-footer {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+.language-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.lang-btn {
+    padding: 8px 20px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.lang-btn:hover { background: #667eea; color: white; }
+.lang-btn.active { background: #667eea; color: white; }
+.footer-text { color: #999; font-size: 12px; }
+
+/* מסך טעינה */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-overlay.active { display: flex; }
+
+.loading-content { text-align: center; color: white; }
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-game { font-size: 16px; font-weight: 600; }
+
+/* התאמות למסכים קטנים */
+@media (max-width: 600px) {
+    body { padding: 15px; }
+    .menu-container { padding: 30px 20px; border-radius: 20px; }
+    .menu-title { font-size: 32px; }
+    .chess-icon { font-size: 52px; }
+    .menu-header { margin-bottom: 30px; }
+    .menu-btn { padding: 16px 20px; font-size: 16px; min-height: 56px; }
+    .btn-icon { font-size: 24px; }
+    .menu-buttons { gap: 14px; margin-bottom: 30px; }
+}
+
+@media (max-width: 400px) {
+    body { padding: 12px; }
+    .menu-container { padding: 25px 16px; border-radius: 16px; }
+    .menu-title { font-size: 28px; }
+    .chess-icon { font-size: 48px; }
+    .menu-btn { padding: 14px 18px; font-size: 15px; min-height: 52px; }
+    .btn-icon { font-size: 22px; }
+}
+
+@media (max-height: 700px) {
+    .menu-container { padding: 25px 20px; }
+    .chess-icon { font-size: 48px; margin-bottom: 10px; }
+    .menu-title { font-size: 32px; margin-bottom: 8px; }
+    .menu-header { margin-bottom: 25px; }
+    .menu-buttons { gap: 12px; margin-bottom: 25px; }
+    .menu-btn { padding: 14px 20px; min-height: 52px; }
+    .menu-footer { padding-top: 20px; }
+}
+
+@media (max-height: 600px) {
+    body { padding: 10px; }
+    .menu-container { padding: 20px; }
+    .chess-icon { font-size: 40px; margin-bottom: 8px; }
+    .menu-title { font-size: 28px; margin-bottom: 6px; }
+    .menu-subtitle { font-size: 14px; }
+    .menu-header { margin-bottom: 20px; }
+    .menu-buttons { gap: 10px; margin-bottom: 20px; }
+    .menu-btn { padding: 12px 18px; font-size: 15px; min-height: 48px; }
+    .btn-icon { font-size: 20px; }
+    .menu-footer { padding-top: 16px; }
+    .lang-btn { padding: 6px 16px; font-size: 13px; }
+}

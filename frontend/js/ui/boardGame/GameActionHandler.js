@@ -3,7 +3,7 @@
 // מחליטה מה לעשות בכל מצב (בחירה, מהלך, ביטול)
 // מתאמת בין השחקן למנוע המשחק
 // מנהלת את זרימת המשחק
-import {logger} from "../Logger/logger.js";
+import {logger} from "../../Logger/logger.js";
 export class GameActionHandler {
   constructor(engine, selectionManager, movesHighlighter) {
     this.engine = engine;

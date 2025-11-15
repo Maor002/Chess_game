@@ -543,7 +543,7 @@ h1 {
     transform: rotate(360deg);
   }
 }
-/* Alert Modal Styles */
+/* Alert Modal Styles
 .alert-overlay {
   position: fixed;
   top: 0;
@@ -687,7 +687,7 @@ h1 {
   transform: translateY(0);
 }
 
-/* Responsive */
+/* Responsive 
 @media (max-width: 600px) {
   .alert-box {
     padding: 20px;
@@ -711,4 +711,4 @@ h1 {
     font-size: 0.9rem;
     min-width: 80px;
   }
-}
+} */

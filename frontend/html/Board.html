@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>משחק שחמט - גרסה מודולרית</title>
+    <link rel="stylesheet" href="../css/board-style.css" />
+    <link rel="stylesheet" href="../css/alert.css" />
+  </head>
+  <body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+      <button class="lang-btn active" data-lang="he">עברית</button>
+      <button class="lang-btn" data-lang="en">English</button>
+    </div>
+
+    <div class="game-container">
+      <h1 data-translate="game-title">♔ משחק שחמט ♛</h1>
+
+      <!-- Game Info -->
+      <div class="game-info">
+        <div
+          class="turn-indicator"
+          id="turnIndicator"
+          data-translate="white-turn"
+        >
+          תור הלבן
+        </div>
+      </div>
+
+      <!-- Main Game Area -->
+      <div class="main-game-area">
+        <!-- Left Panel - Moves List -->
+        <div class="left-panel">
+          <div class="moves-panel">
+            <h3 data-translate="moves-list">📝 רשימת המהלכים</h3>
+            <div class="moves-list" id="movesList"></div>
+          </div>
+        </div>
+
+        <!-- Right Panel - Chess Board and Captured Pieces -->
+        <div class="right-panel">
+          <!-- Captured Pieces -->
+          <div class="captured-pieces-display">
+            <h3 data-translate="captured-pieces">♜ כלים שנתפסו ♜</h3>
+            <div class="captured-list" id="capturedPieces"></div>
+          </div>
+
+          <!-- Chess Board -->
+          <div class="board-container">
+            <div class="board-with-coordinates">
+              <div class="coordinates numbers-left">
+                <span>8</span><span>7</span><span>6</span><span>5</span>
+                <span>4</span><span>3</span><span>2</span><span>1</span>
+              </div>
+              <div class="chess-board" id="chessBoard"></div>
+              <div class="coordinates letters-bottom">
+                <span>H</span><span>G</span><span>F</span><span>E</span>
+                <span>D</span><span>C</span><span>B</span><span>A</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Controls -->
+      <div class="game-controls">
+        <button class="btn new-game-btn" data-translate="new-game">
+          משחק חדש
+        </button>
+        <button class="btn" id="undo-btn" data-translate="undo-move">
+          מהלך קודם
+        </button>
+        <button class="btn" id="redo-btn" data-translate="redo-move">
+          מהלך הבא
+        </button>
+      </div>
+
+      <!-- Status Message -->
+      <div class="status-message" id="statusMessage"></div>
+    </div>
+
+    <!-- Alert Modal Container (will be created by AlertUI class) -->
+    <div id="alertContainer"></div>
+
+    <!-- קישור לקבצי JavaScript -->
+    <script type="module" src="../js/ui/ChessGameController.js"></script>
+  </body>
+</html>

@@ -52,7 +52,7 @@ app.use('/api/room', roomRoutes);
 
 // מסלול לקבלת דף הבית
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend/html/Board.html'));
 });
 
 // מטפל בשגיאות 404 - כשלא נמצא מסלול מתאים
