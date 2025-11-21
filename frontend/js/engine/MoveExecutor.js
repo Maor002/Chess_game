@@ -1,4 +1,4 @@
-import { logger } from "../Logger/logger.js";
+import {logger} from "../Logger/logger.js";
 import { ChessConfig } from "../config/chessConfig.js";
 export class MoveExecutor {
   constructor(engine) {

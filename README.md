@@ -61,3 +61,27 @@
         ├── main.js
     └── index.html
 ```
+
+
+
+# Project Commands Summary
+
+## Frontend Only
+npm run dev:front
+
+## Backend Only
+npm run dev:back
+
+## Both Together (Development)
+npm run dev:all
+# or
+npm start
+
+## Production (build + run)
+npm run prod
+
+## Build Only (no run)
+npm run build
+
+## Preview Build
+npm run preview

@@ -41,5 +41,21 @@
     "default": null,
     "description": "המנצח במשחק, אם הסתיים"
   },
+  "createdAt": {
+    "type": "Date",
+    "default": "Date.now",
+    "description": "תאריך יצירת המשחק"
+  },
+  "updatedAt": {
+    "type": "Date",
+    "default": "Date.now",
+    "description": "תאריך העדכון האחרון של המשחק"
+  },
+  "turn": {
+    "type": "String",
+    "enum": ["white", "black"],
+    "default": "white",
+    "description": "מי התור הבא לבצע מהלך"
+  },
 "useFieldsFrom": ["detail"]
 }

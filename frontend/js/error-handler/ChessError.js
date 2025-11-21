@@ -29,8 +29,8 @@ export class ChessError extends Error {
 
 // ===== 3. Error Handler מרכזי =====
 export class ErrorHandler {
-  constructor(logger) {
-    this.logger = logger;
+  constructor(Logger) {
+    this.Logger = Logger;
     this.errorConfig = this.getErrorConfig();
     this.errorListeners = [];
   }

@@ -1,6 +1,6 @@
-import { LanguageManager } from "../language/Language.js";
-import { logger } from "../Logger/logger.js";
-import { UIAlert } from "./Alerts/UIAlert.js";
+import { LanguageManager } from "../../language/Language.js";
+import {logger} from "../../Logger/logger.js";
+import { UIAlert } from "../../ui/Alerts/UIAlert.js";
 
 class ChessMenu {
   constructor() {
@@ -53,10 +53,28 @@ class ChessMenu {
     });
   }
 
-  handleLocalGame() {
+  async handleLocalGame() {
     logger.info("Local Game button clicked");
-    window.location.href = "html/Board.html";
-  }
+   // window.location.href = "html/Board.html";
+    try {
+        const gameData = {
+            mode: "local",  
+            players: ["white", "black"],
+            turn : "white" ,
+             board:["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"],
+             status: "active"
+        };
+        localStorage.setItem("chessGameData", JSON.stringify(gameData));
+        window.location.href = "html/Board.html";
+    } catch (error) {
+        logger.error("Error starting local game:", error);
+        this.alert.error(
+            this.langManager.translate("error"),
+            this.langManager.translate("Failed to start local game")
+        );
+    }
+};
+  
 
   handleOnlineGame() {
     logger.info("Online Game button clicked");

@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon backend\\src\\server.js",
-    "dev": "vite"
+    "start": "npm run dev:all",
+    "dev:front": "vite",
+    "dev:back": "nodemon backend/src/server.js",
+    "dev:all": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prod": "npm run build && node backend/src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +22,9 @@
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.10",
     "vite": "^6.3.5"
   }
 }
-

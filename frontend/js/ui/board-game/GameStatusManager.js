@@ -13,29 +13,34 @@ export class GameStatusManager {
     this.statusElement = statusElement;
     this.languageManager = languageManager;
   }
-// פונקציה לעדכון תור השחקן
+  // פונקציה לעדכון תור השחקן
   updateTurn(currentPlayer) {
     this.turnElement.textContent =
-      currentPlayer === ChessConfig.WHITE_PLAYER ? this.languageManager.translate("white-turn") : this.languageManager.translate("black-turn");
+      currentPlayer === ChessConfig.WHITE_PLAYER
+        ? this.languageManager.translate("white-turn")
+        : this.languageManager.translate("black-turn");
   }
-// פונקציה לעדכון הכלים שנלכדו
+  // פונקציה לעדכון הכלים שנלכדו
   updateCapturedPieces(capturedPieces) {
     if (!capturedPieces || capturedPieces.length === 0) {
+      this.clearCapturedPieces();
       return;
     }
-    const piece = capturedPieces[capturedPieces.length - 1];
     this.capturedElement.textContent = capturedPieces
       .map((p) => ChessConfig.pieces[p.color + p.type])
       .join(" ");
   }
-// פונקציה להצגת הודעה למשתמש
+  // פונקציה להצגת הודעה למשתמש
   showMessage(message, type = "") {
     this.statusElement.textContent = message;
     this.statusElement.className = `status-message ${type}`;
   }
-// פונקציה לניקוי הודעה
+  // פונקציה לניקוי הודעה
   clearMessage() {
     this.statusElement.textContent = "";
     this.statusElement.className = "status-message";
+  }
+  clearCapturedPieces() {
+    this.capturedElement.textContent = "";
   }
 }
