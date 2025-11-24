@@ -1,10 +1,14 @@
-const models = require('../models/generateSchemas'); // ייבוא מודלים
-const Room = models.Room; // מודל חדר
+const { models } = require("../models/generateSchemas"); // ייבוא מודלים
 
 
 //יצירת חדר עם קוד
 exports.createRoom = async (req, res) => {
     try {
+      const Room = models.Room;
+  
+      if (!Room) {
+        return res.status(500).json({ success: false, message: "Room model not loaded yet" });
+      }
       const code = await generateRoomCode();
       const room = new Room({ code });
       await room.save();

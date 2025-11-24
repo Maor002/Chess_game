@@ -2,7 +2,7 @@
 // מקבלת רשימת מהלכים אפשריים
 // מדגישה אותם על הלוח
 // זוכרת מה הודגש כדי לנקות אחר כך
-import {logger} from "../../Logger/logger.js";
+import {logger} from "../../logger/logger.js";
 export class MovesHighlighter {
   constructor(boardRenderer) {
     this.boardRenderer = boardRenderer;

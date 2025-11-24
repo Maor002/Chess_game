@@ -2,6 +2,7 @@ const http = require('http');
 const app = require('./app');
 const { connectDB } = require('./config/db');
 const { setupSocket } = require('./sockets/gameSocket');
+const { init: initModels } = require('./models/generateSchemas');
 
 // טעינת משתני סביבה
 require('dotenv').config();
@@ -16,6 +17,11 @@ async function startServer() {
         console.log('Connecting to database...');
         await connectDB();
         console.log('Database connected successfully');
+
+        // טעינת כל המודלים
+        console.log('Loading models...');
+        await initModels();
+        console.log('All models loaded successfully');
 
         // יצירת שרת HTTP
         const server = http.createServer(app);

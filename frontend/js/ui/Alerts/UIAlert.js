@@ -1,4 +1,4 @@
-import {logger} from "../../Logger/logger.js";
+import {logger} from "../../logger/logger.js";
 // מחלקת UIAlert - לניהול התראות ופופאפים
 
 export class UIAlert {

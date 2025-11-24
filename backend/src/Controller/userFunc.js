@@ -1,12 +1,16 @@
-const models = require('../models/generateSchemas'); // ייבוא מודלים
+const { models } = require("../models/generateSchemas"); // ייבוא מודלים
 // const bcrypt = require('bcryptjs');
 // const jwt = require('jsonwebtoken');
-const User = models.User; // מודל משתמש
 
 
 // פונקציה ליצירת משתמש חדש
 exports.register = async (req, res) => {
     try {
+        const User = models.User;
+        
+        if (!User) {
+            return res.status(500).json({ message: "User model not loaded yet" });
+        }
         const { username, email, password } = req.body;
         if (!username || !email || !password) {
             return res.status(400).json({ message: 'Username, email, and password are required' });

@@ -1,5 +1,5 @@
 import { Piece } from "./Piece.js";
-import {logger} from "../Logger/logger.js";
+import {logger} from "../logger/logger.js";
 //יורשים של מחלקת Piece   
 // כל מחלקה מיישמת את הפונקציה getValidMoves שמחזירה את המהלכים התקפים לכלי בהתאם לחוקים
 export class Pawn extends Piece {

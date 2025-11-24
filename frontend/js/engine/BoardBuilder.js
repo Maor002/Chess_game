@@ -1,6 +1,6 @@
 import { ChessConfig } from "../config/chessConfig";
 import { Rook, Bishop, Knight, Queen, King, Pawn } from "../pieces/Pieces.js";
-import {logger} from "../Logger/logger.js";
+import {logger} from "../logger/logger.js";
 export class BoardBuilder {
   constructor() {
     this.board = Array.from({ length: ChessConfig.BOARD_SIZE }, () =>

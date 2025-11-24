@@ -1,7 +1,7 @@
 //  * ===== מודול מנוע השחמט =====
 //  * מטפל בלוגיקה הבסיסית של המשחק - תנועות, חוקים ומצב המשחק
 import { ChessConfig } from "../config/chessConfig.js";
-import {logger} from "../Logger/logger.js";
+import {logger} from "../logger/logger.js";
 import { BoardBuilder } from "./BoardBuilder.js";
 import { MoveValidator } from "./MoveValidator.js";
 import { MoveExecutor } from "./MoveExecutor.js";

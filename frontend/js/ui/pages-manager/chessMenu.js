@@ -1,13 +1,14 @@
 import { LanguageManager } from "../../language/Language.js";
-import {logger} from "../../Logger/logger.js";
-import { UIAlert } from "../../ui/Alerts/UIAlert.js";
+import {logger} from "../../logger/logger.js";
+import { UIAlert } from "../alerts/UIAlert.js";
+import {GameService} from "../../service/api/GameService.js";
 
 class ChessMenu {
   constructor() {
     this.langManager = new LanguageManager(this);
     this.alert = new UIAlert(this.langManager);
     this.elements = null;
-    
+    this.gameService = new GameService();
     this.initializeElements();
     this.bindEvents();
     logger.debug("ChessMenu initialized.");
@@ -55,7 +56,7 @@ class ChessMenu {
 
   async handleLocalGame() {
     logger.info("Local Game button clicked");
-   // window.location.href = "html/Board.html";
+    window.location.href = "html/Board.html";
     try {
         const gameData = {
             mode: "local",  
@@ -64,8 +65,9 @@ class ChessMenu {
              board:["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"],
              status: "active"
         };
-        localStorage.setItem("chessGameData", JSON.stringify(gameData));
-        window.location.href = "html/Board.html";
+       this.gameService.clearGameData();
+       this.gameService.startLocalGame(gameData.players[0], gameData.players[1]);
+        
     } catch (error) {
         logger.error("Error starting local game:", error);
         this.alert.error(

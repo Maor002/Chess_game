@@ -5,6 +5,7 @@ const behaviors = require('./behaviors');
 
 const schemasDir = path.join(__dirname, '../schemas');
 const models = {};
+let modelsReady = false;
 
 // ממפה סוגי JSON ל־mongoose
 const mapJsonTypeToMongoose = (jsonType) => {
@@ -27,6 +28,11 @@ const convertToMongooseSchema = (jsonSchema) => {
   const result = {};
 
   for (const [key, value] of Object.entries(jsonSchema)) {
+    // Skip _id field - let Mongoose handle it automatically
+    if (key === '_id') {
+      continue;
+    }
+
     if (value.type) {
       if (value.type === 'Array' && value.items) {
         result[key] = [{
@@ -37,9 +43,20 @@ const convertToMongooseSchema = (jsonSchema) => {
         result[key] = convertToMongooseSchema(value.properties);
       } else {
         result[key] = {
-          type: mapJsonTypeToMongoose(value.type),
-          ...value
+          type: mapJsonTypeToMongoose(value.type)
         };
+        
+        // Copy other properties and handle special cases
+        for (const [propKey, propValue] of Object.entries(value)) {
+          if (propKey !== 'type') {
+            // Special handling for Date.now string
+            if (propKey === 'default' && propValue === 'Date.now') {
+              result[key][propKey] = Date.now;
+            } else {
+              result[key][propKey] = propValue;
+            }
+          }
+        }
       }
 
       if (value.ref) {
@@ -140,11 +157,18 @@ const loadAllModels = async () => {
     }
 
     console.log("📦 Models loaded:", Object.keys(models));
+    modelsReady = true;
+    return models;
   } catch (err) {
     console.error("❌ Error loading models:", err);
+    throw err;
   }
 };
 
-loadAllModels().then(() => {
-  module.exports = models;
-});
+// Export the models object, initialization function, and ready check
+module.exports = {
+  models,
+  init: loadAllModels,
+  isReady: () => modelsReady,
+  getModel: (name) => models[name]
+};

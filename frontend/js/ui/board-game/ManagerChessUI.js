@@ -3,7 +3,7 @@
 // מתאמת בין כל החלקים
 // מנהלת את מחזור החיים של הממשק
 
-import {logger} from "../../Logger/logger.js";
+import {logger} from "../../logger/logger.js";
 import { BoardRenderer } from "./BoardRenderer.js";
 import { GameActionHandler } from "./GameActionHandler.js";
 import { MovesHighlighter } from "./MovesHighlighter.js";

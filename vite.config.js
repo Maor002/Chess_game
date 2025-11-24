@@ -21,6 +21,12 @@ export default defineConfig({
       '@css': path.resolve(__dirname, 'frontend/css'),
       '@backend': path.resolve(__dirname, 'backend/src'),
       '@html': path.resolve(__dirname, 'frontend/html'),
+      '@assets': path.resolve(__dirname, 'frontend/assets'),
+      '@engine': path.resolve(__dirname, 'frontend/js/engine'),
+      '@ui': path.resolve(__dirname, 'frontend/js/ui'),
+      '@service': path.resolve(__dirname, 'frontend/js/service'),
+      '@logger': path.resolve(__dirname, 'frontend/js/logger'),
+      '@language': path.resolve(__dirname, 'frontend/js/language'),
     },
   },
 

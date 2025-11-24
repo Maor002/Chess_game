@@ -1,4 +1,4 @@
-import {logger} from "../Logger/logger.js";
+import {logger} from "../logger/logger.js";
 export class MoveValidator {
   constructor(board){
     this.board = board;

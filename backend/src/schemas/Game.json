@@ -1,6 +1,6 @@
 {
   "_id": {
-    "type": "string",
+    "type": "ObjectId",
     "description": "Unique identifier for the room (MongoDB ObjectId)."
   },
   "players": {

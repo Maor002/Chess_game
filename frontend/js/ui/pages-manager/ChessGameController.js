@@ -3,7 +3,7 @@
  * מתאם בין מנוע השחמט לממשק המשתמש
  */
 import { ChessEngine } from "../../engine/ManagerChessEngine.js";
-import {logger} from "../../Logger/logger.js";
+import {logger} from "../../logger/logger.js";
 import { ChessUI } from "../board-game/ManagerChessUI.js";
 
 export class ChessGameController {
