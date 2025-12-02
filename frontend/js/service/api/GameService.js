@@ -42,9 +42,13 @@ export class GameService {
     async startLocalGame(player1 = "White", player2 = "Black") {
         this.clearGameData();
 
-        const game = {
+        const gameData = {
             white: player1,
-            black: player2
+            black: player2,
+            boardState: "startpos",
+            moves: [],
+            status: "in_progress",
+            turn: "white"
         };
 
         // Save details locally
@@ -52,7 +56,7 @@ export class GameService {
         this.save(STORAGE_KEYS.PLAYER_COLOR, PLAYER_COLORS.WHITE);
 
         // Create game on backend
-        const created = await this.api.createGame(player1, player2);
+        const created = await this.api.createGame(gameData);
 
         // Save data locally
         this.save(STORAGE_KEYS.GAME_ID, created._id);
@@ -60,7 +64,7 @@ export class GameService {
         // redirect
         window.location.href = ROUTES.BOARD;
     }
-
+// ONLINE GAME METHODS
     async startOnlineGame(playerName) {
         this.clearGameData();
 
@@ -97,7 +101,7 @@ export class GameService {
         const gameId = this.load(STORAGE_KEYS.GAME_ID);
         return this.api.makeMove(gameId, move);
     }
-
+//GAME ACTIONS
     async resign() {
         const gameId = this.load(STORAGE_KEYS.GAME_ID);
         const playerId = this.load(STORAGE_KEYS.PLAYER_ID);

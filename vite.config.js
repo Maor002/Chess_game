@@ -10,7 +10,7 @@ export default defineConfig({
 
   server: {
     port: 5173,
-    open: true,                    // Auto-open browser
+    open: false,                    // Auto-open browser
     strictPort: true,
   },
 

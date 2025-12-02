@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const logger = require('../logger/logger');
 
 // פונקציה לחיבור למסד הנתונים
 const connectDB = async () => {
@@ -7,9 +8,9 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    logger.info(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    logger.error(`Error: ${error.message}`);
     process.exit(1); // יציאה מהתהליך במקרה של כשל
   }
 };

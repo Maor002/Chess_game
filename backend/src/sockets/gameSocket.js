@@ -1,16 +1,17 @@
 const { Server } = require('socket.io');
 const models = require('../models/generateSchemas'); // ייבוא מודלים
+const logger = require("../logger/logger");
 const Game = models.Game; // טוען את מודל המשחק
 
 const setupSocket = (server) => {
     const io = new Server(server, { cors: { origin: '*' } });
 
     io.on('connection', (socket) => {
-        console.log(`🔌 Player connected: ${socket.id}`);
+        logger.info(`🔌 Player connected: ${socket.id}`);
 
         socket.on('join_game', async (gameId) => {
             socket.join(gameId);
-            console.log(`👤 Player joined game: ${gameId}`);
+            logger.info(`👤 Player joined game: ${gameId}`);
 
             // שליחת מצב המשחק הנוכחי לכל מי שמתחבר
             const game = await Game.findById(gameId);
@@ -20,7 +21,7 @@ const setupSocket = (server) => {
         });
 
         socket.on('make_move', async ({ gameId, move }) => {
-            console.log(`🎯 Move received for game ${gameId}:`, move);
+            logger.info(`🎯 Move received for game ${gameId}:`, move);
 
             // עדכון מסד הנתונים
             const game = await Game.findById(gameId);
@@ -34,7 +35,7 @@ const setupSocket = (server) => {
         });
 
         socket.on('disconnect', () => {
-            console.log(`❌ Player disconnected: ${socket.id}`);
+            logger.info(`❌ Player disconnected: ${socket.id}`);
         });
     });
 };

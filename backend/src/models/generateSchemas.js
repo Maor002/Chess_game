@@ -1,8 +1,9 @@
+
 const mongoose = require('mongoose');
 const fs = require('fs').promises;
 const path = require('path');
 const behaviors = require('./behaviors');
-
+const logger = require('../logger/logger');
 const schemasDir = path.join(__dirname, '../schemas');
 const models = {};
 let modelsReady = false;
@@ -34,7 +35,7 @@ const convertToMongooseSchema = (jsonSchema) => {
     }
 
     if (value.type) {
-      if (value.type === 'Array' && value.items) {
+      if (value.type === 'Array' && value.items ) {
         result[key] = [{
           type: mapJsonTypeToMongoose(value.items.type),
           ...value.items
@@ -86,7 +87,7 @@ const loadFieldsFromFiles = async (names) => {
       // כל הקובץ נחשב לשדות שנוספים
       Object.assign(combinedFields, json);
     } catch (err) {
-      console.warn(`⚠️ useFieldsFrom "${name}" not found at ${filePath}`);
+      logger.warn(`⚠️ useFieldsFrom "${name}" not found at ${filePath}`);
     }
   }
 
@@ -126,14 +127,14 @@ const buildSchema = async (filePath, modelName) => {
           mongooseSchema.methods[behavior] = func;
         }
       } else {
-        console.warn(`⚠️ Behavior "${behavior}" not found in behaviors.js`);
+        logger.warn(`⚠️ Behavior "${behavior}" not found in behaviors.js`);
       }
     }
 
     return mongooseSchema;
 
   } catch (err) {
-    console.error(`❌ Error building schema "${modelName}":`, err);
+    logger.error(`❌ Error building schema "${modelName}":`, err);
     return null;
   }
 };
@@ -151,16 +152,16 @@ const loadAllModels = async () => {
         const schema = await buildSchema(filePath, modelName);
         if (schema) {
           models[modelName] = mongoose.model(modelName, schema);
-          console.log(`✅ Loaded model: ${modelName}`);
+          logger.info(`✅ Loaded model: ${modelName}`);
         }
       }
     }
 
-    console.log("📦 Models loaded:", Object.keys(models));
+    logger.info("📦 Models loaded:", Object.keys(models));
     modelsReady = true;
     return models;
   } catch (err) {
-    console.error("❌ Error loading models:", err);
+    logger.error("❌ Error loading models:", err);
     throw err;
   }
 };

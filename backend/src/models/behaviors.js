@@ -1,10 +1,10 @@
 module.exports = {
     preSave: function (next) {
-        console.log("🔹 Pre-save hook executed");
+        logger.info("🔹 Pre-save hook executed");
         next();
     },
     print: function () {
-        console.log(`🔹 User: ${this.username}, Email: ${this.email}`);
+        logger.info(`🔹 User: ${this.username}, Email: ${this.email}`);
     },
     isOnline: function () {
         return this.status === 'online';

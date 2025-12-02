@@ -6,9 +6,7 @@ export class ApiClient {
         this.token = localStorage.getItem("token") || null;
     }
 
-    // ---------------------------
-    // 🔹 Internal request handler
-    // ---------------------------
+    // Internal method to make API requests
     async request(endpoint, method = "GET", body = null) {
         const options = {
             method,
@@ -36,17 +34,14 @@ export class ApiClient {
             return data;
 
         } catch (err) {
-            console.error("❌ API ERROR:", err);
+            logger.error("❌ API ERROR:", err);
             throw err;
         }
     }
 
-    // =====================================
-    // 🔹 GAME ENDPOINTS
-    // =====================================
-
-    createGame(white, black) {
-        return this.request(API_ENDPOINTS.CREATE_GAME, "POST", { white, black });
+    //GAME ENDPOINTS
+    createGame(gameData) {
+        return this.request(API_ENDPOINTS.CREATE_GAME, "POST", gameData);
     }
 
     joinGame(gameId, playerName) {
@@ -61,9 +56,7 @@ export class ApiClient {
         return this.request(API_ENDPOINTS.LEAVE_GAME, "POST", { gameId, playerId });
     }
 
-    // =====================================
-    // 🔹 MOVES
-    // =====================================
+    //MOVE ENDPOINTS
 
     makeMove(gameId, move) {
         return this.request(API_ENDPOINTS.MAKE_MOVE, "POST", { gameId, move });
@@ -73,9 +66,7 @@ export class ApiClient {
         return this.request(`${API_ENDPOINTS.GET_MOVES}?gameId=${gameId}`, "GET");
     }
 
-    // =====================================
-    // 🔹 GAME ACTIONS
-    // =====================================
+    //GAME ACTIONS
 
     resign(gameId, playerId) {
         return this.request(API_ENDPOINTS.RESIGN, "POST", { gameId, playerId });
@@ -93,9 +84,7 @@ export class ApiClient {
         return this.request(API_ENDPOINTS.DECLINE_DRAW, "POST", { gameId, playerId });
     }
 
-    // =====================================
-    // 🔹 PLAYER ENDPOINTS
-    // =====================================
+    //PLAYER ENDPOINTS
 
     getPlayer(playerId) {
         return this.request(`${API_ENDPOINTS.GET_PLAYER}?playerId=${playerId}`, "GET");
@@ -105,9 +94,7 @@ export class ApiClient {
         return this.request(API_ENDPOINTS.UPDATE_PLAYER, "POST", { playerId, updates });
     }
 
-    // =====================================
-    // 🔹 STATS ENDPOINTS
-    // =====================================
+    // STATS & HISTORY
 
     getStats(playerId) {
         return this.request(`${API_ENDPOINTS.GET_STATS}?playerId=${playerId}`, "GET");

@@ -1,4 +1,4 @@
-export class Logger {
+class Logger {
   constructor(level = 'info') {
     this.levels = {
       trace: 0,
@@ -11,48 +11,49 @@ export class Logger {
   }
 
   setLevel(level) {
+    // הגדרת רמת הלוג הנוכחית
     this.currentLevel = this.levels[level] ?? this.levels.info;
   }
-
-  // פונקציה עזר לקבלת מיקום הקריאה (גרסה פשוטה)
-getCallerLocation() {
-  try {
-    const err = new Error();
-    const stack = err.stack?.split("\n");
-    if (stack && stack.length > 3) {
-      for (let i = 2; i < stack.length; i++) {
-        const line = stack[i];
-        if (!line.includes("logger.js")) {
-          const match = line.match(/at\s+(.*):(\d+):\d+/);
-          if (match) {
-            let file = match[1].split('/').pop();
-            file = file.split('?')[0]; // מסיר את ?t=...
-            const lineNumber = match[2];
-            return `${file}:${lineNumber}`;
+// קבלת מיקום הקובץ והשורה שקראה לפונקציית הלוג
+  getCallerLocation() {
+    try {
+      const err = new Error();
+      const stack = err.stack?.split("\n");
+      if (stack && stack.length > 3) {
+        for (let i = 2; i < stack.length; i++) {
+          const line = stack[i];
+          if (!line.includes("logger.js")) {
+            const match = line.match(/at\s+(.*):(\d+):\d+/);
+            if (match) {
+              let file = match[1].split('/').pop();
+              file = file.split('?')[0];
+              const lineNumber = match[2];
+              return `${file}:${lineNumber}`;
+            }
           }
         }
       }
-    }
-  } catch (e) {}
-  return "unknown";
-}
+    } catch (e) {}
+    return "unknown";
+  }
+
   trace(...args) {
     if (this.currentLevel <= this.levels.trace) {
       const location = this.getCallerLocation();
-      console.log(`[TRACE] [${location}]`, ...args);
+      this.info(`[TRACE] [${location}]`, ...args);
     }
   }
 
   debug(...args) {
     if (this.currentLevel <= this.levels.debug) {
       const location = this.getCallerLocation();
-      console.log(`[DEBUG] [${location}]`, ...args);
+      this.info(`[DEBUG] [${location}]`, ...args);
     }
   }
 
   info(...args) {
     if (this.currentLevel <= this.levels.info) {
-      console.log(`[INFO]`, ...args);
+      console.info(`[INFO]`, ...args);
     }
   }
 
@@ -68,20 +69,22 @@ getCallerLocation() {
     }
   }
 }
-let level = "debug"; // שנה ל-'info', 'warn', או 'error' לפי הצורך
 
-try {
-  console.log(import.meta.env.VITE_LOG_LEVEL);
-  if (import.meta.env && import.meta.env.VITE_LOG_LEVEL) {
-    level = import.meta.env.VITE_LOG_LEVEL;
-    console.log("Using VITE_LOG_LEVEL:", level);
-  } else {
-    console.warn("VITE_LOG_LEVEL not set, using default:", level);
-  }
-} catch (error) {
-  console.warn("Error reading environment variable:", error);
-}
-console.log("Loaded VITE_LOG_LEVEL:", import.meta.env.VITE_LOG_LEVEL);
-
+let level = "debug";
 
 export const logger = new Logger(level);
+
+// ניסיון לקרוא את רמת הלוג מהמשתנה הסביבתי
+try {
+  logger.info(import.meta.env.VITE_LOG_LEVEL);
+  if (import.meta.env && import.meta.env.VITE_LOG_LEVEL) {
+    level = import.meta.env.VITE_LOG_LEVEL;
+    logger.info("Using VITE_LOG_LEVEL:", level);
+  } else {
+    logger.warn("VITE_LOG_LEVEL not set, using default:", level);
+  }
+} catch (error) {
+  console.error("Error reading environment variable:", error);
+}
+
+logger.info("Loaded VITE_LOG_LEVEL:", import.meta.env.VITE_LOG_LEVEL);

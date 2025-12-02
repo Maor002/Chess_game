@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
+const logger = require("./logger/logger");
 
 // רישום מסלולים (Routes)
 const gameRoutes = require('./routes/gameRoutes');
 const userRoutes = require('./routes/userRoutes');
 const roomRoutes = require('./routes/roomRoutes');
+const loggerRoutes = require('./routes/loggerRoutes');
 
 // הגדרת middleware לאימות
 //const authMiddleware = require('./middleware/auth');
@@ -53,6 +55,7 @@ app.get('/health', (req, res) => {
 app.use('/api/game', gameRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/room', roomRoutes);
+app.use('/api/logger', loggerRoutes);
 
 // מסלול לקבלת דף הבית
 app.get('/', (req, res) => {
@@ -68,7 +71,7 @@ app.use((req, res, next) => {
 
 // מטפל בשגיאות כללי
 app.use((err, req, res, next) => {
-    console.error('Error stack:', err.stack);
+    logger.error('Error stack:', err.stack);
     
     // אם השגיאה כבר נשלחה לקליינט, העבר ל-Express
     if (res.headersSent) {

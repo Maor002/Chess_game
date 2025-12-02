@@ -1,4 +1,5 @@
 const { models } = require("../models/generateSchemas"); // ייבוא מודלים
+const logger = require("../logger/logger");
 // const bcrypt = require('bcryptjs');
 // const jwt = require('jsonwebtoken');
 
@@ -11,6 +12,8 @@ exports.register = async (req, res) => {
         if (!User) {
             return res.status(500).json({ message: "User model not loaded yet" });
         }
+        logger.info("REGISTER USER REQUEST");
+        logger.debug("Request body:", req.body);
         const { username, email, password } = req.body;
         if (!username || !email || !password) {
             return res.status(400).json({ message: 'Username, email, and password are required' });
@@ -33,7 +36,7 @@ exports.register = async (req, res) => {
         await newUser.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        console.error("❌ Error registering user:", error);
+        logger.error("❌ Error registering user:", error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -63,7 +66,7 @@ exports.login = async (req, res) => {
         );
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
-        console.error("❌ Error during login:", error);
+        logger.error("❌ Error during login:", error);
         res.status(500).json({ message: error.message });
     }
 };
