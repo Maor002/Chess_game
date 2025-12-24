@@ -1,7 +1,7 @@
 import { LanguageManager } from "../../language/Language.js";
-import {logger} from "../../logger/logger.js";
+import { logger } from "../../logger/logger.js";
 import { UIAlert } from "../alerts/UIAlert.js";
-import {GameService} from "../../service/api/GameService.js";
+import { GameService } from "../../service/api/GameService.js";
 
 class ChessMenu {
   constructor() {
@@ -56,26 +56,28 @@ class ChessMenu {
 
   async handleLocalGame() {
     logger.info("Local Game button clicked");
-    window.location.href = "html/Board.html";
-    try {
-        const gameData = {
-            mode: "local",  
-            players: ["white", "black"],
-            turn : "white" ,
-             board:["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"],
-             status: "active"
-        };
-       this.gameService.clearGameData();
-       this.gameService.startLocalGame(gameData.players[0], gameData.players[1]);
-        
-    } catch (error) {
-        logger.error("Error starting local game:", error);
-        this.alert.error(
-            this.langManager.translate("error"),
-            this.langManager.translate("Failed to start local game")
-        );
+
+      const gameData = {
+        mode: "local",
+        players: ["white", "black"],
+        turn: "white",
+        boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"],
+        status: "active",
+      };
+      // Clear any existing game data
+      this.gameService.clearGameData();
+      // Create new local game
+      const created = await this.gameService.createLocalGame(gameData);
+      if (created && created._id) { // Successfully created
+      window.location.href = "html/Board.html"; 
+    }else {
+      logger.error("Failed to create local game");
+      this.alert.error(
+        this.langManager.translate("error"),
+        this.langManager.translate("Failed-to-start-local-game")
+      );
     }
-};
+  }
   
 
   handleOnlineGame() {
@@ -88,7 +90,7 @@ class ChessMenu {
 
   handlePuzzles() {
     logger.info("Puzzles button clicked");
-      this.alert.warning(
+    this.alert.warning(
       this.langManager.translate("message"),
       this.langManager.translate("Page under construction")
     );
@@ -97,14 +99,14 @@ class ChessMenu {
 
   handleVsComputer() {
     logger.info("VS Computer button clicked");
-     logger.info("Puzzles button clicked");
-      this.alert.warning(
+    logger.info("Puzzles button clicked");
+    this.alert.warning(
       this.langManager.translate("message"),
       this.langManager.translate("Page under construction")
     );
     // TODO: Implement VS Computer functionality
   }
 }
-
+  
 // Create global instance
 const chessMenu = new ChessMenu();

@@ -3,16 +3,16 @@
     "type": "Object",
     "properties": {
       "createdAt": {
-        "type": "String",
+        "type": "Date",
         "format": "date-time",
         "description": "Timestamp of when the entity was created.",
-        "default": "CURRENT_TIMESTAMP"
+        "default": "Date.now"
       },
       "updatedAt": {
-        "type": "String",
+        "type": "Date",
         "format": "date-time",
         "description": "Timestamp of when the entity was last updated.",
-        "default": "CURRENT_TIMESTAMP"
+        "default": "Date.now"
       }
     },
     "description": "Details about the entity's creation and update timestamps."

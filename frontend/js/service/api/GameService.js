@@ -39,15 +39,15 @@ export class GameService {
     // =====================================================
     // 🔹 Game Initialization
     // =====================================================
-    async startLocalGame(player1 = "White", player2 = "Black") {
-        this.clearGameData();
+    async createLocalGame(getGameData) {
+      //  this.clearGameData();
 
         const gameData = {
-            white: player1,
-            black: player2,
-            boardState: "startpos",
+            white: getGameData.players[0],
+            black: getGameData.players[1],
+            boardState: getGameData.boardState || "startpos",
             moves: [],
-            status: "in_progress",
+            status: "start new game",
             turn: "white"
         };
 
@@ -61,8 +61,11 @@ export class GameService {
         // Save data locally
         this.save(STORAGE_KEYS.GAME_ID, created._id);
 
-        // redirect
-        window.location.href = ROUTES.BOARD;
+        // // redirect
+        // if (created && created._id) {
+        //     window.location.href = ROUTES.BOARD;
+        // }
+        return created;
     }
 // ONLINE GAME METHODS
     async startOnlineGame(playerName) {

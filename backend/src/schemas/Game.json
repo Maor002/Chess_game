@@ -18,8 +18,11 @@
     }
   },
   "boardState": {
-    "type": "String",
+    "type": "Array",
     "required": true,
+    "items": {
+      "type": "String"
+    },
     "description": "ייצוג מצב הלוח בפורמט FEN"
   },
   "moves": {
@@ -40,16 +43,6 @@
     "enum": ["white", "black", "draw", null],
     "default": null,
     "description": "המנצח במשחק, אם הסתיים"
-  },
-  "createdAt": {
-    "type": "Date",
-    "default": "Date.now",
-    "description": "תאריך יצירת המשחק"
-  },
-  "updatedAt": {
-    "type": "Date",
-    "default": "Date.now",
-    "description": "תאריך העדכון האחרון של המשחק"
   },
   "turn": {
     "type": "String",

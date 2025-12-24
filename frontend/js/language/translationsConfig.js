@@ -48,8 +48,10 @@ export const translations = {
 
     "footer-text": "גרסה 1.0.0 | © 2025 משחק שחמט",
     "Page under construction": "הדף בבנייה",
+    "Failed-to-start-local-game": "התחלת המשחק המקומי נכשלה"
   },
   en: {
+    
     "page-title": "Chess Game - Modular Version",
     "game-title": "♔ Chess Game ♛",
 
@@ -98,5 +100,6 @@ export const translations = {
 
     "footer-text": "Version 1.0.0 | © 2025 Chess Game",
     "Page under construction": "Page Under Construction",
+    "Failed-to-start-local-game": "Failed to start local game"
   },
 };
