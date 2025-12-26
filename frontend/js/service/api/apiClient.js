@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "../../config/constants.js";
+import { API_ENDPOINTS } from "../../config/apiConstants.js";
 
 export class ApiClient {
     constructor(baseUrl) {

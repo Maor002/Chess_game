@@ -1,11 +1,8 @@
 import { ApiClient } from "../api/apiClient.js";
-import { 
-    STORAGE_KEYS,
-    GAME_MODES,
-    ROUTES,
-    PLAYER_COLORS,
-    DEFAULT_PREFERENCES
-} from "../../config/constants.js";
+import { STORAGE_KEYS,DEFAULT_PREFERENCES} from "../../config/storageConstants.js";
+import { GAME_MODES, PLAYER_COLORS } from "../../config/gameConstants.js";
+import { ROUTES } from "../../config/routesConstants.js";
+
 
 export class GameService {
     constructor() {
