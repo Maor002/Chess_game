@@ -1,12 +1,14 @@
+// טעינת משתני סביבה
+require('dotenv').config();
+console.log('LOG_LEVEL:', process.env.LOG_LEVEL);
 const http = require('http');
 const app = require('./app');
 const { connectDB } = require('./config/db');
 const { setupSocket } = require('./sockets/gameSocket');
-const { init: initModels } = require('./models/generateSchemas');
+const { init: initModels } = require('./schema-generators/generateSchemas');
 const logger = require("./logger/logger");
 
-// טעינת משתני סביבה
-require('dotenv').config();
+
 
 // הגדרת פורט
 const PORT = process.env.PORT || 3001; // שינוי לפורט 3001 כדי לא להתנגש עם Frontend

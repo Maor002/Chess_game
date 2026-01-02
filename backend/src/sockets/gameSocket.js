@@ -1,5 +1,5 @@
 const { Server } = require('socket.io');
-const models = require('../models/generateSchemas'); // ייבוא מודלים
+const models = require('../schema-generators/generateSchemas'); // ייבוא מודלים
 const logger = require("../logger/logger");
 const Game = models.Game; // טוען את מודל המשחק
 

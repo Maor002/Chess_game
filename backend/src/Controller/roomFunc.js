@@ -1,4 +1,4 @@
-const { models } = require("../models/generateSchemas"); // ייבוא מודלים
+const { models } = require("../schema-generators/generateSchemas"); // ייבוא מודלים
 const logger = require("../logger/logger");
 
 //יצירת חדר עם קוד

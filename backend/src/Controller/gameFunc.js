@@ -1,4 +1,4 @@
-const { models } = require("../models/generateSchemas");
+const { models } = require("../schema-generators/generateSchemas"); // ייבוא מודלים
 const logger = require("../logger/logger");
 exports.createGame = async (req, res) => {
   // Prevent duplicate responses
@@ -28,9 +28,9 @@ exports.createGame = async (req, res) => {
       status: "in_progress",
       turn: req.body.turn || "white",
     };
-    
-    logger.info("Creating game with data:", gameData);
-    
+
+    logger.debug("Creating game with data:", gameData);
+
     const newGame = new Game(gameData);
     
     logger.info("Game instance created, saving...");

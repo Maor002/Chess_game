@@ -1,20 +1,16 @@
 {
   "detail": {
     "type": "Object",
+    "default": {},
     "properties": {
       "createdAt": {
         "type": "Date",
-        "format": "date-time",
-        "description": "Timestamp of when the entity was created.",
-        "default": "Date.now"
+        "description": "Timestamp of when the entity was created."
       },
       "updatedAt": {
         "type": "Date",
-        "format": "date-time",
-        "description": "Timestamp of when the entity was last updated.",
-        "default": "Date.now"
+        "description": "Timestamp of when the entity was last updated."
       }
-    },
-    "description": "Details about the entity's creation and update timestamps."
+    }
   }
 }

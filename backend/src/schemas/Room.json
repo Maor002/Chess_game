@@ -1,29 +1,46 @@
 {
-  "_id": {
-      "type": "string",
-      "description": "Unique identifier for the room (MongoDB ObjectId)."
-  },
-  "name": {
-      "type": "string",
+  "fields": {
+    "name": {
+      "type": "String",
       "description": "Name of the room."
-  },
-  "code": {
-      "type": "string",
+    },
+    "code": {
+      "type": "String",
       "required": true,
       "unique": true,
-      "pattern": "^[0-9]{6}$",
+      "match": "/^[0-9]{6}$/",
       "description": "A unique 6-digit room code."
-  },
-  "players": {
-      "type": "array",
+    },
+    "players": {
+      "type": "Object",
       "required": true,
-      "items": {
-          "type": "string",
-          "description": "Player identifiers or usernames."
+      "description": "List of players in the room (max 2 players).",
+      "properties": {
+        "white": {
+          "type": "ObjectId",
+          "ref": "User"
+        },
+        "black": {
+          "type": "ObjectId",
+          "ref": "User"
+        }
       },
-      "maxItems": 2,
-      "description": "List of players in the room (max 2 players)."
+      "validate": {
+        "validator": "function(v) { return Object.keys(v).length <= 2; }",
+        "message": "Maximum 2 players allowed"
+      }
+    },
+    "gameId": {
+      "type": "ObjectId",
+      "ref": "Game",
+      "description": "Reference to the game being played in the room."
+    },
+    "status": {
+      "type": "String",
+      "enum": ["waiting", "ready", "in_game", "closed"],
+      "default": "waiting"
+    }
   },
   "useFieldsFrom": ["detail"],
-  "behaviors": ["generateRoomCode"]
+  "behaviors": ["generateRoomCode", "preSave"]
 }

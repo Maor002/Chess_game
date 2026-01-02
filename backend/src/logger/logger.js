@@ -203,7 +203,7 @@ class Logger {
 // Singleton instance
 
 const logger = new Logger({
-  level: process.env.LOG_LEVEL || "INFO",
+  level: process.env.LOG_LEVEL || "DEBUG",
   enableFile: process.env.LOG_TO_FILE !== "false",
   enableConsole: true,
   logsDir: path.join(process.cwd(), "logs"),

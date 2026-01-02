@@ -1,5 +1,5 @@
 const express = require('express');
-const models = require('../models/generateSchemas'); // טוען את כל המודלים
+const models = require('../schema-generators/generateSchemas'); // טוען את כל המודלים
 const userFunctions = require('../Controller/userFunc'); // טוען את הפונקציות של המשתמשים
 const logger = require("../logger/logger");
 const router = express.Router();
