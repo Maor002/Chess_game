@@ -22,22 +22,7 @@ export class ChessGameController {
     this.ui.clearStatusMessage();
   }
 
-  //שחזור המהלך האחרון
-  undoLastMove() {
-    logger.debug("Undoing last move");
-  }
-  redoLastMove() {
-    logger.debug("Redoing last move");
-  }
 }
 
-document.querySelector(".new-game-btn").addEventListener("click", () => {
-  gameController.ui.startNewGame();
-});
-document.querySelector("#undo-btn").addEventListener("click", () => {
-  gameController.undoLastMove();
-});
-document.querySelector("#redo-btn").addEventListener("click", () => {
-  gameController.redoLastMove();
-});
+
 const gameController = new ChessGameController();

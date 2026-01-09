@@ -35,7 +35,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        board: path.resolve(__dirname, 'frontend/html/Board.html'),
+        board: path.resolve(__dirname, 'frontend/html/pages/Board.html'),
         menu: path.resolve(__dirname, 'frontend/index.html'),
       },
     },

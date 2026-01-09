@@ -3,7 +3,7 @@
 // מתאמת בין כל החלקים
 // מנהלת את מחזור החיים של הממשק
 
-import {logger} from "../../logger/logger.js";
+import { logger } from "../../logger/logger.js";
 import { BoardRenderer } from "./BoardRenderer.js";
 import { GameActionHandler } from "./GameActionHandler.js";
 import { MovesHighlighter } from "./MovesHighlighter.js";
@@ -19,8 +19,14 @@ export class ChessUI {
     this.currentMoveIndex = -1;
     this.initializeElements();
     this.initializeManagers();
+    this.initializeButtons();
     this.bindEvents();
-    
+  }
+
+  initializeButtons() {
+    this.newGameButton = document.querySelector(".new-game-btn");
+    this.undoButton = document.getElementById("undo-btn");
+    this.redoButton = document.getElementById("redo-btn");
   }
 
   initializeElements() {
@@ -34,24 +40,23 @@ export class ChessUI {
   }
 
   initializeManagers() {
-    this.langManager = new LanguageManager(this);// מנהל השפה
-    this.boardRenderer = new BoardRenderer(this.elements.board);//מנהל תצוגת הלוח
-    this.selectionManager = new SelectionManager(this.boardRenderer);//מנהל הבחירה אריח על הלוח
-    this.movesHighlighter = new MovesHighlighter(this.boardRenderer);//מנהל הדגשת מהלכים
-    this.MovesListManager = new MovesListManager(this.elements.movesList);//מנהל תצוגת היסטוריית מהלכים
+    this.langManager = new LanguageManager(this); // מנהל השפה
+    this.boardRenderer = new BoardRenderer(this.elements.board); //מנהל תצוגת הלוח
+    this.selectionManager = new SelectionManager(this.boardRenderer); //מנהל הבחירה אריח על הלוח
+    this.movesHighlighter = new MovesHighlighter(this.boardRenderer); //מנהל הדגשת מהלכים
+    this.MovesListManager = new MovesListManager(this.elements.movesList); //מנהל תצוגת היסטוריית מהלכים
     this.gameStatus = new GameStatusManager(
       this.elements.turnIndicator,
       this.elements.capturedPieces,
       this.elements.statusMessage,
       this.langManager
-    );// מנהל מצב שבדף המשחק
+    ); // מנהל מצב שבדף המשחק
     this.actionHandler = new GameActionHandler(
       this.engine,
       this.selectionManager,
       this.movesHighlighter
-    );//פונקצייה לטיפול בפעולות משתמש על הלוח 
-      this.alertManager = new AlertManager(this);// מנהל התראות ופופאפים
-
+    ); //פונקצייה לטיפול בפעולות משתמש על הלוח
+    this.alertManager = new AlertManager(this); // מנהל התראות ופופאפים
   }
 
   createBoard() {
@@ -63,10 +68,14 @@ export class ChessUI {
   }
 
   bindEvents() {
-    this.handleSquareClick = this.handleSquareClick.bind(this);//קישור לפונקציית לחיצה על ריבוע
+    this.handleSquareClick = this.handleSquareClick.bind(this); //קישור לפונקציית לחיצה על ריבוע
+
+    this.newGameButton.addEventListener("click", () => this.startNewGame());
+    this.undoButton.addEventListener("click", () => this.engine.undoMove());
+    this.redoButton.addEventListener("click", () => this.engine.redoMove());
   }
 
-//פעולה בעת לחיצה על אריח
+  //פעולה בעת לחיצה על אריח
   handleSquareClick(row, col) {
     try {
       const result = this.actionHandler.handleSquareClick(row, col);
@@ -87,7 +96,10 @@ export class ChessUI {
       this.createBoard();
       this.gameStatus.updateTurn(this.engine.getCurrentPlayer());
       this.gameStatus.updateCapturedPieces(this.engine.getCapturedPieces());
-      this.MovesListManager.updateListofMoves(this.engine.getHistoryMoves(), this.currentMoveIndex);
+      this.MovesListManager.updateListofMoves(
+        this.engine.getHistoryMoves(),
+        this.currentMoveIndex
+      );
     } catch (error) {
       logger.error("Error updating display:", error);
     }

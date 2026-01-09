@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>משחק מקוון</title>
+  <link rel="stylesheet" href="./../../css/online-game-dialog.css">
+  <link rel="stylesheet" href="./../../css/alert.css">
+  
+</head>
+<body>
+
+<div id="online-game-overlay" class="game-dialog-overlay">
+  <div class="game-dialog">
+    <h2>משחק מקוון</h2>
+
+    <div class="dialog-content">
+      <label for="player-name-input" data-translate="player-name-label">
+        שם שחקן:
+        <input type="text" id="player-name-input" value="Player" />
+      </label>
+
+      <div class="choice-buttons">
+        <button id="create-game-btn" class="primary-button" data-translate="create-new-gameOnline-button">
+          🎮 צור משחק חדש
+        </button>
+        <button id="join-game-btn" class="secondary-button" data-translate="join-gameOnline-button">
+          הצטרף למשחק
+        </button>
+      </div>
+
+      <div id="join-game-section">
+        <label for="game-id-input" data-translate="game-code-label">
+          קוד משחק:
+          <input type="text" id="game-id-input" placeholder="הזן קוד משחק..." />
+        </label>
+
+        <div class="dialog-buttons">
+          <button id="confirm-join-btn" class="primary-button" data-translate="join-game-button">
+            הצטרף
+          </button>
+          <button id="cancel-join-btn" class="secondary-button" data-translate="cancel-button">
+            ביטול
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button id="close-dialog-btn" class="close-button">×</button>
+  </div>
+</div>
+
+</body>
+</html>
