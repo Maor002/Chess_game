@@ -1,17 +1,16 @@
-// טעינת משתני סביבה
+// server.js
 require('dotenv').config();
 console.log('LOG_LEVEL:', process.env.LOG_LEVEL);
+
 const http = require('http');
 const app = require('./app');
 const { connectDB } = require('./config/db');
-const { setupSocket } = require('./sockets/gameSocket');
+const { initGameSocket } = require('./sockets/gameSocket'); // תואם לגרסה החדשה
 const { init: initModels } = require('./schema-generators/generateSchemas');
 const logger = require("./logger/logger");
 
-
-
 // הגדרת פורט
-const PORT = process.env.PORT || 3001; // שינוי לפורט 3001 כדי לא להתנגש עם Frontend
+const PORT = process.env.PORT || 3001;
 
 // פונקציה אסינכרונית להפעלת השרת
 async function startServer() {
@@ -29,10 +28,14 @@ async function startServer() {
         // יצירת שרת HTTP
         const server = http.createServer(app);
 
-        // הגדרת WebSocket
-        logger.info('Setting up WebSocket...');
-        setupSocket(server);
-        logger.info('WebSocket configured successfully');
+        // הגדרת Socket.IO
+        logger.info('Setting up Socket.IO...');
+        const io = require("socket.io")(server, {
+            cors: { origin: '*' } // ניתן להחליף ל‑frontend origin ספציפי
+        });
+
+        initGameSocket(io); // הפעלת כל אירועי המשחק
+        logger.info('Socket.IO configured successfully');
 
         // הפעלת השרת
         server.listen(PORT, () => {
@@ -47,21 +50,15 @@ async function startServer() {
         });
 
         // טיפול בסגירה נקייה של השרת
-        process.on('SIGTERM', () => {
-            logger.info('SIGTERM signal received: closing HTTP server');
+        const shutdown = () => {
+            logger.info('Closing HTTP server...');
             server.close(() => {
                 logger.info('HTTP server closed');
                 process.exit(0);
             });
-        });
-
-        process.on('SIGINT', () => {
-            logger.info('SIGINT signal received: closing HTTP server');
-            server.close(() => {
-                logger.info('HTTP server closed');
-                process.exit(0);
-            });
-        });
+        };
+        process.on('SIGTERM', shutdown);
+        process.on('SIGINT', shutdown);
 
         // טיפול בשגיאות לא צפויות
         process.on('uncaughtException', (err) => {

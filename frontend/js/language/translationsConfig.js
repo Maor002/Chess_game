@@ -48,7 +48,25 @@ export const translations = {
 
     "footer-text": "גרסה 1.0.0 | © 2025 משחק שחמט",
     "Page under construction": "הדף בבנייה",
-    "Failed-to-start-local-game": "התחלת המשחק המקומי נכשלה"
+    "Failed-to-start-local-game": "התחלת המשחק המקומי נכשלה",
+    "online-game": "משחק מקוון",
+    "enter-player-name": "הכנס את שמך",
+    "create-game": "צור משחק",
+    "join-game": "הצטרף למשחק",
+    "create-game-or-join": "האם ברצונך ליצור משחק חדש?",
+    "enter-game-id": "הכנס קוד משחק",
+    "game-created": "משחק נוצר בהצלחה!",
+    "game-joined": "הצטרפת למשחק בהצלחה!",
+    "failed-to-create-game": "יצירת המשחק נכשלה",
+    "failed-to-join-game": "ההצטרפות למשחק נכשלה",
+    "connected": "מחובר",
+    "disconnected": "מנותק",
+    "connecting": "מתחבר...",
+    "connection-error": "שגיאת חיבור",
+    "connection-failed": "החיבור לשרת נכשל",
+    "start-online-game": "התחל משחק מקוון",
+    "connect-to-server": "התחבר לשרת",
+    "unknown-error": "שגיאה לא ידועה"
   },
   en: {
     
@@ -100,6 +118,24 @@ export const translations = {
 
     "footer-text": "Version 1.0.0 | © 2025 Chess Game",
     "Page under construction": "Page Under Construction",
-    "Failed-to-start-local-game": "Failed to start local game"
+    "Failed-to-start-local-game": "Failed to start local game",
+    "online-game": "Online Game",
+    "enter-player-name": "Enter your name",
+    "create-game": "Create Game", 
+    "join-game": "Join Game",
+    "create-game-or-join": "Would you like to create a new game?",
+    "enter-game-id": "Enter Game Code",
+    "game-created": "Game created successfully!",
+    "game-joined": "Successfully joined the game!",
+    "failed-to-create-game": "Failed to create game",
+    "failed-to-join-game": "Failed to join game",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "connecting": "Connecting...",
+    "connection-error": "Connection Error",
+    "connection-failed": "Failed to connect to server",
+    "start-online-game": "Start Online Game",
+    "connect-to-server": "Connect to Server",
+    "unknown-error": "Unknown Error"
   },
 };

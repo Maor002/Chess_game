@@ -1,43 +1,75 @@
-const { Server } = require('socket.io');
-const models = require('../schema-generators/generateSchemas'); // ייבוא מודלים
 const logger = require("../logger/logger");
-const Game = models.Game; // טוען את מודל המשחק
+const gameFunc = require("../Controller/gameFunc");
 
-const setupSocket = (server) => {
-    const io = new Server(server, { cors: { origin: '*' } });
 
-    io.on('connection', (socket) => {
-        logger.info(`🔌 Player connected: ${socket.id}`);
+function initGameSocket(io) {
+  io.on("connection", (socket) => {
+    logger.debug(`Player connected: ${socket.id}`);
 
-        socket.on('join_game', async (gameId) => {
-            socket.join(gameId);
-            logger.info(`👤 Player joined game: ${gameId}`);
 
-            // שליחת מצב המשחק הנוכחי לכל מי שמתחבר
-            const game = await Game.findById(gameId);
-            if (game) {
-                socket.emit('game_state', game);
-            }
+    // ============================
+    // הצטרפות לשחקן שני
+    // ============================
+    socket.on("game:join", async ({ roomCode, playerId }) => {
+      try {
+        const result = await gameFunc.joinGameSocket({ roomCode, playerId });
+        if (!result) {
+          return socket.emit("error", { message: "Room full or not found" });
+        }
+
+        socket.join(result.room._id.toString());
+
+        // שליחת עדכון לכל השחקנים בחדר
+        io.to(result.room._id.toString()).emit("game:joined", {
+          room: result.room,
+          game: result.game,
         });
 
-        socket.on('make_move', async ({ gameId, move }) => {
-            logger.info(`🎯 Move received for game ${gameId}:`, move);
-
-            // עדכון מסד הנתונים
-            const game = await Game.findById(gameId);
-            if (!game) return;
-
-            game.moves.push(move);
-            await game.save();
-
-            // שליחת העדכון לכל המשתתפים במשחק
-            io.to(gameId).emit('receive_move', move);
-        });
-
-        socket.on('disconnect', () => {
-            logger.info(`❌ Player disconnected: ${socket.id}`);
-        });
+        logger.info(`Player ${playerId} joined room ${roomCode}`);
+      } catch (err) {
+        logger.error("Error joining game via socket:", err);
+        socket.emit("error", { message: "Failed to join game" });
+        
+      }
     });
-};
 
-module.exports = { setupSocket };
+    // ============================
+    // ביצוע מהלך
+    // ============================
+    socket.on("game:move", async ({ roomCode, playerId, from, to, piece, capturedPiece }) => {
+      try {
+        const result = await gameFunc.makeMoveSocket({
+          roomCode,
+          playerId,
+          from,
+          to,
+          piece,
+          capturedPiece,
+        });
+
+        if (!result) {
+          return socket.emit("error", { message: "Invalid move or not your turn" });
+        }
+
+        // שליחת העדכון לכל השחקנים בחדר
+        io.to(roomCode).emit("game:move", {
+          move: result.move,
+          boardState: result.game.boardState,
+          nextTurn: result.nextTurn,
+        });
+      } catch (err) {
+        logger.error("Error in game:move event:", err);
+        socket.emit("error", { message: "Failed to execute move" });
+      }
+    });
+
+    // ============================
+    // התנתקות שחקן
+    // ============================
+    socket.on("disconnect", () => {
+      logger.info(`Player disconnected: ${socket.id}`);
+    });
+  });
+}
+
+module.exports = { initGameSocket };

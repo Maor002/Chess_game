@@ -1,5 +1,12 @@
-const { models } = require("../schema-generators/generateSchemas"); // ייבוא מודלים
+const { models } = require("../schema-generators/generateSchemas");
 const logger = require("../logger/logger");
+
+const Game = models.Game;
+const Room = models.Room;
+
+/* ============================
+    REST: יצירת משחק
+============================ */
 exports.createGame = async (req, res) => {
   // Prevent duplicate responses
   if (res.headersSent) {
@@ -61,3 +68,60 @@ exports.createGame = async (req, res) => {
     }
   }
 };
+
+/* ============================
+    Socket.IO: הצטרפות לשחקן שני
+============================ */
+exports.joinGameSocket = async ({ roomCode, playerId }) => {
+  try {
+    const room = await Room.findOne({ code: roomCode }).populate("gameId");
+    if (!room || room.players.black) return null;
+    room.players.black = playerId;
+    room.status = "ready";
+    await room.save();
+
+    const game = await Game.findById(room.gameId._id);
+    game.players.black = playerId;
+    await game.save();
+
+    return { game, room };
+  } catch (err) {
+    logger.error("Error joining game via socket:", err);
+    throw err;
+  }
+};
+
+/* ============================
+    Socket.IO: ביצוע מהלך
+============================ */
+exports.makeMoveSocket = async ({ roomCode, playerId, from, to, piece, capturedPiece }) => {
+  try {
+    const room = await Room.findOne({ code: roomCode }).populate("gameId");
+    if (!room) return null;
+
+    const game = await Game.findById(room.gameId._id);
+    if (!game) return null;
+
+    const playerColor = game.players.white === playerId ? "white" : "black";
+    if (game.turn !== playerColor) return null;
+
+    const moveStr = `${piece}:${from}->${to}` + (capturedPiece ? `x${capturedPiece}` : "");
+    game.moves.push(moveStr);
+    game.boardState.push(`${from}-${to}`);
+    game.turn = game.turn === "white" ? "black" : "white";
+
+    await game.save();
+    return { game, move: moveStr, nextTurn: game.turn };
+  } catch (err) {
+    logger.error("Error making move via socket:", err);
+    throw err;
+  }
+};
+
+/* ============================
+    פונקציה ליצירת מזהה שחקן ייחודי
+============================ */
+function generatePlayerId() {
+  return `player_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+exports.generatePlayerId = generatePlayerId;
