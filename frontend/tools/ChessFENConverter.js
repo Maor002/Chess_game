@@ -3,7 +3,7 @@
  * Converts a chess board representation to Forsyth-Edwards Notation (FEN)
  */
 
-class ChessFENConverter {
+export class ChessFENConverter {
   /**
    * Validates a chess piece object
    * @param {Object} piece - The piece to validate
@@ -128,4 +128,113 @@ class ChessFENConverter {
       fullmove
     ].join(' ');
   }
+
+  // =====================================================
+  // 🔹 FEN to Board Conversion (NEW)
+  // =====================================================
+
+  /**
+   * Converts FEN notation to a chess board array
+   * @param {string} fenBoard - FEN board notation (e.g., "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+   * @returns {Array<Array>} 8x8 board array
+   */
+  static parseFENToBoard(fenBoard) {
+    const board = Array(8).fill(null).map(() => Array(8).fill(null));
+    const rows = fenBoard.split('/');
+    
+    if (rows.length !== 8) {
+      throw new Error('FEN board must have exactly 8 ranks');
+    }
+    
+    for (let row = 0; row < 8; row++) {
+      let col = 0;
+      for (const char of rows[row]) {
+        if (char >= '1' && char <= '8') {
+          // מספר = משבצות ריקות
+          col += parseInt(char);
+        } else {
+          // אות = כלי
+          board[row][col] = this.fenCharToPiece(char);
+          col++;
+        }
+      }
+      
+      if (col !== 8) {
+        throw new Error(`Rank ${row} has invalid number of squares`);
+      }
+    }
+    
+    return board;
+  }
+
+  /**
+   * Converts a FEN character to a piece object
+   * @param {string} char - FEN character (K, Q, R, B, N, P or lowercase)
+   * @returns {Object|null} Piece object with type and color
+   */
+  static fenCharToPiece(char) {
+    const pieceMap = {
+      'K': 'K', 'Q': 'Q', 'R': 'R', 'B': 'B', 'N': 'N', 'P': 'P',
+      'k': 'K', 'q': 'Q', 'r': 'R', 'b': 'B', 'n': 'N', 'p': 'P'
+    };
+    
+    const type = pieceMap[char];
+    if (!type) return null;
+    
+    const color = char === char.toUpperCase() ? 'w' : 'b';
+    
+    return {
+      type: type,
+      color: color
+    };
+  }
+
+  /**
+   * Parses a complete FEN string into game state
+   * @param {string} fen - Complete FEN string
+   * @returns {Object} Game state object
+   */
+  static parseFEN(fen) {
+    const parts = fen.trim().split(/\s+/);
+    
+    if (parts.length < 1) {
+      throw new Error('Invalid FEN string');
+    }
+    
+    return {
+      board: this.parseFENToBoard(parts[0]),
+      activeColor: parts[1] || 'w',
+      castling: parts[2] || 'KQkq',
+      enPassant: parts[3] || '-',
+      halfmove: parseInt(parts[4]) || 0,
+      fullmove: parseInt(parts[5]) || 1
+    };
+  }
+
+  /**
+   * Validates a FEN string
+   * @param {string} fen - FEN string to validate
+   * @returns {boolean} True if valid
+   */
+  static isValidFEN(fen) {
+    try {
+      this.parseFEN(fen);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * Gets the starting position FEN
+   * @returns {string} Standard chess starting position
+   */
+  static getStartingFEN() {
+    return 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  }
+}
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ChessFENConverter;
 }

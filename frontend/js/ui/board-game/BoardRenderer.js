@@ -38,7 +38,7 @@ export class BoardRenderer {
     if (clickHandler) {
       square.onclick = () => clickHandler(row, col);
     }
-    
+    // יוצר את הכלי על המשבצת
     this.updateSquareContent(square, piece);
     return square;
   }

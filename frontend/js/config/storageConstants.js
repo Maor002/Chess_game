@@ -1,11 +1,12 @@
 export const STORAGE_KEYS = {
-  GAME_ID: 'chess_game_id',
-  PLAYER_ID: 'chess_player_id',
-  PLAYER_NAME: 'chess_player_name',
-  PLAYER_COLOR: 'chess_player_color',
-  GAME_MODE: 'chess_game_mode',
-  TIME_CONTROL: 'chess_time_control',
-  PREFERENCES: 'chess_preferences'
+    GAME_ID: "chess_game_id",
+    PLAYER_ID: "chess_player_id",
+    PLAYER_COLOR: "chess_player_color",
+    GAME_MODE: "chess_game_mode",
+    TIME_CONTROL: "chess_time_control",
+    PREFERENCES: "chess_preferences",
+    PLAYER_NAME: "chess_player_name",
+    CURRENT_GAME: "chess_current_game", // ← הוסף שורה זו
 };
 
 export const DEFAULT_PREFERENCES = {

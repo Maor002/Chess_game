@@ -57,50 +57,67 @@ class ChessMenu {
   async handleLocalGame() {
     logger.info("Local Game button clicked");
 
-      const gameData = {
-        mode: "local",
-        players: ["white", "black"],
-        turn: "white",
-        boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"],
-        status: "active",
-      };
-      // Clear any existing game data
-      this.gameService.clearGameData();
-      // Create new local game
-      const created = await this.gameService.createLocalGame(gameData);
-      if (created && created._id) { // Successfully created
-      window.location.href = "html/pages/Board.html"; 
-    }else {
+    const gameData = {
+      mode: "local",
+      players: ["white", "black"],
+      turn: "white",
+      boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"],
+      status: "active",
+    };
+
+    this.gameService.clearGameData();
+    const created = await this.gameService.createLocalGame(gameData);
+
+    if (created && created._id) {
+      // שמירת כל נתוני המשחק
+      this.gameService.setCurrentGame(created);
+      logger.debug("Game created and saved with ID:", created._id);
+
+      //window.pageRouter.navigateTo("board");
+      window.location.href = "html/pages/Board.html";
+    } else {
       logger.error("Failed to create local game");
       this.alert.error(
         this.langManager.translate("error"),
-        this.langManager.translate("Failed-to-start-local-game")
+        this.langManager.translate("Failed-to-start-local-game"),
       );
     }
   }
-  
 
   // הוסף את הפונקציה הזו
-    initOnlineGameButton() {
-        const onlineGameBtn = document.getElementById('online-game-btn');
-        if (onlineGameBtn) {
-            onlineGameBtn.addEventListener('click', () => this.handleOnlineGame());
-        }
+  initOnlineGameButton() {
+    const onlineGameBtn = document.getElementById("online-game-btn");
+    if (onlineGameBtn) {
+      onlineGameBtn.addEventListener("click", () => this.handleOnlineGame());
     }
+  }
 
-    async handleOnlineGame() {
-        console.log("Online Game button clicked");
-        const onlineGameService = new OnlineGameService(this.langManager, this.alert, this.gameService);
-        await onlineGameService.connect();
-        
+  async handleOnlineGame() {
+    logger.debug("Online Game button clicked");
+    const onlineGameService = new OnlineGameService(
+      this.langManager,
+      this.alert,
+      this.gameService,
+    );
+    await onlineGameService.connect();
+    if (onlineGameService.socket.id) {
+      // Navigate to online game lobby or setup page
+      //window.pageRouter.navigateTo("board");
+      window.location.href = "/board.html";
+    } else {
+      logger.error("Failed to connect to online game service");
+      this.alert.error(
+        this.langManager.translate("error"),
+        this.langManager.translate("Failed-to-connect-online-game"),
+      );
     }
-
+  }
 
   handlePuzzles() {
     logger.info("Puzzles button clicked");
     this.alert.warning(
       this.langManager.translate("message"),
-      this.langManager.translate("Page under construction")
+      this.langManager.translate("Page under construction"),
     );
     // TODO: Implement puzzles functionality
   }
@@ -110,11 +127,11 @@ class ChessMenu {
     logger.info("Puzzles button clicked");
     this.alert.warning(
       this.langManager.translate("message"),
-      this.langManager.translate("Page under construction")
+      this.langManager.translate("Page under construction"),
     );
     // TODO: Implement VS Computer functionality
   }
 }
-  
+
 // Create global instance
 const chessMenu = new ChessMenu();

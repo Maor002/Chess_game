@@ -5,12 +5,16 @@ import {logger} from "../logger/logger.js";
 import { BoardBuilder } from "./BoardBuilder.js";
 import { MoveValidator } from "./MoveValidator.js";
 import { MoveExecutor } from "./MoveExecutor.js";
+import { ChessFENConverter } from "../../tools/ChessFENConverter.js";
 export class ChessEngine {
   constructor() {
     this.currentPlayer = ChessConfig.WHITE_PLAYER;
     this.gameActive = true;
-    this.initializeGame();
     this.isWhiteWin = null;
+    this.board = null;
+    this.moveValidator = null;
+    this.moveExecutor = null;
+    this.initializeGame();
     logger.debug("Chess engine created successfully");
   }
   //  מאתחל את כל מערכות המשחק
@@ -81,5 +85,26 @@ export class ChessEngine {
   }
   getGameStatus() {
     return this.gameActive;
+  }
+  isGameOver() {
+    return !this.gameActive;
+  }
+  loadGameFromFEN(fen) {
+    try {
+      logger.info(` Loading position from FEN: ${fen}`);
+      const boardState = ChessFENConverter.parseFENToBoard(fen);
+      this.board = new BoardBuilder().initializeBoard(boardState);
+      this.moveValidator = new MoveValidator(this.board);
+      this.moveExecutor = new MoveExecutor(this);
+      logger.debug(" Position loaded successfully");
+    } catch (error) {
+      logger.error(" Error loading position from FEN:", error);
+      throw new Error(`Failed to load position: ${error.message}`);
+    }
+}
+getFEN() {
+    const fen = ChessFENConverter.boardToFEN(this.board, this.currentPlayer);
+    logger.trace(` Current FEN: ${fen}`);
+    return fen;
   }
 }

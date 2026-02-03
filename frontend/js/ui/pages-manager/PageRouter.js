@@ -5,7 +5,7 @@
 
 import { logger } from "../../logger/logger.js";
 
-class PageRouter {
+export class PageRouter {
   constructor() {
     this.currentPage = null;
     this.history = [];
@@ -45,7 +45,7 @@ class PageRouter {
 
     // בצע ניווט
     setTimeout(() => {
-      logger.info(`Navigating to: ${pageName}`);
+      logger.debug(`Navigating to: ${pageName} after delay: ${delay}ms`);
       this.addToHistory(pageName);
       window.location.href = this.routes[pageName];
     }, delay);
@@ -217,9 +217,8 @@ class PageRouter {
 }
 
 // יצירת instance גלובלי
-const pageRouter = new PageRouter();
+export const pageRouter = new PageRouter();
 
 // הפוך זמין globally
 window.pageRouter = pageRouter;
 
-export default pageRouter;

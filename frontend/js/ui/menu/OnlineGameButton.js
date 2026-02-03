@@ -6,7 +6,7 @@ export class OnlineGameService {
     this.socket = null;
     this.gameId = null;
     this.playerId = null;
-    this.serverUrl = "http://localhost:3001"; // ✅ תיקון
+    this.serverUrl = "http://localhost:3001"; // URL של שרת Socket.IO
   }
 
   connect() {

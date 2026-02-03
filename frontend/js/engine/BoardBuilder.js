@@ -8,12 +8,12 @@ export class BoardBuilder {
     );
   }
   //יוצר את הלוח ומחזיר אותו
-  initializeBoard() {
+  initializeBoard(initialBoard = ChessConfig.initialBoard) {
     try {
     logger.debug("Initializing chess board");
     for (let row = 0; row < ChessConfig.BOARD_SIZE; row++) {
       for (let col = 0; col < ChessConfig.BOARD_SIZE; col++) {
-        const piece = ChessConfig.initialBoard[row][col];
+        const piece = initialBoard[row][col];
         this.createPiece(piece, row, col);
       }
     }
