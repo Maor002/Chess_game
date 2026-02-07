@@ -97,6 +97,7 @@ export class ChessEngine {
       this.moveValidator = new MoveValidator(this.board);
       this.moveExecutor = new MoveExecutor(this);
       logger.debug(" Position loaded successfully");
+      return true;
     } catch (error) {
       logger.error(" Error loading position from FEN:", error);
       throw new Error(`Failed to load position: ${error.message}`);
@@ -106,5 +107,13 @@ getFEN() {
     const fen = ChessFENConverter.boardToFEN(this.board, this.currentPlayer);
     logger.trace(` Current FEN: ${fen}`);
     return fen;
+  }
+  setTurn(player) {
+    if (player !== ChessConfig.WHITE_PLAYER && player !== ChessConfig.BLACK_PLAYER) {
+      logger.warn(` Invalid player for turn: ${player}`);
+      return;
+    }
+    logger.debug(` Setting turn to ${player}`);
+    this.currentPlayer = player;
   }
 }

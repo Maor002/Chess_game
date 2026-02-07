@@ -58,11 +58,11 @@ class ChessMenu {
     logger.info("Local Game button clicked");
 
     const gameData = {
-      mode: "local",
       players: ["white", "black"],
       turn: "white",
-      boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"],
+      boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"],
       status: "active",
+      gameMode: "local",
     };
 
     this.gameService.clearGameData();

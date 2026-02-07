@@ -53,6 +53,15 @@
       ],
       "default": "white",
       "description": "מי התור הבא לבצע מהלך"
+    },
+    "gameMode": {
+      "type": "String",
+      "enum": [
+        "local",
+        "online"
+      ],
+      "default": "local",
+      "description": "מצב המשחק - משחק מקומי או מקוון"
     }
   },
   "useFieldsFrom": [

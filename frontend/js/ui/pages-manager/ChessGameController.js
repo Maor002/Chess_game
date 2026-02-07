@@ -31,7 +31,7 @@ export class ChessGameController {
       
       if (this.currentGame) {
         logger.info("Loading saved game:", this.currentGame);
-        this.gameMode = this.currentGame.mode;
+        this.gameMode = this.currentGame.gameMode ;
       } else {
         logger.warn("No saved game found in localStorage");
         
