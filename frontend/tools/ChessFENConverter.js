@@ -1,15 +1,10 @@
-/**
- * Chess Board to FEN Converter
- * Converts between chess board representation and Forsyth-Edwards Notation (FEN)
- */
-
-import { ChessConfig } from "../js/config/ChessConfig.js";
+import { ChessConfig } from "../js/config/chessConfig.js";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "../js/pieces/Pieces.js";
 import { logger } from "../js/logger/logger.js";
 
 export class ChessFENConverter {
   // =====================================================
-  // 🔹 קבועים
+  // 🔹 Constants
   // =====================================================
   
   static VALID_PIECE_TYPES = ['K', 'Q', 'R', 'B', 'N', 'P'];
@@ -17,7 +12,7 @@ export class ChessFENConverter {
   static BOARD_SIZE = 8;
   static STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
-  // מפה של מחלקות הכלים
+  // Piece classes map
   static PIECE_CLASSES = {
     'P': Pawn,
     'R': Rook,
@@ -27,15 +22,30 @@ export class ChessFENConverter {
     'K': King
   };
 
+  // Piece values for material calculation
+  static PIECE_VALUES = {
+    'P': 1,
+    'N': 3,
+    'B': 3,
+    'R': 5,
+    'Q': 9,
+    'K': 0
+  };
+
+  // Unicode symbols for pieces
+  static PIECE_SYMBOLS = {
+    'P': '♟',
+    'R': '♜',
+    'N': '♞',
+    'B': '♝',
+    'Q': '♛',
+    'K': '♚'
+  };
+
   // =====================================================
-  // 🔹 אימות (Validation)
+  // 🔹 Validation
   // =====================================================
 
-  /**
-   * בדיקת תקינות כלי שחמט
-   * @param {Object} piece - הכלי לבדיקה
-   * @returns {boolean} true אם תקין
-   */
   static isValidPiece(piece) {
     if (!piece || typeof piece !== 'object') return false;
     
@@ -45,11 +55,6 @@ export class ChessFENConverter {
     );
   }
 
-  /**
-   * בדיקה האם משבצת ריקה
-   * @param {*} square - המשבצת לבדיקה
-   * @returns {boolean} true אם המשבצת ריקה
-   */
   static isEmptySquare(square) {
     return square === null || 
            square === undefined || 
@@ -57,35 +62,25 @@ export class ChessFENConverter {
            square === 0;
   }
 
-  /**
-   * בדיקת תקינות מבנה הלוח
-   * @param {Array} board - לוח שחמט 8x8
-   * @throws {Error} אם הלוח לא תקין
-   */
   static validateBoard(board) {
     if (!Array.isArray(board)) {
-      throw new Error('הלוח חייב להיות מערך');
+      throw new Error('The board must be array');
     }
 
     if (board.length !== this.BOARD_SIZE) {
-      throw new Error(`הלוח חייב להכיל בדיוק ${this.BOARD_SIZE} שורות`);
+      throw new Error(`Board must contain exactly ${this.BOARD_SIZE} rows`);
     }
 
     board.forEach((rank, index) => {
       if (!Array.isArray(rank)) {
-        throw new Error(`שורה ${index} חייבת להיות מערך`);
+        throw new Error(`Row ${index} must be an array`);
       }
       if (rank.length !== this.BOARD_SIZE) {
-        throw new Error(`שורה ${index} חייבת להכיל בדיוק ${this.BOARD_SIZE} משבצות`);
+        throw new Error(`Row ${index} must contain exactly ${this.BOARD_SIZE} squares`);
       }
     });
   }
 
-  /**
-   * בדיקת תקינות מחרוזת FEN
-   * @param {string} fen - מחרוזת FEN לבדיקה
-   * @returns {boolean} true אם תקין
-   */
   static isValidFEN(fen) {
     try {
       this.parseFEN(fen);
@@ -97,24 +92,14 @@ export class ChessFENConverter {
   }
 
   // =====================================================
-  // 🔹 המרה מלוח ל-FEN (Board → FEN)
+  // 🔹 Board → FEN
   // =====================================================
 
-  /**
-   * קבלת סימן FEN עבור כלי
-   * @param {Object} piece - כלי שחמט עם type ו-color
-   * @returns {string} סימן FEN (אותיות גדולות ללבן, קטנות לשחור)
-   */
   static getPieceSymbol(piece) {
     const symbol = piece.type.toUpperCase();
     return piece.color === 'w' ? symbol : symbol.toLowerCase();
   }
 
-  /**
-   * המרת שורה אחת (rank) לסימון FEN
-   * @param {Array} rank - מערך של 8 משבצות (כלים או ריק)
-   * @returns {string} סימון FEN עבור השורה
-   */
   static rankToFEN(rank) {
     let fen = '';
     let emptyCount = 0;
@@ -138,12 +123,6 @@ export class ChessFENConverter {
     return fen;
   }
 
-  /**
-   * המרת לוח שחמט לסימון FEN (מיקום בלבד)
-   * @param {Array<Array>} board - מערך 8x8 המייצג את לוח השחמט
-   * @returns {string} מחרוזת FEN המייצגת את מיקום הכלים
-   * @throws {Error} אם מבנה הלוח לא תקין
-   */
   static boardToFEN(board) {
     try {
       this.validateBoard(board);
@@ -157,17 +136,6 @@ export class ChessFENConverter {
     }
   }
 
-  /**
-   * המרת לוח שחמט לסימון FEN מלא
-   * @param {Object} gameState - מצב משחק מלא
-   * @param {Array<Array>} gameState.board - לוח שחמט 8x8
-   * @param {string} gameState.activeColor - 'w' או 'b' (תור מי לשחק)
-   * @param {string} gameState.castling - זכויות הצרחה (למשל 'KQkq')
-   * @param {string|null} gameState.enPassant - משבצת en passant או '-'
-   * @param {number} gameState.halfmove - מונה חצאי מהלכים (לכלל 50 המהלכים)
-   * @param {number} gameState.fullmove - מספר המהלך המלא
-   * @returns {string} מחרוזת FEN מלאה
-   */
   static toCompleteFEN(gameState) {
     try {
       const {
@@ -199,16 +167,9 @@ export class ChessFENConverter {
   }
 
   // =====================================================
-  // 🔹 המרה מ-FEN ללוח (FEN → Board)
+  // 🔹 FEN → Board
   // =====================================================
 
-  /**
-   * המרת תו FEN לאובייקט Piece
-   * @param {string} char - תו FEN (K, Q, R, B, N, P או אותיות קטנות)
-   * @param {number} row - מיקום השורה
-   * @param {number} col - מיקום העמודה
-   * @returns {Piece|null} אובייקט Piece או null למשבצת ריקה
-   */
   static fenCharToPiece(char, row, col) {
     const pieceMap = {
       'K': 'K', 'Q': 'Q', 'R': 'R', 'B': 'B', 'N': 'N', 'P': 'P',
@@ -222,16 +183,9 @@ export class ChessFENConverter {
     const PieceClass = this.PIECE_CLASSES[type];
     const grade = ChessConfig.grade[type] || 0;
 
-    // יצירת מופע של הכלי המתאים
     return new PieceClass(color, type, row, col, grade);
   }
 
-  /**
-   * המרת סימון FEN ללוח שחמט
-   * @param {string} fenBoard - סימון לוח FEN (למשל "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-   * @returns {Array<Array>} מערך לוח 8x8 עם אובייקטי Piece
-   * @throws {Error} אם ה-FEN לא תקין
-   */
   static parseFENToBoard(fenBoard) {
     try {
       logger.debug(`Parsing FEN to board: ${fenBoard}`);
@@ -241,10 +195,12 @@ export class ChessFENConverter {
         () => Array(this.BOARD_SIZE).fill('')
       );
       
-      const rows = fenBoard.split('/');
+      // FIX: Extract only the board position part (before the first space)
+      const boardPosition = fenBoard.split(' ')[0];
+      const rows = boardPosition.split('/');
       
       if (rows.length !== this.BOARD_SIZE) {
-        throw new Error(`לוח FEN חייב להכיל בדיוק ${this.BOARD_SIZE} שורות, קיבלנו ${rows.length}`);
+        throw new Error(`FEN board must contain exactly ${this.BOARD_SIZE} rows, received ${rows.length}`);
       }
       
       for (let row = 0; row < this.BOARD_SIZE; row++) {
@@ -252,16 +208,14 @@ export class ChessFENConverter {
         
         for (const char of rows[row]) {
           if (char >= '1' && char <= '8') {
-            // מספר = משבצות ריקות
             const skipCount = parseInt(char);
             for (let i = 0; i < skipCount; i++) {
               board[row][col] = '';
               col++;
             }
           } else {
-            // אות = כלי
             if (col >= this.BOARD_SIZE) {
-              throw new Error(`שורה ${row} ארוכה מדי`);
+              throw new Error(`Row ${row} is too long`);
             }
             board[row][col] = this.fenCharToPiece(char, row, col);
             col++;
@@ -269,7 +223,7 @@ export class ChessFENConverter {
         }
         
         if (col !== this.BOARD_SIZE) {
-          throw new Error(`שורה ${row} מכילה ${col} משבצות במקום ${this.BOARD_SIZE}`);
+          throw new Error(`Row ${row} contains ${col} squares instead of ${this.BOARD_SIZE}`);
         }
       }
 
@@ -281,12 +235,6 @@ export class ChessFENConverter {
     }
   }
 
-  /**
-   * פענוח מחרוזת FEN מלאה למצב משחק
-   * @param {string} fen - מחרוזת FEN מלאה
-   * @returns {Object} אובייקט מצב משחק
-   * @throws {Error} אם ה-FEN לא תקין
-   */
   static parseFEN(fen) {
     try {
       logger.debug(`Parsing complete FEN: ${fen}`);
@@ -294,7 +242,7 @@ export class ChessFENConverter {
       const parts = fen.trim().split(/\s+/);
       
       if (parts.length < 1) {
-        throw new Error('מחרוזת FEN לא תקינה - ריקה או לא תקינה');
+        throw new Error('Invalid FEN string - empty or malformed');
       }
       
       const gameState = {
@@ -315,21 +263,13 @@ export class ChessFENConverter {
   }
 
   // =====================================================
-  // 🔹 פונקציות עזר
+  // 🔹 Helpers
   // =====================================================
 
-  /**
-   * קבלת FEN של מצב התחלה סטנדרטי
-   * @returns {string} מיקום התחלה של שחמט
-   */
   static getStartingFEN() {
     return this.STARTING_FEN;
   }
 
-  /**
-   * יצירת לוח התחלה עם אובייקטי Piece
-   * @returns {Array<Array>} לוח התחלה עם כלים
-   */
   static createStartingBoard() {
     try {
       logger.debug('Creating starting board from FEN');
@@ -340,30 +280,14 @@ export class ChessFENConverter {
     }
   }
 
-  /**
-   * קבלת רק חלק המיקום מ-FEN מלא
-   * @param {string} fen - מחרוזת FEN מלאה
-   * @returns {string} רק חלק המיקום
-   */
   static getPositionPart(fen) {
     return fen.split(' ')[0];
   }
 
-  /**
-   * השוואת שני מצבי לוח
-   * @param {string} fen1 - FEN ראשון
-   * @param {string} fen2 - FEN שני
-   * @returns {boolean} true אם המיקומים זהים
-   */
   static comparePositions(fen1, fen2) {
     return this.getPositionPart(fen1) === this.getPositionPart(fen2);
   }
 
-  /**
-   * המרת לוח לפורמט של ChessConfig.initialBoard
-   * @param {Array<Array>} board - לוח עם אובייקטי Piece
-   * @returns {Array<Array>} לוח בפורמט של initialBoard (['wP', 'bR', ...])
-   */
   static boardToConfigFormat(board) {
     try {
       logger.debug('Converting board to config format');
@@ -380,11 +304,6 @@ export class ChessFENConverter {
     }
   }
 
-  /**
-   * המרת FEN לפורמט של ChessConfig.initialBoard
-   * @param {string} fen - מחרוזת FEN
-   * @returns {Array<Array>} לוח בפורמט של initialBoard
-   */
   static fenToConfigFormat(fen) {
     try {
       const board = this.parseFENToBoard(this.getPositionPart(fen));
@@ -395,29 +314,6 @@ export class ChessFENConverter {
     }
   }
 
-  /**
-   * הדפסת לוח לקונסול (לצורכי דיבוג)
-   * @param {Array<Array>} board - לוח השחמט
-   */
-  static printBoard(board) {
-    console.log('\n  a b c d e f g h');
-    console.log('  ---------------');
-    board.forEach((rank, row) => {
-      const pieces = rank.map(square => {
-        if (this.isEmptySquare(square)) return '.';
-        return this.getPieceSymbol(square);
-      }).join(' ');
-      console.log(`${8 - row} ${pieces} ${8 - row}`);
-    });
-    console.log('  ---------------');
-    console.log('  a b c d e f g h\n');
-  }
-
-  /**
-   * קבלת סטטיסטיקת כלים בלוח
-   * @param {Array<Array>} board - לוח השחמט
-   * @returns {Object} אובייקט עם ספירת כלים לפי צבע וסוג
-   */
   static getBoardStatistics(board) {
     const stats = {
       white: { P: 0, R: 0, N: 0, B: 0, Q: 0, K: 0, total: 0 },
@@ -436,9 +332,104 @@ export class ChessFENConverter {
 
     return stats;
   }
+
+  // =====================================================
+  // 🔹 Captured Pieces Analysis
+  // =====================================================
+
+  static getCapturedPieces(fen) {
+    try {
+      logger.debug(`Calculating captured pieces from FEN: ${fen}`);
+      
+      // מספר הכלים בלוח התחלתי
+      const startingPieces = {
+        white: { P: 8, R: 2, N: 2, B: 2, Q: 1, K: 1 },
+        black: { P: 8, R: 2, N: 2, B: 2, Q: 1, K: 1 }
+      };
+      
+      // קבל את הלוח הנוכחי
+      const board = this.parseFENToBoard(this.getPositionPart(fen));
+      
+      // ספור כלים נוכחיים
+      const currentPieces = {
+        white: { P: 0, R: 0, N: 0, B: 0, Q: 0, K: 0 },
+        black: { P: 0, R: 0, N: 0, B: 0, Q: 0, K: 0 }
+      };
+      
+      board.forEach(rank => {
+        rank.forEach(square => {
+          if (!this.isEmptySquare(square)) {
+            const color = square.color === 'w' ? 'white' : 'black';
+            currentPieces[color][square.type]++;
+          }
+        });
+      });
+      
+      // חשב הפרש - כלים שנאכלו
+      const captured = {
+        white: { P: 0, R: 0, N: 0, B: 0, Q: 0, K: 0, total: 0 },
+        black: { P: 0, R: 0, N: 0, B: 0, Q: 0, K: 0, total: 0 }
+      };
+      
+      // כלים לבנים שנאכלו על ידי שחור
+      for (const piece in startingPieces.white) {
+        captured.white[piece] = startingPieces.white[piece] - currentPieces.white[piece];
+        captured.white.total += captured.white[piece];
+      }
+      
+      // כלים שחורים שנאכלו על ידי לבן
+      for (const piece in startingPieces.black) {
+        captured.black[piece] = startingPieces.black[piece] - currentPieces.black[piece];
+        captured.black.total += captured.black[piece];
+      }
+      
+      logger.debug('Captured pieces calculated:', captured);
+      return captured;
+    } catch (error) {
+      logger.error(`Error calculating captured pieces: ${error.message}`);
+      throw error;
+    }
+  }
+
+  static getCapturedPiecesDisplay(fen) {
+    try {
+      const captured = this.getCapturedPieces(fen);
+      
+      const display = {
+        whiteCaptured: '', // כלים לבנים שנאכלו (שחור תפס)
+        blackCaptured: '', // כלים שחורים שנאכלו (לבן תפס)
+        whiteScore: 0,
+        blackScore: 0
+      };
+      
+      // כלים לבנים שנאכלו
+      for (const [piece, count] of Object.entries(captured.white)) {
+        if (piece !== 'total' && count > 0) {
+          display.whiteCaptured += this.PIECE_SYMBOLS[piece].repeat(count);
+          display.blackScore += this.PIECE_VALUES[piece] * count;
+        }
+      }
+      
+      // כלים שחורים שנאכלו
+      for (const [piece, count] of Object.entries(captured.black)) {
+        if (piece !== 'total' && count > 0) {
+          display.blackCaptured += this.PIECE_SYMBOLS[piece].repeat(count);
+          display.whiteScore += this.PIECE_VALUES[piece] * count;
+        }
+      }
+      
+      display.advantage = display.whiteScore - display.blackScore;
+      
+      return display;
+    } catch (error) {
+      logger.error(`Error getting captured pieces display: ${error.message}`);
+      throw error;
+    }
+  }
+
+
 }
 
-// Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = ChessFENConverter;
 }

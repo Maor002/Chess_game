@@ -19,6 +19,7 @@ export class ChessGameController {
     });
   }
 
+
   /**
    * אתחול המשחק
    */

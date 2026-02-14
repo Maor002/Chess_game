@@ -1,7 +1,7 @@
 //  * ===== מודול מנוע השחמט =====
 //  * מטפל בלוגיקה הבסיסית של המשחק - תנועות, חוקים ומצב המשחק
 import { ChessConfig } from "../config/chessConfig.js";
-import {logger} from "../logger/logger.js";
+import { logger } from "../logger/logger.js";
 import { BoardBuilder } from "./BoardBuilder.js";
 import { MoveValidator } from "./MoveValidator.js";
 import { MoveExecutor } from "./MoveExecutor.js";
@@ -56,7 +56,7 @@ export class ChessEngine {
         : ChessConfig.WHITE_PLAYER;
 
     logger.info(
-      ` Current player updated to ${this.currentPlayer} (previous: ${previousPlayer})`
+      ` Current player updated to ${this.currentPlayer} (previous: ${previousPlayer})`,
     );
   }
   getBoard() {
@@ -68,7 +68,7 @@ export class ChessEngine {
       logger.debug(
         ` Returning captured pieces list (${
           this.moveExecutor.getCapturedPieces().length
-        } pieces)`
+        } pieces)`,
       );
       return this.moveExecutor.getCapturedPieces();
     } catch (error) {
@@ -92,24 +92,43 @@ export class ChessEngine {
   loadGameFromFEN(fen) {
     try {
       logger.info(` Loading position from FEN: ${fen}`);
-      const boardState = ChessFENConverter.parseFENToBoard(fen);
-      this.board = new BoardBuilder().initializeBoard(boardState);
-      this.moveValidator = new MoveValidator(this.board);
-      this.moveExecutor = new MoveExecutor(this);
+
+      const gameState = ChessFENConverter.parseFEN(fen);
+
+      this.board = gameState.board;
+      this.currentPlayer =
+        gameState.activeColor === "w"
+          ? ChessConfig.WHITE_PLAYER
+          : ChessConfig.BLACK_PLAYER;
+      this.castlingRights = gameState.castling;
+      this.enPassantSquare = gameState.enPassant;
+      this.halfmoveClock = gameState.halfmove;
+      this.fullmoveNumber = gameState.fullmove;
+
+      if (this.moveValidator) {
+        this.moveValidator = new MoveValidator(this.board);
+      }
+      if (this.moveExecutor) {
+        this.moveExecutor = new MoveExecutor(this);
+      }
+
       logger.debug(" Position loaded successfully");
       return true;
     } catch (error) {
       logger.error(" Error loading position from FEN:", error);
       throw new Error(`Failed to load position: ${error.message}`);
     }
-}
-getFEN() {
+  }
+  getFEN() {
     const fen = ChessFENConverter.boardToFEN(this.board, this.currentPlayer);
     logger.trace(` Current FEN: ${fen}`);
     return fen;
   }
   setTurn(player) {
-    if (player !== ChessConfig.WHITE_PLAYER && player !== ChessConfig.BLACK_PLAYER) {
+    if (
+      player !== ChessConfig.WHITE_PLAYER &&
+      player !== ChessConfig.BLACK_PLAYER
+    ) {
       logger.warn(` Invalid player for turn: ${player}`);
       return;
     }

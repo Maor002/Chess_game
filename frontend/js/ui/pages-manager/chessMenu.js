@@ -53,14 +53,15 @@ class ChessMenu {
       this.handleVsComputer();
     });
   }
-
+   
   async handleLocalGame() {
     logger.info("Local Game button clicked");
 
     const gameData = {
       players: ["white", "black"],
       turn: "white",
-      boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"],
+      //boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"],
+      boardState:["r2q1rk1/1pp2ppp/p1np1n2/2b1p1B1/2B1P3/2NP1N2/PPP2PPP/R2Q1RK1 w - - 4 9"],
       status: "active",
       gameMode: "local",
     };
