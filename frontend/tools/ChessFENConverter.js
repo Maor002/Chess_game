@@ -251,7 +251,8 @@ export class ChessFENConverter {
         castling: parts[2] || 'KQkq',
         enPassant: parts[3] || '-',
         halfmove: parseInt(parts[4]) || 0,
-        fullmove: parseInt(parts[5]) || 1
+        fullmove: parseInt(parts[5]) || 1,
+        capturedPieces: this.getCapturedPieces(parts[0])
       };
 
       logger.debug('FEN successfully parsed to game state');

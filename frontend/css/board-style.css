@@ -389,6 +389,10 @@ h1 {
 .reset-btn {
   background: var(--danger-gradient);
 }
+.hidden {
+  display: none;
+}
+
 
 /* Status Messages */
 .status-message {

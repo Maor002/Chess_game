@@ -52,7 +52,7 @@ export class ChessGameController {
       
       // אתחול המנוע והUI אחרי שיש לנו את הנתונים
       logger.debug("Initializing chess engine");
-      this.engine = new ChessEngine();
+      this.engine = new ChessEngine(this.gameMode);
       
       // טעינת מצב הלוח אם יש
       if (this.currentGame?.boardState?.[0]) {

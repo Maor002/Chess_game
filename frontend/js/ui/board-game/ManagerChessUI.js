@@ -27,6 +27,8 @@ export class ChessUI {
     this.newGameButton = document.querySelector(".new-game-btn");
     this.undoButton = document.getElementById("undo-btn");
     this.redoButton = document.getElementById("redo-btn");
+    this.saveButton = document.getElementById("save-btn");
+    this.setButtonsState(this.engine.gameMode);
   }
 
   initializeElements() {
@@ -49,12 +51,12 @@ export class ChessUI {
       this.elements.turnIndicator,
       this.elements.capturedPieces,
       this.elements.statusMessage,
-      this.langManager
+      this.langManager,
     ); // מנהל מצב שבדף המשחק
     this.actionHandler = new GameActionHandler(
       this.engine,
       this.selectionManager,
-      this.movesHighlighter
+      this.movesHighlighter,
     ); //פונקצייה לטיפול בפעולות משתמש על הלוח
     this.alertManager = new AlertManager(this); // מנהל התראות ופופאפים
   }
@@ -98,7 +100,7 @@ export class ChessUI {
       this.gameStatus.updateCapturedPieces(this.engine.getCapturedPieces());
       this.MovesListManager.updateListofMoves(
         this.engine.getHistoryMoves(),
-        this.currentMoveIndex
+        this.currentMoveIndex,
       );
     } catch (error) {
       logger.error("Error updating display:", error);
@@ -150,4 +152,13 @@ export class ChessUI {
     this.clearStatusMessage();
     logger.debug("New game started.");
   }
+setButtonsState(gameMode) {
+if (gameMode !== "local") {
+  this.newGameButton.classList.add("hidden");
+  this.undoButton.classList.add("hidden");
+  this.redoButton.classList.add("hidden");
+  this.saveButton.classList.add("hidden");
+
+}
+}
 }

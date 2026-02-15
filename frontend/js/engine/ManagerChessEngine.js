@@ -7,13 +7,14 @@ import { MoveValidator } from "./MoveValidator.js";
 import { MoveExecutor } from "./MoveExecutor.js";
 import { ChessFENConverter } from "../../tools/ChessFENConverter.js";
 export class ChessEngine {
-  constructor() {
+  constructor(gameMode) {
     this.currentPlayer = ChessConfig.WHITE_PLAYER;
     this.gameActive = true;
     this.isWhiteWin = null;
     this.board = null;
     this.moveValidator = null;
     this.moveExecutor = null;
+    this.gameMode = gameMode;
     this.initializeGame();
     logger.debug("Chess engine created successfully");
   }
