@@ -12,6 +12,7 @@ import { MovesListManager } from "./MovesListManager.js";
 import { GameStatusManager } from "./GameStatusManager.js";
 import { LanguageManager } from "../../language/Language.js";
 import { AlertManager } from "../alerts/AlertManager.js";
+import { GameService } from "../../service/api/GameService.js";
 
 export class ChessUI {
   constructor(engine) {
@@ -20,6 +21,7 @@ export class ChessUI {
     this.initializeElements();
     this.initializeManagers();
     this.initializeButtons();
+    this.setAvailableButtons(this.engine.gameMode);
     this.bindEvents();
   }
 
@@ -28,7 +30,7 @@ export class ChessUI {
     this.undoButton = document.getElementById("undo-btn");
     this.redoButton = document.getElementById("redo-btn");
     this.saveButton = document.getElementById("save-btn");
-    this.setButtonsState(this.engine.gameMode);
+   
   }
 
   initializeElements() {
@@ -59,6 +61,7 @@ export class ChessUI {
       this.movesHighlighter,
     ); //פונקצייה לטיפול בפעולות משתמש על הלוח
     this.alertManager = new AlertManager(this); // מנהל התראות ופופאפים
+    this.gameService = new GameService(); // שירות לתקשורת עם השרת
   }
 
   createBoard() {
@@ -75,7 +78,9 @@ export class ChessUI {
     this.newGameButton.addEventListener("click", () => this.startNewGame());
     this.undoButton.addEventListener("click", () => this.engine.undoMove());
     this.redoButton.addEventListener("click", () => this.engine.redoMove());
-  }
+    this.saveButton.addEventListener("click", () => this.saveGame());
+     }
+  
 
   //פעולה בעת לחיצה על אריח
   handleSquareClick(row, col) {
@@ -152,13 +157,22 @@ export class ChessUI {
     this.clearStatusMessage();
     logger.debug("New game started.");
   }
-setButtonsState(gameMode) {
-if (gameMode !== "local") {
-  this.newGameButton.classList.add("hidden");
-  this.undoButton.classList.add("hidden");
-  this.redoButton.classList.add("hidden");
-  this.saveButton.classList.add("hidden");
-
-}
-}
+  saveGame() {
+   const gameData = {
+        boardState: this.engine.getBoardState(),
+        turn: this.engine.getCurrentPlayer(),
+        historyMoves: this.engine.getHistoryMoves(),
+        gameMode: this.engine.gameMode
+      };
+      this.gameService.saveLocalGame(gameData);
+      logger.info("Game saved:", gameData);
+    }
+  setAvailableButtons(gameMode) {
+    if (gameMode !== "local") {
+      this.newGameButton.classList.add("hidden");
+      this.undoButton.classList.add("hidden");
+      this.redoButton.classList.add("hidden");
+      this.saveButton.classList.add("hidden");
+    }
+  }
 }

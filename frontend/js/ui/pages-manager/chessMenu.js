@@ -56,12 +56,15 @@ class ChessMenu {
    
   async handleLocalGame() {
     logger.info("Local Game button clicked");
+    if (!this.gameService.getCurrentLocalGameData()) {
+      window.location.href = "html/pages/Board.html";
+      logger.info("Existing local game found, navigating to board.");
+    }
 
     const gameData = {
       players: ["white", "black"],
       turn: "white",
-      //boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"],
-      boardState:["r2q1rk1/1pp2ppp/p1np1n2/2b1p1B1/2B1P3/2NP1N2/PPP2PPP/R2Q1RK1 w - - 4 9"],
+       boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"],
       status: "active",
       gameMode: "local",
     };
@@ -71,7 +74,7 @@ class ChessMenu {
 
     if (created && created._id) {
       // שמירת כל נתוני המשחק
-      this.gameService.setCurrentGame(created);
+      this.gameService.setCurrentLocalGame(created);
       logger.debug("Game created and saved with ID:", created._id);
 
       //window.pageRouter.navigateTo("board");

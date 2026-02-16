@@ -28,7 +28,7 @@ export class ChessGameController {
     
     try {
       // קבלת נתוני המשחק השמורים
-      this.currentGame = this.gameService.getCurrentGameData();
+      this.currentGame = this.gameService.getCurrentLocalGameData();
       
       if (this.currentGame) {
         logger.info("Loading saved game:", this.currentGame);
@@ -37,12 +37,12 @@ export class ChessGameController {
         logger.warn("No saved game found in localStorage");
         
         // ניסיון לקבל מהשרת (במקרה של רענון דף)
-        const gameFromServer = await this.gameService.getCurrentGame();
+        const gameFromServer = await this.gameService.getCurrentLocalGameData();
         
         if (gameFromServer) {
           logger.info("Game loaded from server:", gameFromServer);
           this.currentGame = gameFromServer;
-          this.gameService.setCurrentGame(gameFromServer);
+          this.gameService.setCurrentLocalGame(gameFromServer);
           this.gameMode = gameFromServer.mode || "local";
         } else {
           logger.info("No game found on server, starting fresh");

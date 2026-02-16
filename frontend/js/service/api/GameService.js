@@ -147,8 +147,8 @@ export class GameService {
   /**
    * שמירת נתוני המשחק הנוכחי
    */
-  setCurrentGame(gameData) {
-    this.save(STORAGE_KEYS.CURRENT_GAME, gameData);
+  setCurrentLocalGame(gameData) {
+    this.save(STORAGE_KEYS.CURRENT_LOCAL_GAME, gameData);
 
     // שמירת נתונים חשובים גם בנפרד
     if (gameData._id) {
@@ -158,12 +158,14 @@ export class GameService {
       this.save(STORAGE_KEYS.GAME_MODE, gameData.mode);
     }
   }
-
+saveLocalGame(gameData) {
+    this.save(STORAGE_KEYS.CURRENT_LOCAL_GAME, gameData);
+  }
   /**
    * קבלת נתוני המשחק הנוכחי
    */
-  getCurrentGameData() {
-    return this.load(STORAGE_KEYS.CURRENT_GAME);
+  getCurrentLocalGameData() {
+    return this.load(STORAGE_KEYS.CURRENT_LOCAL_GAME);
   }
 
   // =====================================================

@@ -6,7 +6,8 @@ export const STORAGE_KEYS = {
     TIME_CONTROL: "chess_time_control",
     PREFERENCES: "chess_preferences",
     PLAYER_NAME: "chess_player_name",
-    CURRENT_GAME: "chess_current_game", // ← הוסף שורה זו
+    CURRENT_GAME: "chess_current_game", 
+    CURRENT_LOCAL_GAME: "chess_current_local_game"
 };
 
 export const DEFAULT_PREFERENCES = {

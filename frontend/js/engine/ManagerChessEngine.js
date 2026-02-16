@@ -77,6 +77,19 @@ export class ChessEngine {
       return [];
     }
   }
+  getBoardState() {
+    try {
+      const boardState = ChessFENConverter.boardToFEN(
+        this.board,
+        this.currentPlayer,
+      );
+      logger.debug(` Current board state (FEN): ${boardState}`);
+      return boardState;
+    } catch (error) {
+      logger.error(" Error getting board state:", error);
+      return null;
+    }
+  }
   getCurrentPlayer() {
     logger.debug(` Current player: ${this.currentPlayer}`);
     return this.currentPlayer;
