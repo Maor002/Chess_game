@@ -46,6 +46,7 @@ export class GameService {
       white: getGameData.players[0],
       black: getGameData.players[1],
       boardState: getGameData.boardState || "startpos",
+      gameMode: getGameData.gameMode || "local",
       moves: [],
       status: "start new game",
       turn: "white",

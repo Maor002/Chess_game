@@ -17,12 +17,12 @@ export class PageRouter {
    */
   defineRoutes() {
     return {
-      home: "/index.html",
-      menu: "/html/pages/Menu.html",
-      board: "/html/pages/Board.html",
-      onlineGame: "/html/pages/OnlineGame.html",
-      puzzles: "/html/pages/Puzzles.html",
-      vsComputer: "/html/pages/VsComputer.html",
+      home: "http://localhost:5173/",
+      menu: "http://localhost:5173/",
+      board: "http://localhost:5173/html/pages/Board.html",
+      onlineGame: "http://localhost:5173/html/pages/OnlineGame.html",
+      puzzles: "http://localhost:5173/html/pages/Puzzles.html",
+      vsComputer: "http://localhost:5173/html/pages/VsComputer.html",
     };
   }
 

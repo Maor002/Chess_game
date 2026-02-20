@@ -89,6 +89,11 @@ export class MoveExecutor {
   getCapturedPieces() {
     return this.capturedPiecesArray;
   }
+
+  setCapturedPieces(capturedPieces) {
+      logger.debug(` Setting captured pieces list with ${capturedPieces.length} pieces`); 
+      this.capturedPiecesArray = capturedPieces;
+    }
   getHistoryMoves() {
     return this.historyMoves;
   }

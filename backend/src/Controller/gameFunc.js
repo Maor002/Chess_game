@@ -31,6 +31,7 @@ exports.createGame = async (req, res) => {
         black: req.body.black,
       },
       boardState: req.body.boardState || "startpos",
+      gameMode: req.body.gameMode || "local",
       moves: [],
       status: "in_progress",
       turn: req.body.turn || "white",

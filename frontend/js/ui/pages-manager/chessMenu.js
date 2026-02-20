@@ -3,6 +3,7 @@ import { logger } from "../../logger/logger.js";
 import { UIAlert } from "../alerts/UIAlert.js";
 import { GameService } from "../../service/api/GameService.js";
 import { OnlineGameService } from "../menu/OnlineGameButton.js";
+import { pageRouter } from "./PageRouter.js";
 class ChessMenu {
   constructor() {
     this.langManager = new LanguageManager(this);
@@ -56,7 +57,7 @@ class ChessMenu {
    
   async handleLocalGame() {
     logger.info("Local Game button clicked");
-    if (!this.gameService.getCurrentLocalGameData()) {
+    if (await this.gameService.getCurrentLocalGameData()) {
       window.location.href = "html/pages/Board.html";
       logger.info("Existing local game found, navigating to board.");
     }
@@ -77,8 +78,8 @@ class ChessMenu {
       this.gameService.setCurrentLocalGame(created);
       logger.debug("Game created and saved with ID:", created._id);
 
-      //window.pageRouter.navigateTo("board");
-      window.location.href = "html/pages/Board.html";
+      pageRouter.navigateTo("board");
+      //window.location.href = "html/pages/Board.html";
     } else {
       logger.error("Failed to create local game");
       this.alert.error(

@@ -164,9 +164,15 @@ export class ChessUI {
         historyMoves: this.engine.getHistoryMoves(),
         gameMode: this.engine.gameMode
       };
+      
       this.gameService.saveLocalGame(gameData);
       logger.info("Game saved:", gameData);
+      // this.alertManager.alert.info(
+      // this.langManager.translate("Game-saved-successfully"),
+      //   "",
+      // );
     }
+   
   setAvailableButtons(gameMode) {
     if (gameMode !== "local") {
       this.newGameButton.classList.add("hidden");

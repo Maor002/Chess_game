@@ -43,4 +43,5 @@ export class GameStatusManager {
   clearCapturedPieces() {
     this.capturedElement.textContent = "";
   }
+
 }

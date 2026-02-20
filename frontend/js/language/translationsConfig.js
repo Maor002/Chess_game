@@ -66,7 +66,11 @@ export const translations = {
     "connection-failed": "החיבור לשרת נכשל",
     "start-online-game": "התחל משחק מקוון",
     "connect-to-server": "התחבר לשרת",
-    "unknown-error": "שגיאה לא ידועה"
+    "unknown-error": "שגיאה לא ידועה",
+    "save-game": "שמור משחק",
+    "load-game": "טען משחק",
+    "clear-game-data": "נקה נתוני משחק",
+    "Game-saved-successfully": "המשחק נשמר בהצלחה",
   },
   en: {
     
@@ -136,6 +140,10 @@ export const translations = {
     "connection-failed": "Failed to connect to server",
     "start-online-game": "Start Online Game",
     "connect-to-server": "Connect to Server",
-    "unknown-error": "Unknown Error"
+    "unknown-error": "Unknown Error",
+    "save-game": "Save Game",
+    "load-game": "Load Game",
+    "clear-game-data": "Clear Game Data",
+    "Game-saved-successfully": "Game saved successfully",
   },
 };

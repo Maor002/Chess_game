@@ -2,43 +2,44 @@ import { ChessEngine } from "../../engine/ManagerChessEngine.js";
 import { logger } from "../../logger/logger.js";
 import { ChessUI } from "../board-game/ManagerChessUI.js";
 import { GameService } from "../../service/api/GameService.js";
+import { ChessFENConverter } from "../../../tools/ChessFENConverter.js";
+
 
 export class ChessGameController {
-  constructor() {
+  constructor(gameMode) {
     this.gameService = new GameService();
-    this.gameMode = null;
+    this.gameMode = gameMode || "local";
     this.currentGame = null;
     this.engine = null;
     this.ui = null;
-    
+
     logger.debug("ChessGameController constructor called");
-    
+
     // קריאה ל-initialize בצורה אסינכרונית
-    this.initialize().catch(error => {
+    this.initialize().catch((error) => {
       logger.error("Error during initialization:", error);
     });
   }
-
 
   /**
    * אתחול המשחק
    */
   async initialize() {
     logger.info("Starting chess game controller initialization");
-    
+
     try {
       // קבלת נתוני המשחק השמורים
       this.currentGame = this.gameService.getCurrentLocalGameData();
-      
+
       if (this.currentGame) {
         logger.info("Loading saved game:", this.currentGame);
-        this.gameMode = this.currentGame.gameMode ;
+        this.gameMode = this.currentGame.gameMode;
       } else {
         logger.warn("No saved game found in localStorage");
-        
+
         // ניסיון לקבל מהשרת (במקרה של רענון דף)
         const gameFromServer = await this.gameService.getCurrentLocalGameData();
-        
+
         if (gameFromServer) {
           logger.info("Game loaded from server:", gameFromServer);
           this.currentGame = gameFromServer;
@@ -49,40 +50,42 @@ export class ChessGameController {
           this.gameMode = "local";
         }
       }
-      
+
       // אתחול המנוע והUI אחרי שיש לנו את הנתונים
       logger.debug("Initializing chess engine");
       this.engine = new ChessEngine(this.gameMode);
-      
+
       // טעינת מצב הלוח אם יש
-      if (this.currentGame?.boardState?.[0]) {
-        logger.debug("Loading board state:", this.currentGame.boardState[0]);
-        const loaded = this.engine.loadGameFromFEN(this.currentGame.boardState[0]);
+      if (this.currentGame?.boardState) {
+        logger.debug("Loading board state:", this.currentGame.boardState);
+        const loaded = this.engine.loadGameFromFEN(this.currentGame.boardState);
         
         if (!loaded) {
           logger.error("Failed to load board position");
         }
       }
-      
+
       // הגדרת התור
       if (this.currentGame?.turn) {
         logger.debug("Setting turn to:", this.currentGame.turn);
         this.engine.setTurn(this.currentGame.turn);
       }
+       const { white, black } = ChessFENConverter.getCapturedPieces(this.currentGame.boardState);
+        this.engine.setCapturedPieces(white, black);
       
+
       // אתחול UI
       logger.debug("Initializing UI");
       this.ui = new ChessUI(this.engine);
-      
+
       // עדכון התצוגה
       this.ui.updateDisplay();
       this.ui.clearStatusMessage();
-      
+
       logger.info("Chess game controller initialized successfully");
-      
     } catch (error) {
       logger.error("Error during chess game initialization:", error);
-      
+
       // במקרה של שגיאה, התחל משחק רגיל
       logger.warn("Falling back to new game");
       this.engine = new ChessEngine();
@@ -91,6 +94,10 @@ export class ChessGameController {
       this.ui.updateDisplay();
       this.ui.clearStatusMessage();
     }
+
+    window.addEventListener("beforeunload", (event) => {
+      this.ui.saveGame();
+    });
   }
 
   /**
@@ -105,10 +112,10 @@ export class ChessGameController {
           turn: this.engine.getCurrentTurn(),
           status: this.engine.isGameOver() ? "completed" : "active",
         };
-        
+
         logger.debug("Updating game state:", updatedGame);
         this.gameService.setCurrentGame(updatedGame);
-        
+
         // שמירה גם בשרת
         if (updatedGame._id) {
           await this.gameService.makeMove({
@@ -131,7 +138,7 @@ export class ChessGameController {
       logger.warn("Engine not initialized yet");
       return null;
     }
-    
+
     return {
       mode: this.gameMode,
       boardState: this.engine.getFEN(),

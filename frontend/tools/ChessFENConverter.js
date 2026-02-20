@@ -132,48 +132,39 @@ export class ChessFENConverter {
     return fen;
   }
 
-  static boardToFEN(board) {
-    try {
-      this.validateBoard(board);
-      const ranks = board.map((rank) => this.rankToFEN(rank));
-      const fen = ranks.join("/");
-      logger.debug(`Board converted to FEN: ${fen}`);
-      return fen;
-    } catch (error) {
-      logger.error(`Error converting board to FEN: ${error.message}`);
-      throw error;
-    }
+static boardToFEN(board) {
+  try {
+    this.validateBoard(board);
+    const ranks = board.map((rank) => this.rankToFEN(rank));
+    const fen = ranks.join("/");
+    logger.debug(`Board converted to FEN position: ${fen}`);
+    return fen;
+  } catch (error) {
+    logger.error(`Error converting board to FEN: ${error.message}`);
+    throw error;
   }
+}
 
-  static toCompleteFEN(gameState) {
-    try {
-      const {
-        board,
-        activeColor = "w",
-        castling = "-",
-        enPassant = "-",
-        halfmove = 0,
-        fullmove = 1,
-      } = gameState;
+static toCompleteFEN(gameState) {
+  try {
+    const {
+      board,
+      activeColor = "w",
+      castling = "KQkq",
+      enPassant = "-",
+      halfmove = 0,
+      fullmove = 1,
+    } = gameState;
 
-      const boardFEN = this.boardToFEN(board);
-
-      const completeFEN = [
-        boardFEN,
-        activeColor,
-        castling,
-        enPassant,
-        halfmove,
-        fullmove,
-      ].join(" ");
-
-      logger.debug(`Complete FEN created: ${completeFEN}`);
-      return completeFEN;
-    } catch (error) {
-      logger.error(`Error creating complete FEN: ${error.message}`);
-      throw error;
-    }
+    const boardFEN = this.boardToFEN(board);
+    const completeFEN = [boardFEN, activeColor, castling, enPassant, halfmove, fullmove].join(" ");
+    logger.debug(`Complete FEN created: ${completeFEN}`);
+    return completeFEN;
+  } catch (error) {
+    logger.error(`Error creating complete FEN: ${error.message}`);
+    throw error;
   }
+}
 
   // =====================================================
   // 🔹 FEN → Board
@@ -260,7 +251,7 @@ export class ChessFENConverter {
   static parseFEN(fen) {
     try {
       logger.debug(`Parsing complete FEN: ${fen}`);
-
+      
       const parts = fen.trim().split(/\s+/);
 
       if (parts.length < 1) {

@@ -77,6 +77,10 @@ export class ChessEngine {
       return [];
     }
   }
+  setCapturedPieces(capturedPieces) {
+      logger.debug(` Setting captured pieces list with ${capturedPieces.length} pieces`);
+      this.moveExecutor.setCapturedPieces(capturedPieces);
+  }
   getBoardState() {
     try {
       const boardState = ChessFENConverter.boardToFEN(
