@@ -40,7 +40,7 @@ export class GameService {
   // 🔹 Game Initialization
   // =====================================================
   async createLocalGame(getGameData) {
-    //  this.clearGameData();
+      this.clearGameData();
 
     const gameData = {
       white: getGameData.players[0],

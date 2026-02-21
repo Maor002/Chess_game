@@ -58,10 +58,11 @@ class ChessMenu {
   async handleLocalGame() {
     logger.info("Local Game button clicked");
     if (await this.gameService.getCurrentLocalGameData()) {
-      window.location.href = "html/pages/Board.html";
+      pageRouter.navigateTo("board");
       logger.info("Existing local game found, navigating to board.");
+      return;
     }
-
+  logger.debug("No existing local game found, creating new game.");
     const gameData = {
       players: ["white", "black"],
       turn: "white",

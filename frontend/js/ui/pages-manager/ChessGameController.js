@@ -4,7 +4,6 @@ import { ChessUI } from "../board-game/ManagerChessUI.js";
 import { GameService } from "../../service/api/GameService.js";
 import { ChessFENConverter } from "../../../tools/ChessFENConverter.js";
 
-
 export class ChessGameController {
   constructor(gameMode) {
     this.gameService = new GameService();
@@ -28,76 +27,87 @@ export class ChessGameController {
     logger.info("Starting chess game controller initialization");
 
     try {
-      // קבלת נתוני המשחק השמורים
-      this.currentGame = this.gameService.getCurrentLocalGameData();
-
-      if (this.currentGame) {
-        logger.info("Loading saved game:", this.currentGame);
-        this.gameMode = this.currentGame.gameMode;
-      } else {
-        logger.warn("No saved game found in localStorage");
-
-        // ניסיון לקבל מהשרת (במקרה של רענון דף)
-        const gameFromServer = await this.gameService.getCurrentLocalGameData();
-
-        if (gameFromServer) {
-          logger.info("Game loaded from server:", gameFromServer);
-          this.currentGame = gameFromServer;
-          this.gameService.setCurrentLocalGame(gameFromServer);
-          this.gameMode = gameFromServer.mode || "local";
-        } else {
-          logger.info("No game found on server, starting fresh");
-          this.gameMode = "local";
-        }
-      }
-
-      // אתחול המנוע והUI אחרי שיש לנו את הנתונים
-      logger.debug("Initializing chess engine");
-      this.engine = new ChessEngine(this.gameMode);
-
-      // טעינת מצב הלוח אם יש
-      if (this.currentGame?.boardState) {
-        logger.debug("Loading board state:", this.currentGame.boardState);
-        const loaded = this.engine.loadGameFromFEN(this.currentGame.boardState);
-        
-        if (!loaded) {
-          logger.error("Failed to load board position");
-        }
-      }
-
-      // הגדרת התור
-      if (this.currentGame?.turn) {
-        logger.debug("Setting turn to:", this.currentGame.turn);
-        this.engine.setTurn(this.currentGame.turn);
-      }
-       const { white, black } = ChessFENConverter.getCapturedPieces(this.currentGame.boardState);
-        this.engine.setCapturedPieces(white, black);
-      
-
-      // אתחול UI
-      logger.debug("Initializing UI");
-      this.ui = new ChessUI(this.engine);
-
-      // עדכון התצוגה
-      this.ui.updateDisplay();
-      this.ui.clearStatusMessage();
-
+      await this.loadGameData();
+      this.initEngine();
+      await this.restoreBoardState();
+      this.initUI();
       logger.info("Chess game controller initialized successfully");
     } catch (error) {
       logger.error("Error during chess game initialization:", error);
-
-      // במקרה של שגיאה, התחל משחק רגיל
-      logger.warn("Falling back to new game");
-      this.engine = new ChessEngine();
-      this.ui = new ChessUI(this.engine);
-      this.gameMode = "local";
-      this.ui.updateDisplay();
-      this.ui.clearStatusMessage();
+      this.fallbackToNewGame();
     }
 
-    window.addEventListener("beforeunload", (event) => {
-      this.ui.saveGame();
-    });
+    window.addEventListener("beforeunload", () => this.ui.saveGame());
+  }
+
+  // =====================================================
+  // 🔹 Private - Initialization Steps
+  // =====================================================
+
+  async loadGameData() {
+    this.currentGame = this.gameService.getCurrentLocalGameData();
+
+    if (this.currentGame) {
+      logger.info("Loaded saved game from localStorage:", this.currentGame);
+      this.gameMode = this.currentGame.gameMode;
+      return;
+    }
+
+    logger.warn("No saved game in localStorage, trying server...");
+    const gameFromServer = await this.gameService.getCurrentLocalGameData();
+
+    if (gameFromServer) {
+      logger.info("Game loaded from server:", gameFromServer);
+      this.currentGame = gameFromServer;
+      this.gameService.setCurrentLocalGame(gameFromServer);
+      this.gameMode = gameFromServer.mode || "local";
+    } else {
+      logger.info("No game found, starting fresh");
+      this.gameMode = "local";
+    }
+  }
+
+  initEngine() {
+    logger.debug("Initializing chess engine, mode:", this.gameMode);
+    this.engine = new ChessEngine(this.gameMode);
+  }
+
+  async restoreBoardState() {
+    if (!this.currentGame?.boardState) return;
+
+    // boardState יכול להגיע כמערך או כ-string
+    const fen = Array.isArray(this.currentGame.boardState)
+      ? this.currentGame.boardState[0]
+      : this.currentGame.boardState;
+
+    logger.debug("Restoring board state from FEN:", fen);
+
+    const loaded = this.engine.loadGameFromFEN(fen);
+    if (!loaded) logger.error("Failed to load board position from FEN");
+
+    if (this.currentGame.turn) {
+      logger.debug("Restoring turn:", this.currentGame.turn);
+      this.engine.setTurn(this.currentGame.turn);
+    }
+
+    const { white, black } = ChessFENConverter.getCapturedPieces(fen);
+    this.engine.setCapturedPieces(white, black);
+  }
+
+  initUI() {
+    logger.debug("Initializing UI");
+    this.ui = new ChessUI(this.engine);
+    this.ui.updateDisplay();
+    this.ui.clearStatusMessage();
+  }
+
+  fallbackToNewGame() {
+    logger.warn("Falling back to new game");
+    this.gameMode = "local";
+    this.engine = new ChessEngine(this.gameMode);
+    this.ui = new ChessUI(this.engine);
+    this.ui.updateDisplay();
+    this.ui.clearStatusMessage();
   }
 
   /**

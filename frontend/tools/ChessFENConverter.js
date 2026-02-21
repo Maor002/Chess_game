@@ -248,10 +248,12 @@ static toCompleteFEN(gameState) {
     }
   }
 
-  static parseFEN(fen) {
+  static parseFEN(boardFEN) {
     try {
-      logger.debug(`Parsing complete FEN: ${fen}`);
-      
+      logger.debug(`Parsing complete FEN: ${boardFEN}`);
+       const fen = Array.isArray(boardFEN) 
+    ? boardFEN[0] 
+    : boardFEN;
       const parts = fen.trim().split(/\s+/);
 
       if (parts.length < 1) {

@@ -27,9 +27,24 @@ export class GameStatusManager {
       return;
     }
     this.capturedElement.textContent = capturedPieces
-      .map((p) => ChessConfig.pieces[p.color + p.type])
+      .map((p) => ChessConfig.pieces[p.color + p.type]) 
       .join(" ");
   }
+
+loadCapturedPieces(capturedPieces) {
+  if (!capturedPieces || capturedPieces.length === 0) {
+    this.clearCapturedPieces();
+    return;
+  }
+
+  const existing = this.capturedElement.textContent
+    ? this.capturedElement.textContent.split(" ")
+    : [];
+
+  const newPieces = capturedPieces.filter((p) => typeof p === "string");
+
+  this.capturedElement.textContent = [...existing, ...newPieces].join(" ");
+}
   // פונקציה להצגת הודעה למשתמש
   showMessage(message, type = "") {
     this.statusElement.textContent = message;
