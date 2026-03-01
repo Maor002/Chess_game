@@ -66,7 +66,7 @@ class ChessMenu {
     const gameData = {
       players: ["white", "black"],
       turn: "white",
-       boardState: ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"],
+       boardState: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       status: "active",
       gameMode: "local",
     };

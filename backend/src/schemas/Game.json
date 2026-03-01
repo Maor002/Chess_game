@@ -15,11 +15,8 @@
       }
     },
     "boardState": {
-      "type": "Array",
       "required": true,
-      "items": {
-        "type": "String"
-      },
+        "type": "String",
       "description": "ייצוג מצב הלוח בפורמט FEN"
     },
     "moves": {

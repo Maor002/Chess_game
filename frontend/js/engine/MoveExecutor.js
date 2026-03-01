@@ -1,10 +1,12 @@
 import {logger} from "../logger/logger.js";
 import { ChessConfig } from "../config/chessConfig.js";
 export class MoveExecutor {
-  constructor(engine) {
+  constructor(engine,king = 'k') {
     this.engine = engine;
+    this.king = king;
     this.capturedPiecesArray = [];
     this.historyMoves = [];
+    this.emptyCell = "";
   }
 
   executeMove(fromRow, fromCol, toRow, toCol) {
@@ -56,10 +58,10 @@ export class MoveExecutor {
   }
   makeMove(fromRow, fromCol, toRow, toCol) {
     this.engine.board[toRow][toCol] = this.engine.board[fromRow][fromCol];
-    this.engine.board[fromRow][fromCol] = "";
+    this.engine.board[fromRow][fromCol] = this.emptyCell;
   }
   isKingCaptured(capturedPiece) {
-    if (capturedPiece.type === "K") {
+    if (capturedPiece.type === this.king) {
       logger.info("King has been captured, ending game");
       return true;
     }
@@ -69,7 +71,7 @@ export class MoveExecutor {
     return capturedPiece !== null && capturedPiece !== undefined && capturedPiece !== "";
   }
   isKingMoved(piece) {
-    if (piece.type === "K") {
+    if (piece.type === this.king) {
       return true;
     }
     return false;

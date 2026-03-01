@@ -34,26 +34,26 @@ export class BoardBuilder {
     try {
       const type = piece[1];
       switch (type) {
-        case "P":
+        case ChessConfig.pieceTypes.pawn:
         this.createPawn(piece, row, col);
           break;
-        case "R":
+        case ChessConfig.pieceTypes.rook:
           this.createRook(piece, row, col);
           break;
-        case "N":
+        case ChessConfig.pieceTypes.knight:
           this.createKnight(piece, row, col);
           break;
-        case "B":
+        case ChessConfig.pieceTypes.bishop:
           this.createBishop(piece, row, col);
           break;
-        case "Q":
+        case ChessConfig.pieceTypes.queen:
           this.createQueen(piece, row, col);
           break;
-        case "K":
+        case ChessConfig.pieceTypes.king:
           this.createKing(piece, row, col);
           break;
         default:
-          this.board[row][col] = ""; // אם אין כלי, השאר ריק
+          this.board[row][col] = ChessConfig.pieceTypes.empty; // אם אין כלי, השאר ריק
       }
     } catch (error) {
       logger.error(" Error initializing board:", error);
@@ -66,7 +66,7 @@ export class BoardBuilder {
       piece[1],
       row,
       col,
-      ChessConfig.grade["P"]
+      ChessConfig.grade[ChessConfig.pieceTypes.pawn]
     );
   }
   createKing(piece, row, col) {
@@ -75,7 +75,7 @@ export class BoardBuilder {
       piece[1],
       row,
       col,
-      ChessConfig.grade["K"]
+      ChessConfig.grade[ChessConfig.pieceTypes.king]
     );
   }
   createRook(piece, row, col) {
@@ -84,7 +84,7 @@ export class BoardBuilder {
       piece[1],
       row,
       col,
-      ChessConfig.grade["R"]
+      ChessConfig.grade[ChessConfig.pieceTypes.rook]
     );
   }
   createKnight(piece, row, col) {
@@ -93,7 +93,7 @@ export class BoardBuilder {
       piece[1],
       row,
       col,
-      ChessConfig.grade["N"]
+      ChessConfig.grade[ChessConfig.pieceTypes.knight]
     );
   }
   createBishop(piece, row, col) {
@@ -102,7 +102,7 @@ export class BoardBuilder {
       piece[1],
       row,
       col,
-      ChessConfig.grade["B"]
+      ChessConfig.grade[ChessConfig.pieceTypes.bishop]
     );
   }
   createQueen(piece, row, col) {
@@ -111,7 +111,7 @@ export class BoardBuilder {
       piece[1],
       row,
       col,
-      ChessConfig.grade["Q"]
+      ChessConfig.grade[ChessConfig.pieceTypes.queen]
     );
   }
   getBoard() {

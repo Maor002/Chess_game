@@ -132,39 +132,46 @@ export class ChessFENConverter {
     return fen;
   }
 
-static boardToFEN(board) {
-  try {
-    this.validateBoard(board);
-    const ranks = board.map((rank) => this.rankToFEN(rank));
-    const fen = ranks.join("/");
-    logger.debug(`Board converted to FEN position: ${fen}`);
-    return fen;
-  } catch (error) {
-    logger.error(`Error converting board to FEN: ${error.message}`);
-    throw error;
+  static boardToFEN(board) {
+    try {
+      this.validateBoard(board);
+      const ranks = board.map((rank) => this.rankToFEN(rank));
+      const fen = ranks.join("/");
+      logger.debug(`Board converted to FEN position: ${fen}`);
+      return fen;
+    } catch (error) {
+      logger.error(`Error converting board to FEN: ${error.message}`);
+      throw error;
+    }
   }
-}
 
-static toCompleteFEN(gameState) {
-  try {
-    const {
-      board,
-      activeColor = "w",
-      castling = "KQkq",
-      enPassant = "-",
-      halfmove = 0,
-      fullmove = 1,
-    } = gameState;
+  static toCompleteFEN(gameState) {
+    try {
+      const {
+        board,
+        activeColor = "w",
+        castling = "KQkq",
+        enPassant = "-",
+        halfmove = 0,
+        fullmove = 1,
+      } = gameState;
 
-    const boardFEN = this.boardToFEN(board);
-    const completeFEN = [boardFEN, activeColor, castling, enPassant, halfmove, fullmove].join(" ");
-    logger.debug(`Complete FEN created: ${completeFEN}`);
-    return completeFEN;
-  } catch (error) {
-    logger.error(`Error creating complete FEN: ${error.message}`);
-    throw error;
+      const boardFEN = this.boardToFEN(board);
+      const completeFEN = [
+        boardFEN,
+        activeColor,
+        castling,
+        enPassant,
+        halfmove,
+        fullmove,
+      ].join(" ");
+      logger.debug(`Complete FEN created: ${completeFEN}`);
+      return completeFEN;
+    } catch (error) {
+      logger.error(`Error creating complete FEN: ${error.message}`);
+      throw error;
+    }
   }
-}
 
   // =====================================================
   // 🔹 FEN → Board
@@ -251,9 +258,7 @@ static toCompleteFEN(gameState) {
   static parseFEN(boardFEN) {
     try {
       logger.debug(`Parsing complete FEN: ${boardFEN}`);
-       const fen = Array.isArray(boardFEN) 
-    ? boardFEN[0] 
-    : boardFEN;
+      const fen = Array.isArray(boardFEN) ? boardFEN[0] : boardFEN;
       const parts = fen.trim().split(/\s+/);
 
       if (parts.length < 1) {
@@ -435,20 +440,32 @@ static toCompleteFEN(gameState) {
 
   static getCapturedPiecesDisplay(fen) {
     try {
+      logger.debug(`Generating captured pieces display from FEN: ${fen}`);
       const captured = this.getCapturedPieces(fen);
 
       const display = {
-        whiteCaptured: "", // כלים לבנים שנאכלו (שחור תפס)
-        blackCaptured: "", // כלים שחורים שנאכלו (לבן תפס)
+        whiteCaptured: "",
+        blackCaptured: "",
         whiteScore: 0,
         blackScore: 0,
       };
+
+      const moves = [];
 
       // כלים לבנים שנאכלו
       for (const [piece, count] of Object.entries(captured.white)) {
         if (piece !== "total" && count > 0) {
           display.whiteCaptured += this.PIECE_SYMBOLS[piece].repeat(count);
           display.blackScore += this.PIECE_VALUES[piece] * count;
+
+          for (let i = 0; i < count; i++) {
+            moves.push({
+              from: { row: -1, col: -1 },
+              to: { row: -1, col: -1 },
+              pieceColor: "w",
+              pieceType: piece.toUpperCase(),
+            });
+          }
         }
       }
 
@@ -457,12 +474,21 @@ static toCompleteFEN(gameState) {
         if (piece !== "total" && count > 0) {
           display.blackCaptured += this.PIECE_SYMBOLS[piece].repeat(count);
           display.whiteScore += this.PIECE_VALUES[piece] * count;
+
+          for (let i = 0; i < count; i++) {
+            moves.push({
+              from: { row: -1, col: -1 },
+              to: { row: -1, col: -1 },
+              pieceColor: "b",
+              pieceType: piece.toUpperCase(),
+            });
+          }
         }
       }
 
       display.advantage = display.whiteScore - display.blackScore;
-
-      return display;
+      logger.debug("Captured pieces display generated:", display);
+      return { ...display, moves };
     } catch (error) {
       logger.error(`Error getting captured pieces display: ${error.message}`);
       throw error;

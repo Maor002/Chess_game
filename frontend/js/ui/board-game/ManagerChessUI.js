@@ -103,7 +103,6 @@ export class ChessUI {
       this.createBoard();
       this.gameStatus.updateTurn(this.engine.getCurrentPlayer());
       this.gameStatus.updateCapturedPieces(this.engine.getCapturedPieces());
-      this.gameStatus.loadCapturedPieces(this.engine.getCapturedPieces());
       this.MovesListManager.updateListofMoves(
         this.engine.getHistoryMoves(),
         this.currentMoveIndex,
