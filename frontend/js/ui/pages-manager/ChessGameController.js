@@ -11,10 +11,8 @@ export class ChessGameController {
     this.currentGame = null;
     this.engine = null;
     this.ui = null;
-
     logger.debug("ChessGameController constructor called");
-
-    // קריאה ל-initialize בצורה אסינכרונית
+// אתחול אסינכרוני
     this.initialize().catch((error) => {
       logger.error("Error during initialization:", error);
     });
@@ -90,8 +88,8 @@ export class ChessGameController {
       this.engine.setTurn(this.currentGame.turn);
     }
 
-    const { white, black } = ChessFENConverter.getCapturedPieces(fen);
-    this.engine.setCapturedPieces(white, black);
+    const capturedPieces = ChessFENConverter.getCapturedPiecesDisplay(fen);
+    this.engine.setCapturedPieces(capturedPieces);
   }
 
   initUI() {

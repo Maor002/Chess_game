@@ -1,10 +1,10 @@
 import {logger} from "../logger/logger.js";
 import { ChessConfig } from "../config/chessConfig.js";
 export class MoveExecutor {
-  constructor(engine,king = 'k') {
+  constructor(engine, king = 'k') {
     this.engine = engine;
     this.king = king;
-    this.capturedPiecesArray = [];
+    this.capturedPiecesArray = [] ;
     this.historyMoves = [];
     this.emptyCell = "";
   }

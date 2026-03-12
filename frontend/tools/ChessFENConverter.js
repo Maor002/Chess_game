@@ -440,55 +440,57 @@ export class ChessFENConverter {
 
   static getCapturedPiecesDisplay(fen) {
     try {
-      logger.debug(`Generating captured pieces display from FEN: ${fen}`);
       const captured = this.getCapturedPieces(fen);
 
       const display = {
-        whiteCaptured: "",
-        blackCaptured: "",
+        whiteCaptured: captured.white.join(""),
+        blackCaptured: captured.black.join(""),
         whiteScore: 0,
         blackScore: 0,
       };
 
       const moves = [];
 
-      // כלים לבנים שנאכלו
-      for (const [piece, count] of Object.entries(captured.white)) {
-        if (piece !== "total" && count > 0) {
-          display.whiteCaptured += this.PIECE_SYMBOLS[piece].repeat(count);
-          display.blackScore += this.PIECE_VALUES[piece] * count;
+      const SYMBOL_TO_TYPE = {
+        "♙": { type: "P", color: "w" },
+        "♖": { type: "R", color: "w" },
+        "♘": { type: "N", color: "w" },
+        "♗": { type: "B", color: "w" },
+        "♕": { type: "Q", color: "w" },
+        "♟": { type: "P", color: "b" },
+        "♜": { type: "R", color: "b" },
+        "♞": { type: "N", color: "b" },
+        "♝": { type: "B", color: "b" },
+        "♛": { type: "Q", color: "b" },
+      };
 
-          for (let i = 0; i < count; i++) {
-            moves.push({
-              from: { row: -1, col: -1 },
-              to: { row: -1, col: -1 },
-              pieceColor: "w",
-              pieceType: piece.toUpperCase(),
-            });
-          }
-        }
+      // כלים לבנים שנאכלו
+      for (const symbol of captured.white) {
+        const { type } = SYMBOL_TO_TYPE[symbol];
+        display.blackScore += this.PIECE_VALUES[type];
+        moves.push({
+          from: { row: -1, col: -1 },
+          to: { row: -1, col: -1 },
+          color: "w",
+          type: type,
+        });
       }
 
       // כלים שחורים שנאכלו
-      for (const [piece, count] of Object.entries(captured.black)) {
-        if (piece !== "total" && count > 0) {
-          display.blackCaptured += this.PIECE_SYMBOLS[piece].repeat(count);
-          display.whiteScore += this.PIECE_VALUES[piece] * count;
-
-          for (let i = 0; i < count; i++) {
-            moves.push({
-              from: { row: -1, col: -1 },
-              to: { row: -1, col: -1 },
-              pieceColor: "b",
-              pieceType: piece.toUpperCase(),
-            });
-          }
-        }
+      for (const symbol of captured.black) {
+        const { type } = SYMBOL_TO_TYPE[symbol];
+        display.whiteScore += this.PIECE_VALUES[type];
+        moves.push({
+          from: { row: -1, col: -1 },
+          to: { row: -1, col: -1 },
+          color: "b",
+          type: type,
+        });
       }
 
       display.advantage = display.whiteScore - display.blackScore;
-      logger.debug("Captured pieces display generated:", display);
-      return { ...display, moves };
+
+      return  moves ;
     } catch (error) {
       logger.error(`Error getting captured pieces display: ${error.message}`);
       throw error;
@@ -496,6 +498,4 @@ export class ChessFENConverter {
   }
 }
 
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = ChessFENConverter;
-}
+export default ChessFENConverter;
