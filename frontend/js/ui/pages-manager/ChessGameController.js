@@ -7,12 +7,12 @@ import { ChessFENConverter } from "../../../tools/ChessFENConverter.js";
 export class ChessGameController {
   constructor(gameMode) {
     this.gameService = new GameService();
-    this.gameMode = gameMode || "local";
+    this.gameMode = gameMode;
     this.currentGame = null;
     this.engine = null;
     this.ui = null;
     logger.debug("ChessGameController constructor called");
-// אתחול אסינכרוני
+    // אתחול אסינכרוני
     this.initialize().catch((error) => {
       logger.error("Error during initialization:", error);
     });
@@ -22,17 +22,28 @@ export class ChessGameController {
    * אתחול המשחק
    */
   async initialize() {
-    logger.info("Starting chess game controller initialization");
-
-    try {
-      await this.loadGameData();
-      this.initEngine();
-      await this.restoreBoardState();
-      this.initUI();
-      logger.info("Chess game controller initialized successfully");
-    } catch (error) {
-      logger.error("Error during chess game initialization:", error);
-      this.fallbackToNewGame();
+    logger.info(
+      `Starting chess game controller initialization, mode: ${this.gameMode}`,
+    );
+    switch (this.gameMode) {
+      case "local":
+        try {
+          await this.loadGameData();
+          this.initEngine();
+          await this.restoreBoardState();
+          this.initUI();
+          logger.info("Chess game controller initialized successfully");
+        } catch (error) {
+          logger.error("Error during chess game initialization:", error);
+          this.fallbackToNewGame();
+        }
+        break;
+      case "online":
+        logger.debug("Initializing online game");
+        break;
+      default:
+        logger.warn("Unknown game mode, defaulting to local");
+        this.gameMode = "local";
     }
 
     window.addEventListener("beforeunload", () => this.ui.saveGame());
