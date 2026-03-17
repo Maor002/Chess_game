@@ -1,87 +1,101 @@
 # Chess_game
 ```
-└── 📁src
-    └── 📁config
-        ├── db.js
-    └── 📁Controller
-        ├── gameFunc.js
-        ├── roomFunc.js
-        ├── userFunc.js
-    └── 📁models
-        ├── behaviors.js
-        ├── generateSchemas.js
-    └── 📁routes
-        ├── gameRoutes.js
-        ├── roomroutes.js
-        ├── userRoutes.js
-    └── 📁schemas
-        ├── detail.json
-        ├── Game.json
-        ├── Room.json
-        ├── User.json
-    └── 📁sockets
-        ├── gameSocket.js
-    ├── app.js
-    └── server.js
+└── 📁backend
+    └── 📁src
+        └── 📁config
+            ├── db.js
+        └── 📁Controller
+            ├── gameFunc.js
+            ├── roomFunc.js
+            ├── userFunc.js
+        └── 📁logger
+            ├── logger.js
+        └── 📁routes
+            ├── gameRoutes.js
+            ├── loggerRoutes.js
+            ├── roomRoutes.js
+            ├── userRoutes.js
+        └── 📁schema-generators
+            ├── behaviors.js
+            ├── generateSchemas.js
+        └── 📁schemas
+            ├── detail.json
+            ├── example.json
+            ├── Game.json
+            ├── Room.json
+            ├── User.json
+        └── 📁sockets
+            ├── gameSocket.js
+        ├── app.js
+        └── server.js
 ```
 ```
 └── 📁frontend
     └── 📁assets
     └── 📁css
-        ├── styles.css
+        ├── alert.css
+        ├── board-style.css
+        ├── chess-menu.css
+        ├── online-game-dialog.css
+    └── 📁html
+        └── 📁components
+            ├── alert.html
+            ├── online-game-dialog.html
+        └── 📁pages
+            ├── Board.html
     └── 📁js
-        └── 📁api
-            ├── apiClient.js
         └── 📁config
+            ├── apiConstants.js
             ├── chessConfig.js
-            ├── Language.js
-            ├── translationsConfig.js
+            ├── errorsConstants.js
+            ├── gameConstants.js
+            ├── routesConstants.js
+            ├── socketConstants.js
+            ├── storageConstants.js
         └── 📁engine
             ├── BoardBuilder.js
-            ├── chessEngine.js
-            ├── LogicBoardManager.js
-            ├── MoveManager.js
+            ├── ManagerChessEngine.js
+            ├── MoveExecutor.js
+            ├── MoveValidator.js
+        └── 📁error-handler
+            ├── ChessError.js
+        └── 📁language
+            ├── Language.js
+            ├── translationsConfig.js
+        └── 📁logger
+            ├── logger.js
+        └── 📁pieces
             ├── piece.js
             ├── pieces.js
-        └── 📁ErrorHandler
-            ├── ChessError.js
-        └── 📁Logger
-            ├── logger.js
-        └── 📁socket
-            ├── socketClient.js
+        └── 📁service
+            └── 📁api
+                ├── apiClient.js
+                ├── GameService.js
+            └── 📁socket
+                ├── GameProtocol.js
+                ├── OnlineGameService .js
+                ├── SocketClient.js
         └── 📁ui
-            ├── BoardRenderer.js
-            ├── ChessNotationHelper.js
-            ├── ChessUI.js
-            ├── GameActionHandler.js
-            ├── GameStatusManager.js
-            ├── MovesHighlighter.js
-            ├── MovesListManager.js
-            ├── SelectionManager.js
-        ├── main.js
+            └── 📁alerts
+                ├── AlertManager.js
+                ├── UIAlert.js
+            └── 📁board-game
+                ├── BoardRenderer.js
+                ├── ChessNotationHelper.js
+                ├── GameActionHandler.js
+                ├── GameStatusManager.js
+                ├── ManagerChessUI.js
+                ├── MovesHighlighter.js
+                ├── MovesListManager.js
+                ├── SelectionManager.js
+            └── 📁menu
+                ├── OnlineGameButton.js
+                ├── OnlineGameDialog.js
+            └── 📁pages-manager
+                ├── ChessGameController.js
+                ├── chessMenu.js
+                ├── PageRouter.js
+    └── 📁tools
+        ├── ChessFENConverter.js
     └── index.html
 ```
-
-
-
-# Project Commands Summary
-
-## Frontend Only
-npm run dev:front
-
-## Backend Only
-npm run dev:back
-
-## Both Together (Development)
-npm run dev:all
-# or
-npm start
-
-## Production (build + run)
-npm run prod
-
-## Build Only (no run)
-npm run build
-
-## Preview Build
-npm run preview
