@@ -5,66 +5,65 @@
       "required": true,
       "properties": {
         "white": {
-          "type": "String",
+          "type": "ObjectId",
+          "ref": "User",
           "required": true
         },
         "black": {
-          "type": "String",
+          "type": "ObjectId",
+          "ref": "User",
           "required": true
         }
       }
     },
     "boardState": {
+      "type": "String",
       "required": true,
-        "type": "String",
-      "description": "ייצוג מצב הלוח בפורמט FEN"
+      "description": "FEN representation of the board"
     },
     "moves": {
       "type": "Array",
-      "items": {
-        "type": "String"
-      },
       "default": [],
-      "description": "רשימת המהלכים שבוצעו במשחק"
-    },
-    "status": {
-      "type": "String",
-      "enum": [
-        "in_progress",
-        "white_won",
-        "black_won",
-        "draw"
-      ],
-      "default": "in_progress",
-      "description": "מצב המשחק הנוכחי"
-    },
-    "winner": {
-      "type": "String",
-      "description": "המנצח במשחק, אם הסתיים"
+      "items": {
+        "type": "Object",
+        "properties": {
+          "from": {
+            "type": "String"
+          },
+          "to": {
+            "type": "String"
+          },
+          "piece": {
+            "type": "String"
+          },
+          "fenAfter": {
+            "type": "String"
+          },
+          "timestamp": {
+            "type": "Date",
+            "default": "Date.now"
+          }
+        }
+      },
+      "description": "History of moves"
     },
     "turn": {
       "type": "String",
-      "enum": [
-        "white",
-        "black"
-      ],
-      "default": "white",
-      "description": "מי התור הבא לבצע מהלך"
+      "enum": ["white", "black"],
+      "default": "white"
     },
-    "gameMode": {
+    "status": {
       "type": "String",
-      "enum": [
-        "local",
-        "online"
-      ],
-      "default": "local",
-      "description": "מצב המשחק - משחק מקומי או מקוון"
+      "enum": ["in_progress", "white_won", "black_won", "draw"],
+      "default": "in_progress"
+    },
+    "winner": {
+      "type": "ObjectId",
+      "ref": "User",
+      "description": "Winner of the game"
     }
-  },
-  "useFieldsFrom": [
-    "detail"
-  ],
-  "behaviors": [
-    "preSave"
-  ]
+ 
+},
+  "useFieldsFrom": ["detail"],  
+  "behaviors": ["preSave"]
 }

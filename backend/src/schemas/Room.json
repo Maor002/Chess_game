@@ -2,43 +2,65 @@
   "fields": {
     "name": {
       "type": "String",
-      "description": "Name of the room."
+      "description": "Room name (optional)"
     },
     "code": {
       "type": "String",
       "required": true,
       "unique": true,
       "match": "/^[0-9]{6}$/",
-      "description": "A unique 6-digit room code."
+      "description": "6-digit room code"
+    },
+    "host": {
+      "type": "ObjectId",
+      "ref": "User",
+      "required": true,
+      "description": "User who created the room"
     },
     "players": {
       "type": "Object",
       "required": true,
-      "description": "List of players in the room (max 2 players).",
       "properties": {
         "white": {
-          "type": "ObjectId",
-          "ref": "User"
+          "type": "Object",
+          "properties": {
+            "userId": {
+              "type": "ObjectId",
+              "ref": "User"
+            },
+            "socketId": {
+              "type": "String"
+            }
+          }
         },
         "black": {
-          "type": "ObjectId",
-          "ref": "User"
+          "type": "Object",
+          "properties": {
+            "userId": {
+              "type": "ObjectId",
+              "ref": "User"
+            },
+            "socketId": {
+              "type": "String"
+            }
+          }
         }
       },
-      "validate": {
-        "validator": "function(v) { return Object.keys(v).length <= 2; }",
-        "message": "Maximum 2 players allowed"
-      }
+      "description": "Players in the room with their active socket connections"
     },
     "gameId": {
       "type": "ObjectId",
       "ref": "Game",
-      "description": "Reference to the game being played in the room."
+      "description": "Reference to the active game"
     },
     "status": {
       "type": "String",
-      "enum": ["waiting", "ready", "in_game", "closed"],
+      "enum": ["waiting", "full", "in_game", "closed"],
       "default": "waiting"
+    },
+    "expiresAt": {
+      "type": "Date",
+      "description": "Expiration time for inactive rooms"
     }
   },
   "useFieldsFrom": ["detail"],
