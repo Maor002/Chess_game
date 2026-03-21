@@ -61,8 +61,8 @@
     "expiresAt": {
       "type": "Date",
       "description": "Expiration time for inactive rooms"
-    }
+    } 
   },
   "useFieldsFrom": ["detail"],
   "behaviors": ["generateRoomCode", "preSave"]
-}
+} 
