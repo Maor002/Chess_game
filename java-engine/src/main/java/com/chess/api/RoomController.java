@@ -1,5 +1,5 @@
 package com.chess.api;
 
-public class GameController {
+public class RoomController {
     
 }
