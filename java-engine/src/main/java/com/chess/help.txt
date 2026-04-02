@@ -1,0 +1,151 @@
+Chess Engine Development Plan (Recommended Order)
+
+1. Domain → Model (Foundation)
+   Create the core entities of the game:
+
+* Piece.java
+* Move.java
+* Board.java
+* Game.java
+
+Goal:
+Represent the chess game in memory.
+
+Why start here:
+Everything in the system depends on these structures. Without them, nothing else can work.
+
+---
+
+2. Domain → Engine (Game Mechanics)
+   Implement how the game state changes:
+
+* ChessEngine.java
+* MoveGenerator.java
+
+Goal:
+Be able to apply moves and generate possible moves.
+
+Why next:
+Once you have the data structures, you need behavior — how the board actually changes.
+
+---
+
+3. Domain → Rules (Validation)
+   Implement game rules:
+
+* MoveValidator.java
+* (later: CheckValidator, CheckmateDetector)
+
+Goal:
+Validate whether a move is legal.
+
+Why here:
+You now have a working board + moves, so you can enforce real chess rules.
+
+---
+
+4. Domain → AI (Decision Making)
+   Implement basic AI:
+
+* EvaluationFunction.java
+* Minimax.java
+
+Goal:
+Let the computer choose the best move.
+
+Why now:
+AI depends on:
+
+* move generation (engine)
+* valid moves (rules)
+
+Without those, AI cannot function.
+
+---
+
+5. Infrastructure (Persistence)
+   Add storage:
+
+* GameRepository.java
+* InMemoryGameRepository.java
+
+Goal:
+Store and retrieve games.
+
+Why here:
+Now that the game actually works, you can persist it.
+
+---
+
+6. Application (Flow Management)
+   Connect everything:
+
+* MoveService.java
+* GameService.java
+* AIService.java
+
+Goal:
+Handle full flows:
+(validate → apply move → save → respond)
+
+Why here:
+You now have all building blocks and can orchestrate them.
+
+---
+
+7. API (Controllers)
+   Expose the system:
+
+* MoveController.java
+* GameController.java
+* RoomController.java
+
+Goal:
+Allow external systems (frontend / Node.js) to interact.
+
+Why near the end:
+API should sit on top of a working system, not define it.
+
+---
+
+8. DTO + Mapper (Data Transfer Layer)
+   Add:
+
+* DTO classes (GameDTO, MoveDTO, etc.)
+* Mapper classes
+
+Goal:
+Separate API data from domain logic.
+
+Why last:
+Only needed when exposing data externally.
+
+---
+
+Summary (Short Version):
+
+1. model
+2. engine
+3. rules
+4. ai
+5. repository
+6. service
+7. controller
+8. dto + mapper
+
+---
+
+Key Principle:
+Start from the core logic (Domain) and build outward.
+
+Why this approach is better:
+
+* Prevents building empty APIs with no logic
+* Keeps architecture clean and modular
+* Reduces rewrites and bugs
+* Makes debugging easier
+* Allows independent testing of each layer
+* Matches real-world production architecture
+
+In short:
+Build the brain first, then the body, then the interface.
