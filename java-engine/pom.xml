@@ -54,7 +54,11 @@
         </dependency>
 
         <!-- Optional: Chess library for move validation -->
-      
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <version>3.2.5</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,13 +1,17 @@
 package com.chess.domain.model;
 
-public final class Move {
+import org.springframework.data.annotation.Id;
 
+public final class Move {
+    @Id
+    private final String id;
     private final int fromRow;
     private final int fromCol;
     private final int toRow;
     private final int toCol;
 
     public Move(int fromRow, int fromCol, int toRow, int toCol) {
+        this.id = java.util.UUID.randomUUID().toString();
         validate(fromRow, fromCol, toRow, toCol);
         this.fromRow = fromRow;
         this.fromCol = fromCol;
