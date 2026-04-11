@@ -1,9 +1,6 @@
 package com.chess.domain.model;
 
-import org.springframework.data.annotation.Id;
-
 public final class Move {
-    @Id
     private final String id;
     private final int fromRow;
     private final int fromCol;

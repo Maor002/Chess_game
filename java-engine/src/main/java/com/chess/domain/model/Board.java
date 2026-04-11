@@ -1,14 +1,11 @@
 package com.chess.domain.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.chess.config.ChessConfig;
 
-@Document(collection = "boards")
 public final class Board {
 
-    @Id
+
     private final String id;
 
     private Piece[][] board;

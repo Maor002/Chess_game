@@ -1,9 +1,7 @@
 package com.chess.domain.model;
 
-import org.springframework.data.annotation.Id;
-
 public final class Room {
-    @Id
+    
     private final String id;
     private final String roomId;
     private final Game game;
