@@ -7,6 +7,8 @@ Chess Engine Development Plan (Recommended Order)
 * Move.java
 * Board.java
 * Game.java
+* Room.java
+* Player.java
 
 Goal:
 Represent the chess game in memory.

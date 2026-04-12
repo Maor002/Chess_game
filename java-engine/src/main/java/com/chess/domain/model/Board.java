@@ -1,13 +1,10 @@
 package com.chess.domain.model;
 
-
 import com.chess.config.ChessConfig;
 
 public final class Board {
 
-
     private final String id;
-
     private Piece[][] board;
     private ChessConfig.Color currentTurn;
     private boolean whiteKingInCheck = false;
@@ -50,11 +47,11 @@ public final class Board {
         // Handle piece capture logic (e.g., remove from game, update score, etc.)
     }
 
-    public void cloneBoard(Board source) {
+    public void copyBoard(Board source) {
         for (int row = 0; row < ChessConfig.BOARD_SIZE; row++) {
             for (int col = 0; col < ChessConfig.BOARD_SIZE; col++) {
                 Piece sourcePiece = source.board[row][col];
-                this.board[row][col] = (sourcePiece != null) ? sourcePiece.clone() : null;
+                this.board[row][col] = (sourcePiece != null) ? sourcePiece.copy() : null;
             }
         }
         this.currentTurn = source.currentTurn;

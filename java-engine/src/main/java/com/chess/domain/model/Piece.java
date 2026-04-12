@@ -35,7 +35,7 @@ public abstract class Piece {
         this.row = newRow;
         this.col = newCol;
     }
-
+    public abstract Piece copy();
     // Abstract method: subclasses must implement their valid moves
     public abstract List<Move> getValidMoves(Board board);
 }

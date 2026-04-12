@@ -1,15 +1,25 @@
 package com.chess.domain.model;
 
 public final class Room {
-    
+
     private final String id;
-    private final String roomId;
-    private final Game game;
+    private final Player whitePlayer;
+    private final Player blackPlayer;
+    private Game game;
 
-    public Room(String roomId) {
-        this.id = java.util.UUID.randomUUID().toString();
-        this.roomId = roomId;
-        this.game = new Game();
+    public Room(Player whitePlayer, Player blackPlayer, String id) {
+        this.id = id;
+        this.whitePlayer = whitePlayer;
+        this.blackPlayer = blackPlayer;
+        this.game = new Game(this.id, whitePlayer, blackPlayer);
+    }
 
+    public String getId()           { return id; }
+    public Player getWhitePlayer()  { return whitePlayer; }
+    public Player getBlackPlayer()  { return blackPlayer; }
+    public Game getGame()           { return game; }
+
+    public void restartGame() {
+        this.game = new Game(this.id, whitePlayer, blackPlayer);
     }
 }
