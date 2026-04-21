@@ -194,4 +194,5 @@ saveLocalGame(gameData) {
   getGameId() {
     return this.load(STORAGE_KEYS.GAME_ID);
   }
+
 }

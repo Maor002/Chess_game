@@ -71,6 +71,7 @@ export const translations = {
     "load-game": "טען משחק",
     "clear-game-data": "נקה נתוני משחק",
     "Game-saved-successfully": "המשחק נשמר בהצלחה",
+    "Failed-to-connect-online-game": "החיבור למשחק המקוון נכשל",
   },
   en: {
     
@@ -145,5 +146,6 @@ export const translations = {
     "load-game": "Load Game",
     "clear-game-data": "Clear Game Data",
     "Game-saved-successfully": "Game saved successfully",
+    "Failed-to-connect-online-game": "Failed to connect to online game",
   },
 };
