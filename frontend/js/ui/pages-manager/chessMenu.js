@@ -9,7 +9,7 @@ class ChessMenu {
     this.langManager = new LanguageManager(this);
     this.alert = new UIAlert(this.langManager);
     this.gameService = new GameService();
-    this.modalContainer = document.getElementById("modal-container");
+    this.initializeContainer();
     this.initializeElements();
     this.bindEvents();
     logger.debug("ChessMenu initialized.");
@@ -22,11 +22,15 @@ class ChessMenu {
       puzzlesBtn:     document.getElementById("start-puzzles"),
       vsComputerBtn:  document.getElementById("start-vs-computer"),
     };
-
-    Object.entries(this.elements).forEach(([key, el]) => {
-      if (!el) logger.error(`Element '${key}' not found in DOM`);
+   
+    Object.entries(this.elements).forEach(([key, element]) => {
+      if (!element) logger.error(`Element '${key}' not found in DOM`);
     });
   }
+
+   initializeContainer(){
+      this.lobbyContainer = document.getElementById("lobbyContainer");
+    }
 
   bindEvents() {
     const { localGameBtn, onlineGameBtn, puzzlesBtn, vsComputerBtn } = this.elements;
@@ -74,32 +78,32 @@ class ChessMenu {
   async handleOnlineGame() {
     logger.debug("Online game button clicked");
 
-    if (!this.modalContainer) {
-      logger.error("modal-container not found in DOM");
+    if (!this.lobbyContainer) {
+      logger.error("lobby Container not found in DOM");
       return;
     }
 
     try {
-      const response = await fetch("/html/components/lobbyDialog.html");
+      const response = await fetch("/html/components/lobby-dialog.html");
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      this.modalContainer.innerHTML = await response.text();
+      this.lobbyContainer.innerHTML = await response.text();
     } catch (err) {
       logger.error("Failed to load lobby dialog:", err);
       return;
     }
 
-    const modal   = document.getElementById("lobbyDialog");
+    const modal   = document.getElementById("lobby-dialog");
     const overlay = modal?.querySelector(".overlay");
     const closeBtn = document.getElementById("closeBtn");
 
     if (!modal || !overlay || !closeBtn) {
-      logger.error("LobbyDialog: required elements missing after load");
+      logger.error("Lobby-dialog: required elements missing after load");
       return;
     }
 
     const close = () => {
       modal.classList.add("hidden");
-      this.modalContainer.innerHTML = "";
+      this.lobbyContainer.innerHTML = "";
     };
 
     modal.classList.remove("hidden");

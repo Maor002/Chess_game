@@ -1,0 +1,100 @@
+/* =============================================================
+   base.css
+   Global resets, design tokens, body defaults, shared utilities.
+   Must be imported FIRST by every page.
+   ============================================================= */
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+    /* Gradients */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --accent-gradient: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    --success-gradient: linear-gradient(45deg, #28a745, #20c997);
+    --danger-gradient: linear-gradient(45deg, #dc3545, #fd7e14);
+
+    /* Shadows */
+    --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.10);
+    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.20);
+    --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.30);
+
+    /* Shapes & Motion */
+    --border-radius: 15px;
+    --transition: all 0.3s ease;
+
+    /* Modal / Dialog shared tokens */
+    --modal-bg: #ffffff;
+    --overlay-bg: rgba(0, 0, 0, 0.55);
+    --modal-radius: 14px;
+    --modal-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    --modal-transition: 0.25s ease;
+
+    /* Button tokens (lobby / modal) */
+    --btn-bg: #4a6cf7;
+    --btn-bg-hover: #3a56c9;
+    --btn-danger: #d9534f;
+    --btn-danger-hover: #b94744;
+
+    /* Form */
+    --input-border: #d0d0d0;
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── Base Body ──────────────────────────────────────────────── */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--primary-gradient);
+    min-height: 100vh;
+    transition: var(--transition);
+}
+
+/* ── Shared Utilities ───────────────────────────────────────── */
+.hidden {
+    display: none !important;
+}
+
+.ltr {
+    direction: ltr;
+}
+
+/* ── Shared Keyframes ───────────────────────────────────────── */
+/* spin     → board-style.css (.loading), chess-menu.css (.spinner) */
+/* popIn    → lobby-dialog.css (.modal-content)                     */
+/* float    → chess-menu.css (.chess-piece-float)                   */
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(10deg);
+    }
+}

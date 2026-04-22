@@ -72,6 +72,10 @@ export const translations = {
     "clear-game-data": "נקה נתוני משחק",
     "Game-saved-successfully": "המשחק נשמר בהצלחה",
     "Failed-to-connect-online-game": "החיבור למשחק המקוון נכשל",
+    "create-room": "צור חדר",
+    "join-room": "הצטרף לחדר",
+    "close": "סגור",
+    "Lobby": "לובי",
   },
   en: {
     
@@ -147,5 +151,9 @@ export const translations = {
     "clear-game-data": "Clear Game Data",
     "Game-saved-successfully": "Game saved successfully",
     "Failed-to-connect-online-game": "Failed to connect to online game",
+    "create-room": "Create Room",
+    "join-room": "Join Room",
+    "close": "Close",
+    "Lobby": "Lobby",
   },
 };

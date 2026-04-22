@@ -1,10 +1,13 @@
-/* Alert Modal Styles */
+/* =============================================================
+   alert.css
+   Custom alert / confirmation modal.
+   Requires: base.css
+   ============================================================= */
+
+/* ── Overlay ────────────────────────────────────────────────── */
 .alert-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
@@ -23,6 +26,7 @@
   pointer-events: all;
 }
 
+/* ── Box ────────────────────────────────────────────────────── */
 .alert-box {
   background: white;
   border-radius: 15px;
@@ -43,6 +47,7 @@
   transform: scale(1);
 }
 
+/* ── Content ────────────────────────────────────────────────── */
 .alert-icon {
   font-size: 4rem;
   margin-bottom: 15px;
@@ -63,6 +68,7 @@
   line-height: 1.6;
 }
 
+/* ── Buttons ────────────────────────────────────────────────── */
 .alert-buttons {
   display: flex;
   gap: 10px;
@@ -87,6 +93,7 @@
   outline-offset: 2px;
 }
 
+/* Primary */
 .alert-btn-primary {
   background: linear-gradient(45deg, #667eea, #764ba2);
   color: white;
@@ -101,6 +108,7 @@
   transform: translateY(0);
 }
 
+/* Secondary */
 .alert-btn-secondary {
   background: #e0e0e0;
   color: #333;
@@ -114,8 +122,9 @@
   background: #c0c0c0;
 }
 
+/* Danger */
 .alert-btn-danger {
-  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  background: var(--accent-gradient);
   color: white;
 }
 
@@ -128,6 +137,7 @@
   transform: translateY(0);
 }
 
+/* Success */
 .alert-btn-success {
   background: linear-gradient(45deg, #51cf66, #37b24d);
   color: white;
@@ -142,7 +152,7 @@
   transform: translateY(0);
 }
 
-/* Responsive */
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .alert-box {
     padding: 20px;

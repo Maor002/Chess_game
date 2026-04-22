@@ -1,0 +1,105 @@
+/* =============================================================
+   lobby-dialog.css
+   Lobby room creation / join modal.
+   Requires: base.css
+   ============================================================= */
+
+/* ── Modal Wrapper ──────────────────────────────────────────── */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity var(--modal-transition);
+}
+
+.modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Overlay ────────────────────────────────────────────────── */
+.modal .overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-bg);
+  backdrop-filter: blur(3px);
+}
+
+/* ── Modal Content ──────────────────────────────────────────── */
+.modal-content {
+  position: relative;
+  z-index: 1;
+  background: var(--modal-bg);
+  border-radius: var(--modal-radius);
+  padding: calc(1rem * 2);
+  min-width: 340px;
+  max-width: 420px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: var(--modal-shadow);
+  animation: popIn 0.25s ease;
+  /* @keyframes popIn → base.css */
+}
+
+/* ── Typography ─────────────────────────────────────────────── */
+.modal-content h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+/* ── Inputs ─────────────────────────────────────────────────── */
+.modal-content input {
+  padding: 0.7rem 1rem;
+  border-radius: var(--modal-radius);
+  border: 1px solid var(--input-border);
+  font-size: 1rem;
+  transition: border var(--modal-transition);
+}
+
+.modal-content input:focus {
+  border-color: var(--btn-bg);
+  outline: none;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.modal-content button {
+  padding: 0.75rem 1rem;
+  border-radius: var(--modal-radius);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background var(--modal-transition), transform var(--modal-transition);
+}
+
+.modal-content button:hover {
+  transform: translateY(-2px);
+}
+
+#createRoomBtn,
+#joinRoomBtn {
+  background: var(--btn-bg);
+  color: white;
+}
+
+#createRoomBtn:hover,
+#joinRoomBtn:hover {
+  background: var(--btn-bg-hover);
+}
+
+#closeBtn {
+  background: var(--btn-danger);
+  color: white;
+}
+
+#closeBtn:hover {
+  background: var(--btn-danger-hover);
+}

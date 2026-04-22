@@ -1,13 +1,11 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* =============================================================
+   chess-menu.css
+   Chess game menu interface.
+   Requires: base.css
+   ============================================================= */
 
+/* ── Page Layout ────────────────────────────────────────────── */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -16,7 +14,7 @@ body {
     overflow-y: auto;
 }
 
-/* כלי שחמט ברקע */
+/* ── Floating Background Pieces ─────────────────────────────── */
 .chess-pieces-bg {
     position: fixed;
     top: 0;
@@ -33,6 +31,7 @@ body {
     font-size: 80px;
     opacity: 0.1;
     animation: float 20s infinite ease-in-out;
+    /* @keyframes float → base.css */
 }
 
 .chess-piece-float:nth-child(1) {
@@ -65,12 +64,7 @@ body {
     animation-delay: 8s;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-30px) rotate(10deg); }
-}
-
-/* מכולת התפריט */
+/* ── Menu Container ─────────────────────────────────────────── */
 .menu-container {
     background: white;
     border-radius: 24px;
@@ -84,7 +78,7 @@ body {
     flex-direction: column;
 }
 
-/* כותרת */
+/* ── Header ─────────────────────────────────────────────────── */
 .menu-header {
     text-align: center;
     margin-bottom: 40px;
@@ -107,7 +101,7 @@ body {
     font-size: 16px;
 }
 
-/* כפתורים */
+/* ── Menu Buttons ───────────────────────────────────────────── */
 .menu-buttons {
     display: flex;
     flex-direction: column;
@@ -126,8 +120,7 @@ body {
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
+    transition: var(--transition);
     color: white;
     text-align: center;
     min-height: 60px;
@@ -138,10 +131,18 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.menu-btn:active { transform: translateY(0); }
+.menu-btn:active {
+    transform: translateY(0);
+}
 
-.btn-icon { font-size: 26px; }
-.btn-text { flex-shrink: 0; }
+.btn-icon {
+    font-size: 26px;
+}
+
+.btn-text {
+    flex-shrink: 0;
+}
+
 .btn-badge {
     background: rgba(255, 255, 255, 0.3);
     padding: 2px 8px;
@@ -150,12 +151,23 @@ body {
     font-weight: bold;
 }
 
-.menu-btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-.menu-btn.success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-.menu-btn.info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-.menu-btn.warning { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.menu-btn.primary {
+    background: var(--primary-gradient);
+}
 
-/* תחתית */
+.menu-btn.success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.menu-btn.info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.menu-btn.warning {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
 .menu-footer {
     text-align: center;
     padding-top: 30px;
@@ -177,15 +189,22 @@ body {
     border-radius: 24px;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     font-size: 14px;
 }
 
-.lang-btn:hover { background: #667eea; color: white; }
-.lang-btn.active { background: #667eea; color: white; }
-.footer-text { color: #999; font-size: 12px; }
+.lang-btn:hover,
+.lang-btn.active {
+    background: #667eea;
+    color: white;
+}
 
-/* מסך טעינה */
+.footer-text {
+    color: #999;
+    font-size: 12px;
+}
+
+/* ── Loading Overlay ────────────────────────────────────────── */
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -199,9 +218,14 @@ body {
     z-index: 1000;
 }
 
-.loading-overlay.active { display: flex; }
+.loading-overlay.active {
+    display: flex;
+}
 
-.loading-content { text-align: center; color: white; }
+.loading-content {
+    text-align: center;
+    color: white;
+}
 
 .spinner {
     width: 50px;
@@ -210,54 +234,165 @@ body {
     border-top-color: white;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    /* @keyframes spin → base.css */
     margin: 0 auto 15px;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+.loading-game {
+    font-size: 16px;
+    font-weight: 600;
+}
 
-.loading-game { font-size: 16px; font-weight: 600; }
-
-/* התאמות למסכים קטנים */
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 600px) {
-    body { padding: 15px; }
-    .menu-container { padding: 30px 20px; border-radius: 20px; }
-    .menu-title { font-size: 32px; }
-    .chess-icon { font-size: 52px; }
-    .menu-header { margin-bottom: 30px; }
-    .menu-btn { padding: 16px 20px; font-size: 16px; min-height: 56px; }
-    .btn-icon { font-size: 24px; }
-    .menu-buttons { gap: 14px; margin-bottom: 30px; }
+    body {
+        padding: 15px;
+    }
+
+    .menu-container {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .menu-title {
+        font-size: 32px;
+    }
+
+    .chess-icon {
+        font-size: 52px;
+    }
+
+    .menu-header {
+        margin-bottom: 30px;
+    }
+
+    .menu-btn {
+        padding: 16px 20px;
+        font-size: 16px;
+        min-height: 56px;
+    }
+
+    .btn-icon {
+        font-size: 24px;
+    }
+
+    .menu-buttons {
+        gap: 14px;
+        margin-bottom: 30px;
+    }
 }
 
 @media (max-width: 400px) {
-    body { padding: 12px; }
-    .menu-container { padding: 25px 16px; border-radius: 16px; }
-    .menu-title { font-size: 28px; }
-    .chess-icon { font-size: 48px; }
-    .menu-btn { padding: 14px 18px; font-size: 15px; min-height: 52px; }
-    .btn-icon { font-size: 22px; }
+    body {
+        padding: 12px;
+    }
+
+    .menu-container {
+        padding: 25px 16px;
+        border-radius: 16px;
+    }
+
+    .menu-title {
+        font-size: 28px;
+    }
+
+    .chess-icon {
+        font-size: 48px;
+    }
+
+    .menu-btn {
+        padding: 14px 18px;
+        font-size: 15px;
+        min-height: 52px;
+    }
+
+    .btn-icon {
+        font-size: 22px;
+    }
 }
 
 @media (max-height: 700px) {
-    .menu-container { padding: 25px 20px; }
-    .chess-icon { font-size: 48px; margin-bottom: 10px; }
-    .menu-title { font-size: 32px; margin-bottom: 8px; }
-    .menu-header { margin-bottom: 25px; }
-    .menu-buttons { gap: 12px; margin-bottom: 25px; }
-    .menu-btn { padding: 14px 20px; min-height: 52px; }
-    .menu-footer { padding-top: 20px; }
+    .menu-container {
+        padding: 25px 20px;
+    }
+
+    .chess-icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .menu-title {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+
+    .menu-header {
+        margin-bottom: 25px;
+    }
+
+    .menu-buttons {
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .menu-btn {
+        padding: 14px 20px;
+        min-height: 52px;
+    }
+
+    .menu-footer {
+        padding-top: 20px;
+    }
 }
 
 @media (max-height: 600px) {
-    body { padding: 10px; }
-    .menu-container { padding: 20px; }
-    .chess-icon { font-size: 40px; margin-bottom: 8px; }
-    .menu-title { font-size: 28px; margin-bottom: 6px; }
-    .menu-subtitle { font-size: 14px; }
-    .menu-header { margin-bottom: 20px; }
-    .menu-buttons { gap: 10px; margin-bottom: 20px; }
-    .menu-btn { padding: 12px 18px; font-size: 15px; min-height: 48px; }
-    .btn-icon { font-size: 20px; }
-    .menu-footer { padding-top: 16px; }
-    .lang-btn { padding: 6px 16px; font-size: 13px; }
+    body {
+        padding: 10px;
+    }
+
+    .menu-container {
+        padding: 20px;
+    }
+
+    .chess-icon {
+        font-size: 40px;
+        margin-bottom: 8px;
+    }
+
+    .menu-title {
+        font-size: 28px;
+        margin-bottom: 6px;
+    }
+
+    .menu-subtitle {
+        font-size: 14px;
+    }
+
+    .menu-header {
+        margin-bottom: 20px;
+    }
+
+    .menu-buttons {
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .menu-btn {
+        padding: 12px 18px;
+        font-size: 15px;
+        min-height: 48px;
+    }
+
+    .btn-icon {
+        font-size: 20px;
+    }
+
+    .menu-footer {
+        padding-top: 16px;
+    }
+
+    .lang-btn {
+        padding: 6px 16px;
+        font-size: 13px;
+    }
 }
