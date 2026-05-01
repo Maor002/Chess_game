@@ -1,10 +1,10 @@
 package com.chess.application;
 
 import com.chess.domain.engine.ChessEngine;
-import com.chess.domain.rules.MoveValidator;
-import com.chess.infrastructure.GameRepository;
 import com.chess.domain.model.Game;
 import com.chess.domain.model.Move;
+import com.chess.domain.rules.MoveValidator;
+import com.chess.infrastructure.GameRepository;
 
 public final class MoveService {
 
@@ -16,13 +16,7 @@ public final class MoveService {
 
         Game game = repo.getGame(gameId);
 
-        if (!validator.isValidMove(move, game.getBoard())) {
-            return false;
-        }
-
-        engine.applyMove(game.getBoard(), move);
-
-        repo.saveGame(game);
+        
 
         return true;
     }
