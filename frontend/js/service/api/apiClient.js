@@ -103,4 +103,13 @@ export class ApiClient {
     getHistory(playerId) {
         return this.request(`${API_ENDPOINTS.GET_HISTORY}?playerId=${playerId}`, "GET");
     }
+    createRoom(roomData) {
+        return this.request(API_ENDPOINTS.CREATE_ROOM, "POST", roomData);
+    }
+    checkRoomExists(roomId) {
+        return this.request(`${API_ENDPOINTS.CHECK_ROOM}?roomId=${roomId}`, "GET");
+    }
+    joinRoom(roomId) {
+        return this.request(API_ENDPOINTS.JOIN_ROOM, "POST", { roomId });
+    }
 }

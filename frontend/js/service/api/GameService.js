@@ -194,5 +194,23 @@ saveLocalGame(gameData) {
   getGameId() {
     return this.load(STORAGE_KEYS.GAME_ID);
   }
-
+async getPlayerName() {
+    return this.load(STORAGE_KEYS.PLAYER_NAME); 
 }
+async getGameStatus() {
+    const gameId = this.load(STORAGE_KEYS.GAME_ID);
+    if (!gameId) return null;
+    const game = await this.api.getGame(gameId);
+    return game ? game.status : null; 
+  }
+  async createRoom(roomData) {
+    return this.api.createRoom(roomData);
+  }
+  async checkRoomExists(roomId) {
+    return this.api.checkRoomExists(roomId);
+  } 
+  async joinRoom(roomId) {
+    return this.api.joinRoom(roomId);
+  }
+}
+

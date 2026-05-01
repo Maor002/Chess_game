@@ -103,3 +103,13 @@
 #closeBtn:hover {
   background: var(--btn-danger-hover);
 }
+
+.room-status {
+  display: block;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  min-height: 1.2em;
+}
+.room-status.valid   { color: #22c55e; }
+.room-status.invalid { color: #ef4444; }
+.room-status.checking { color: #f59e0b; }
