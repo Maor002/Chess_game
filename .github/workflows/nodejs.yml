@@ -19,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -43,7 +43,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Java 17
+      - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
           java-version: "21"
@@ -59,33 +59,63 @@ jobs:
         with:
           name: java-engine-jar
           path: java-engine/target/*.jar
+          if-no-files-found: warn
 
   # ============================================================
-  # JOB 3 — Pytest (runs after backend + java are up)
+  # JOB 3 — Frontend (Vite)
   # ============================================================
-  pytest:
-    name: Pytest (Integration & Unit)
+  frontend:
+    name: Frontend (Vite)
     runs-on: ubuntu-latest
-    needs: [backend, java-engine] # ממתין שה-2 jobים הקודמים יסתיימו
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Build (Vite)
+        working-directory: frontend
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+          if-no-files-found: warn
+
+  # ============================================================
+  # JOB 4 — Pytest
+  # ============================================================
+  pytest:
+    name: Pytest (Unit Tests)
+    runs-on: ubuntu-latest
+    needs: [backend, java-engine, frontend]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
 
       - name: Install Python dependencies
-        run: |
-          pip install pytest httpx
+        run: pip install pytest httpx
 
-      - name: Run unit tests only (no live server needed)
-        run: |
-          pytest tests/backend/unit tests/java_engine/unit -v
+      - name: Run unit tests
+        run: pytest tests/backend/unit tests/java_engine/unit -v
 
-      # את הבלוק הזה תפעיל רק אחרי שתחבר servers אמיתיים ב-CI
+      # הפעל אחרי שיש servers אמיתיים ב-CI
       # - name: Run integration tests
       #   run: pytest tests/backend/integration tests/java_engine/integration -v
