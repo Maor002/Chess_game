@@ -27,6 +27,8 @@ export default defineConfig({
       '@service': path.resolve(__dirname, 'frontend/js/service'),
       '@logger': path.resolve(__dirname, 'frontend/js/logger'),
       '@language': path.resolve(__dirname, 'frontend/js/language'),
+      '@alerts': path.resolve(__dirname, 'frontend/js/alerts'),
+      '@UIAlert': path.resolve(__dirname, 'frontend/js/ui/alerts/UIAlert.js'),
     },
   },
 

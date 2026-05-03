@@ -1,6 +1,6 @@
 import { LanguageManager } from "../../language/Language.js";
 import { logger } from "@logger/logger.js";
-import { UIAlert } from "../alerts/UIAlert.js";
+import { UIAlert } from "@UIAlert/UIAlert.js";
 import { GameService } from "../../service/api/GameService.js";
 import { pageRouter } from "./PageRouter.js";
 
