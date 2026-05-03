@@ -3,7 +3,7 @@
  * מטפל במעברים בין דפים, שמירת היסטוריה וניהול state
  */
 
-import { logger } from "../../logger/logger.js";
+import { logger } from "@logger/logger.js";
 
 export class PageRouter {
   constructor() {

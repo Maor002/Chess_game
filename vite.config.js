@@ -16,7 +16,6 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@logger': path.resolve(__dirname, 'frontend/js/logger'),
       '@': path.resolve(__dirname, 'frontend'),
       '@js': path.resolve(__dirname, 'frontend/js'),
       '@css': path.resolve(__dirname, 'frontend/css'),

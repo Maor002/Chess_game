@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { logger } from "../../logger/logger.js";
+import { logger } from "@logger/logger.js";
 
 export class SocketClient {
   constructor(url, options = {}) {
