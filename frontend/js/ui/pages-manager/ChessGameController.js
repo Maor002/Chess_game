@@ -1,5 +1,5 @@
 import { ChessEngine } from "../../engine/ManagerChessEngine.js";
-import { logger } from "../../logger/logger.js";
+import { logger } from "@logger/logger.js";
 import { ChessUI } from "../board-game/ManagerChessUI.js";
 import { GameService } from "../../service/api/GameService.js";
 import { ChessFENConverter } from "../../../tools/ChessFENConverter.js";
