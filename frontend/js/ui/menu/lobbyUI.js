@@ -1,3 +1,9 @@
+/**
+ * LobbyUI.js
+ * ----------
+ * DOM helpers and input validation for the Lobby dialog.
+ */
+
 export const LobbyUI = {
   getElements() {
     return {
@@ -11,8 +17,8 @@ export const LobbyUI = {
     };
   },
 
+  // state: "idle" | "checking" | "valid" | "invalid"
   setStatus(el, message, state) {
-    // state: "idle" | "checking" | "valid" | "invalid"
     el.textContent = message;
     el.className = `room-status ${state}`;
   },
@@ -29,4 +35,17 @@ export const LobbyUI = {
     modal.classList.add("hidden");
     container.innerHTML = "";
   },
+
+  // --- Validation ---
+
+  // TODO: adjust regex to match your Room ID format
+validateRoomId(roomId) {
+  if (!roomId || roomId.trim().length === 0) {
+    return { valid: false, message: "" };
+  }
+  if (!/^[0-9]{6}$/.test(roomId.trim())) {
+    return { valid: false, message: "⚠️ 6-digit code only" };
+  }
+  return { valid: true, message: "" };
+},
 };

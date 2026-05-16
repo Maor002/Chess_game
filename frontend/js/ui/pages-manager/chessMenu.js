@@ -1,8 +1,9 @@
 import { LanguageManager } from "../../language/Language.js";
 import { logger } from "@logger/logger.js";
-import { UIAlert } from "@UIAlert/UIAlert.js";
+import { UIAlert } from "@alerts/UIAlert.js";
 import { GameService } from "../../service/api/GameService.js";
 import { pageRouter } from "./PageRouter.js";
+import { initLobby } from "./LobbyDialog.js";
 
 class ChessMenu {
   constructor() {
@@ -75,42 +76,16 @@ class ChessMenu {
     }
   }
 
-  async handleOnlineGame() {
-    logger.debug("Online game button clicked");
+ async handleOnlineGame() {
+  logger.debug("Online game button clicked");
 
-    if (!this.lobbyContainer) {
-      logger.error("lobby Container not found in DOM");
-      return;
-    }
-
-    try {
-      const response = await fetch("/html/components/lobby-dialog.html");
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      this.lobbyContainer.innerHTML = await response.text();
-    } catch (err) {
-      logger.error("Failed to load lobby dialog:", err);
-      return;
-    }
-
-    const modal   = document.getElementById("lobby-dialog");
-    const overlay = modal?.querySelector(".overlay");
-    const closeBtn = document.getElementById("closeBtn");
-
-    if (!modal || !overlay || !closeBtn) {
-      logger.error("Lobby-dialog: required elements missing after load");
-      return;
-    }
-
-    const close = () => {
-      modal.classList.add("hidden");
-      this.lobbyContainer.innerHTML = "";
-    };
-
-    modal.classList.remove("hidden");
-    closeBtn.addEventListener("click", close);
-    overlay.addEventListener("click", close);
+  if (!this.lobbyContainer) {
+    logger.error("lobbyContainer not found in DOM");
+    return;
   }
 
+  await initLobby(this.lobbyContainer);
+}
   handleComingSoon() {
     this.alert.warning(
       this.langManager.translate("message"),

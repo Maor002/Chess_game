@@ -4,63 +4,70 @@ const logger = require("../logger/logger");
 //יצירת חדר עם קוד
 exports.createRoom = async (req, res) => {
   try {
-    const Room = models.Room;
+  const Room = models.Room;
+  const code = await generateRoomCode();
+if (!Room) {
+  logger.error("❌ Room model is not loaded correctly!");
+  return res.status(500).json({ success: false, message: "Internal server error" });
+}
+  const room = new Room({
+    code,
+    host: req.user._id,          // comes from your auth middleware
+    players: { white: { userId: req.user._id } },  // creator is white by default
+  });
 
-    if (!Room) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Room model not loaded yet" });
-    }
-    logger.info("CREATE ROOM REQUEST");
-    logger.debug("Request body:", req.body);
-
-    const code = await generateRoomCode();
-    const room = new Room({ code });
-    await room.save();
-    res.json({ success: true, code });
-    logger.info("Room created with code:", code);
-  } catch (error) {
-    logger.error("Error creating room:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Error creating room", error });
+  await room.save();
+  res.json({ success: true, code });
+} catch (err) {
+    logger.error("❌ Error creating room:", err);
+    res.status(500).json({ success: false, message: "Failed to create room" });
   }
 };
 
 // 🔹 הצטרפות לחדר
 exports.joinRoom = async (req, res) => {
-  try {
-    const { code, player } = req.body; // קבלת קוד החדר ושם השחקן
-    const room = await Room.findOne({ code });
+  const { code } = req.body;
+  const room = await models.Room.findOne({ code });
 
-    if (!room) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Room not found" });
-    }
-    logger.info(`JOIN ROOM REQUEST for code: ${code}, player: ${player}`);
-    logger.debug("Request body:", req.body);
-    if (room.players.length >= 2) {
-      return res.status(400).json({ success: false, message: "Room is full" });
-    }
+  if (!room) return res.status(404).json({ success: false, message: "Room not found" });
+  if (room.status === "full") return res.status(400).json({ success: false, message: "Room is full" });
 
-    room.players.push(player);
-    await room.save();
-    res.json({ success: true, message: "Joined room", room });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Error joining room", error });
-  }
+  // Assign the joining player to black (white is the host)
+  room.players.black = { userId: req.user._id };
+  room.status = "full";
+
+  await room.save();
+  res.json({ success: true, room });
 };
+exports.checkRoomExists = async (req, res) => {
+  if (!req.params.roomId) {
+    return res.status(400).json({ success: false, message: "Room ID is required" });
+  }
+  const { code } = req.query;
+  const room = await models.Room.findOne({ code });
 
+  if (!room) return res.json({ exists: false });
+  if (room.status === "full" || room.status === "closed")
+    return res.json({ exists: true, available: false, message: "Room is full" });
+
+  res.json({ exists: true, available: true });
+};
 //קבלת כל החדרים
 exports.getAllrooms = async (req, res) => {
-  try {
-    const rooms = await Room.find({}, { _id: 1, name: 1, code: 1 }); // קבלת כל החדרים
-    res.status(200).json(rooms);
-  } catch (error) {
-    logger.error("❌ Error fetching rooms:", error);
-    res.status(500).json({ message: error.message });
-  }
+  const rooms = await models.Room.find({}, { _id: 1, name: 1, code: 1 });
+  res.status(200).json(rooms);
 };
+
+generateRoomCode = async () => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code;
+  while (true) {
+    code = "";
+    for (let i = 0; i < 6; i++) {
+      code += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    const existingRoom = await models.Room.findOne({ code });
+    if (!existingRoom) break;
+  }
+  return code;
+}

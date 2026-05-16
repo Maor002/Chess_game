@@ -8,10 +8,11 @@
 
     <button id="createRoomBtn" data-translate="create-room">Create Room</button>
 
-    <input id="roomInput" placeholder="Enter Room ID" autocomplete="off" />
+    <input id="roomInput" data-translate="enter-digit" placeholder="Enter 6-digit code" inputmode="numeric"
+      maxlength="6" autocomplete="off" />
     <span id="roomStatus" class="room-status"></span>
     <button id="joinRoomBtn" data-translate="join-room" disabled>Join Room</button>
     <button id="closeBtn" data-translate="close">Close</button>
   </div>
   <script type="module" src="../../js/ui/pages-manager/LobbyDialog.js"></script>
-</div>
+</div> 

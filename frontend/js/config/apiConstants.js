@@ -21,5 +21,11 @@ export const API_ENDPOINTS = {
   
   // Stats endpoints
   GET_STATS: '/api/stats/getStats',
-  GET_HISTORY: '/api/stats/getHistory'
+  GET_HISTORY: '/api/stats/getHistory',
+
+  // Room endpoints
+  CREATE_ROOM: '/api/room/createRoom',
+  JOIN_ROOM: '/api/room/joinRoom',
+  CHECK_ROOM: '/api/room/checkRoomExists',
+  LEAVE_ROOM: '/api/room/leaveRoom'
 };
