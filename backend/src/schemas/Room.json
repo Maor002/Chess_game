@@ -4,18 +4,16 @@
       "type": "String",
       "description": "Room name (optional)"
     },
-    "code": {
-      "type": "String",
-      "required": true,
-      "unique": true,
-      "match": "/^[0-9]{6}$/",
-      "description": "6-digit room code"
-    },
+ "code": {
+  "type": "String",
+  "required": true,
+  "unique": true,
+  "description": "6-digit room code"
+},
     "host": {
       "type": "ObjectId",
       "ref": "User",
-      "required": true,
-      "description": "User who created the room"
+      "required": true
     },
     "players": {
       "type": "Object",
@@ -24,34 +22,22 @@
         "white": {
           "type": "Object",
           "properties": {
-            "userId": {
-              "type": "ObjectId",
-              "ref": "User"
-            },
-            "socketId": {
-              "type": "String"
-            }
+            "userId":   { "type": "ObjectId", "ref": "User" },
+            "socketId": { "type": "String" }
           }
         },
         "black": {
           "type": "Object",
           "properties": {
-            "userId": {
-              "type": "ObjectId",
-              "ref": "User"
-            },
-            "socketId": {
-              "type": "String"
-            }
+            "userId":   { "type": "ObjectId", "ref": "User" },
+            "socketId": { "type": "String" }
           }
         }
-      },
-      "description": "Players in the room with their active socket connections"
+      }
     },
     "gameId": {
       "type": "ObjectId",
-      "ref": "Game",
-      "description": "Reference to the active game"
+      "ref": "Game"
     },
     "status": {
       "type": "String",
@@ -59,10 +45,9 @@
       "default": "waiting"
     },
     "expiresAt": {
-      "type": "Date",
-      "description": "Expiration time for inactive rooms"
-    } 
+      "type": "Date"
+    }
   },
   "useFieldsFrom": ["detail"],
   "behaviors": ["generateRoomCode", "preSave"]
-} 
+}

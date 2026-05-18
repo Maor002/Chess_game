@@ -5,14 +5,36 @@
       "required": true,
       "properties": {
         "white": {
-          "type": "ObjectId",
-          "ref": "User",
-          "required": true
+          "type": "Object",
+          "properties": {
+            "userId": {
+              "type": "ObjectId",
+              "ref": "User"
+            },
+            "color": {
+              "type": "String",
+              "enum": [
+                "white",
+                "black"
+              ]
+            }
+          }
         },
         "black": {
-          "type": "ObjectId",
-          "ref": "User",
-          "required": true
+          "type": "Object",
+          "properties": {
+            "userId": {
+              "type": "ObjectId",
+              "ref": "User"
+            },
+            "color": {
+              "type": "String",
+              "enum": [
+                "white",
+                "black"
+              ]
+            }
+          }
         }
       }
     },
@@ -22,48 +44,47 @@
       "description": "FEN representation of the board"
     },
     "moves": {
-      "type": "Array",
-      "default": [],
-      "items": {
-        "type": "Object",
-        "properties": {
-          "from": {
-            "type": "String"
-          },
-          "to": {
-            "type": "String"
-          },
-          "piece": {
-            "type": "String"
-          },
-          "fenAfter": {
-            "type": "String"
-          },
-          "timestamp": {
-            "type": "Date",
-            "default": "Date.now"
-          }
-        }
-      },
-      "description": "History of moves"
-    },
+  "type": "Array",
+  "default": [],
+  "items": {
+    "type": "Object",
+    "properties": {
+      "from":      { "type": "String" },
+      "to":        { "type": "String" },
+      "piece":     { "type": "String" },
+      "promotion": { "type": "String", "default": null },
+      "fenAfter":  { "type": "String" },
+      "timestamp": { "type": "Date", "default": "Date.now" }
+    }
+  }
+},
     "turn": {
       "type": "String",
-      "enum": ["white", "black"],
+      "enum": [
+        "white",
+        "black"
+      ],
       "default": "white"
     },
     "status": {
       "type": "String",
-      "enum": ["in_progress", "white_won", "black_won", "draw"],
+      "enum": [
+        "in_progress",
+        "white_won",
+        "black_won",
+        "draw"
+      ],
       "default": "in_progress"
     },
     "winner": {
       "type": "ObjectId",
-      "ref": "User",
-      "description": "Winner of the game"
+      "ref": "User"
     }
- 
-},
-  "useFieldsFrom": ["detail"],  
-  "behaviors": ["preSave"]
+  },
+  "useFieldsFrom": [
+    "detail"
+  ],
+  "behaviors": [
+    "preSave"
+  ]
 }

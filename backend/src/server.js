@@ -72,7 +72,7 @@ async function startServer() {
         });
 
     } catch (error) {
-        logger.error('Failed to start server:', error);
+        console.error('Failed to start server:', error);
         process.exit(1);
     }
 }

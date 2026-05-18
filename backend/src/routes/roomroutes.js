@@ -12,7 +12,7 @@ if (!Room) {
 
 router.post('/createRoom', roomFunctions.createRoom); // יצירת חדר חדש
 router.post('/joinRoom', roomFunctions.joinRoom); // הצטרפות לחדר קיים
-router.get('/getAllRooms', roomFunctions.getAllrooms); // קבלת כל החדרים
+//router.get('/getAllRooms', roomFunctions.getAllrooms); // קבלת כל החדרים
 router.get('/checkRoomExists/:roomId', roomFunctions.checkRoomExists); // בדיקת קיום חדר
 
 module.exports = router;

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm run dev:all",
     "dev:front": "vite",
-    "dev:back": "nodemon backend/src/server.js",
+    "dev:back": "nodemon --inspect backend/src/server.js",
     "dev:all": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
     "build": "vite build",
     "preview": "vite preview",
