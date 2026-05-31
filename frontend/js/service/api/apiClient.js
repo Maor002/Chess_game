@@ -107,7 +107,7 @@ export class ApiClient {
         return this.request(API_ENDPOINTS.CREATE_ROOM, "POST", roomData);
     }
     checkRoomExists(roomId) {
-        return this.request(`${API_ENDPOINTS.CHECK_ROOM}/${roomId}`, "GET");
+        return this.request(`${API_ENDPOINTS.CHECK_ROOM}/${roomId}`, "POST");
     }
     joinRoom(roomId) {
         return this.request(API_ENDPOINTS.JOIN_ROOM, "POST", { roomId });
