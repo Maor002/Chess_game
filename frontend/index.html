@@ -11,6 +11,7 @@
     <link rel="stylesheet" href=".\css\alert.css" />
     <link rel="stylesheet" href=".\css\base.css" />
     <link rel="stylesheet" href=".\css\lobby-dialog.css" />
+    <link rel="stylesheet" href=".\css\night-mode.css" />
     
 </head>
 
@@ -60,6 +61,11 @@
         </div>
 
         <div class="menu-footer">
+            <div class="settings-bar">
+                <button class="night-mode-btn" id="nightModeBtn" title="switch theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
             <div class="language-switcher">
                 <button class="lang-btn active" data-lang="he">עברית</button>
                 <button class="lang-btn" data-lang="en">English</button>
@@ -85,6 +91,7 @@
     <div id="lobbyContainer"></div>
 
     <script type="module" src="js/ui/pages-manager/chessMenu.js"></script>
+    <script type="module" src="js/ui/menu/nightMode.js"></script>
 </body>
 
 </html>

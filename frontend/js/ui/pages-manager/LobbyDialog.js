@@ -37,7 +37,7 @@ export async function initLobby(container) {
   els.roomInput?.addEventListener("input", () => {
     const roomId = els.roomInput.value.trim();
     clearTimeout(debounceTimer);
-    LobbyUI.setJoinEnabled(els.joinBtn, false);
+    LobbyUI.setJoinEnabled(els.joinBtn, true);
 
     const { valid, message } = LobbyUI.validateRoomId(roomId);
     if (!valid) {
@@ -82,6 +82,11 @@ export async function initLobby(container) {
   els.joinBtn?.addEventListener("click", async () => {
     const roomId = els.roomInput.value.trim();
     try {
+      const result = gameService.joinOnlineRoom(roomId);
+      if (!result.success) {
+        logger.error("Join room failed:", result.message);
+        return;
+      }
       await onlineService.connect();
       onlineService.joinGame(roomId, await gameService.getPlayerName());
       logger.info("Joined room:", roomId);

@@ -27,9 +27,13 @@ exports.createRoom = async (req, res) => {
 // 🔹 הצטרפות לחדר
 exports.joinRoom = async (req, res) => {
   try {
-    const { code } = req.body;
-    const room = await models.Room.findOne({ code });
+    const Room = models.Room;
+    if (!Room) return res.status(500).json({ success: false, message: "Internal server error" });
 
+    const { code } = req.body.roomId;  
+    if (!code) return res.status(400).json({ success: false, message: "Code is required" });  // ← אחר כך
+
+    const room = await Room.findOne({ code });
     if (!room) return res.status(404).json({ success: false, message: "Room not found" });
     if (room.status === "full") return res.status(400).json({ success: false, message: "Room is full" });
 
@@ -47,7 +51,7 @@ exports.checkRoomExists = async (req, res) => {
   const { code } = req.params;
   if (!code) return res.status(400).json({ success: false, message: "Code is required" });
 
-  const room = await models.Room.findOne({ code });
+  const room = await db.rooms.findOne({ code });
   if (!room) return res.json({ exists: false });
   if (room.status === "full" || room.status === "closed")
     return res.json({ exists: true, available: false, message: "Room is full" });

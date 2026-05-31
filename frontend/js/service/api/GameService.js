@@ -87,10 +87,10 @@ export class GameService {
     window.location.href = ROUTES.BOARD;
   }
 
-  async joinOnlineGame(gameId, playerName) {
-    const result = await this.api.joinGame(gameId, playerName);
+  async joinOnlineRoom(roomId, playerName) {
+    const result = await this.api.joinRoom(roomId, playerName);
 
-    this.save(STORAGE_KEYS.GAME_ID, gameId);
+    this.save(STORAGE_KEYS.GAME_ID, roomId);
     this.save(STORAGE_KEYS.PLAYER_NAME, playerName);
     this.save(STORAGE_KEYS.PLAYER_COLOR, PLAYER_COLORS.BLACK);
     this.save(STORAGE_KEYS.GAME_MODE, GAME_MODES.ONLINE);
