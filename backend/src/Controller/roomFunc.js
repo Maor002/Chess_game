@@ -30,10 +30,10 @@ exports.joinRoom = async (req, res) => {
     const Room = models.Room;
     if (!Room) return res.status(500).json({ success: false, message: "Internal server error" });
 
-    const { code } = req.body.roomId;  
-    if (!code) return res.status(400).json({ success: false, message: "Code is required" });  // ← אחר כך
+    const { roomId } = req.body;
+    if (!roomId) return res.status(400).json({ success: false, message: "Code is required" });
 
-    const room = await Room.findOne({ code });
+    const room = await Room.findOne({ code: roomId });
     if (!room) return res.status(404).json({ success: false, message: "Room not found" });
     if (room.status === "full") return res.status(400).json({ success: false, message: "Room is full" });
 
@@ -48,15 +48,23 @@ exports.joinRoom = async (req, res) => {
   }
 };
 exports.checkRoomExists = async (req, res) => {
-  const { code } = req.params;
-  if (!code) return res.status(400).json({ success: false, message: "Code is required" });
+  try {
+    const Room = models.Room;
+    if (!Room) return res.status(500).json({ success: false, message: "Internal server error" });
 
-  const room = await db.rooms.findOne({ code });
-  if (!room) return res.json({ exists: false });
-  if (room.status === "full" || room.status === "closed")
-    return res.json({ exists: true, available: false, message: "Room is full" });
+    const { roomId } = req.params;
+    if (!roomId) return res.status(400).json({ success: false, message: "Code is required" });
 
-  res.json({ exists: true, available: true });
+    const room = await Room.findOne({ code: roomId });
+    if (!room) return res.json({ exists: false });
+    if (room.status === "full" || room.status === "closed")
+      return res.json({ exists: true, available: false, message: "Room is full" });
+
+    res.json({ exists: true, available: true });
+  } catch (err) {
+    logger.error("❌ Error checking room:", err);
+    res.status(500).json({ success: false, message: "Failed to check room" });
+  }
 };
 
 const generateRoomCode = () => {
