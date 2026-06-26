@@ -8,12 +8,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   root: path.resolve(__dirname, 'frontend/'), // Serve HTML from here
 
-  server: {
+ server: {
     port: 5173,
-    open: false,                    // Auto-open browser
+    open: false,
     strictPort: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+      '/socket.io': {
+        target: 'http://localhost:3001',
+        ws: true,
+        changeOrigin: true,
+      }
+    }
   },
-
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'frontend'),

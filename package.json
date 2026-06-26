@@ -5,11 +5,13 @@
   "scripts": {
     "start": "npm run dev:all",
     "dev:front": "vite",
-    "dev:back": "nodemon --inspect backend/src/server.js",
-    "dev:all": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
+    "kill-port": "node scripts/kill-port.js",
+    "dev:back": "npm run kill-port && nodemon --inspect backend/src/server.js",
+    "dev:all": "npm run kill-port && concurrently \"npm run dev:back\" \"npm run dev:front\"",
     "build": "vite build",
     "preview": "vite preview",
     "prod": "npm run build && node backend/src/server.js"
+    
   },
   "keywords": [],
   "author": "",

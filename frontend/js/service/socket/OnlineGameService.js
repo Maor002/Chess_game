@@ -1,43 +1,58 @@
-import { SocketClient }  from "./SocketClient.js";
-import { GameProtocol }  from "./GameProtocol.js";
+import { SocketClient } from "./SocketClient.js";
+import { GameProtocol } from "./GameProtocol.js";
 
 export class OnlineGameService {
   constructor() {
     this.roomCode = null;
-    this.playerId = null;
 
-    this.socket   = new SocketClient("ws://localhost:3000");
+    this.socket = new SocketClient(window.location.origin);
     this.protocol = new GameProtocol(this.socket);
   }
 
-  // Opens the socket connection and waits for it to be ready
   connect() {
     return new Promise((resolve, reject) => {
-      this.socket.connect();
-
       this.socket.on("CONNECT", resolve);
-      this.socket.on("ERROR",   reject);
+      this.socket.on("ERROR", reject);
+      this.socket.connect();
     });
   }
 
-  // Emits game:join → { roomCode, playerId }
-  joinGame(roomCode, playerId) {
-    this.roomCode = roomCode;
-    this.playerId = playerId;
-
-    console.log("[OnlineGameService] joinGame →", { roomCode, playerId });
-    this.protocol.joinGame({ roomCode, playerId });
+  createRoom() {
+    console.log("[OnlineGameService] createRoom");
+    this.protocol.createRoom();
   }
 
-  // Emits game:move → { from, to, piece, capturedPiece }
-  // roomCode + playerId are stored on the socket server-side, no need to resend
+  // FIX: no longer accepts or forwards playerId — server derives identity from TEMP_USER_ID_2
+  joinGame(roomCode) {
+    this.roomCode = roomCode;
+    console.log("[OnlineGameService] joinGame →", { roomCode });
+    this.protocol.joinGame({ roomCode }); // playerId intentionally omitted
+  }
+
+  rejoinRoom(roomCode) {
+    console.log("[OnlineGameService] rejoinRoom →", roomCode);
+
+    const doRejoin = () => {
+      this.roomCode = roomCode;
+      this.socket.emit("game:rejoin", { roomCode });
+    };
+
+    if (this.socket.isConnected()) {
+      doRejoin();
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+      this.socket.on("CONNECT", () => { doRejoin(); resolve(); });
+      this.socket.on("ERROR", reject);
+    });
+  }
+
   sendMove({ from, to, piece, capturedPiece }) {
     console.log("[OnlineGameService] sendMove →", { from, to, piece, capturedPiece });
     this.protocol.sendMove({ from, to, piece, capturedPiece });
   }
 
-  // Register listeners for incoming server events
-  // Usage: onlineService.on({ "game:joined": handler, "game:move": handler })
   on(handlers) {
     this.protocol.registerHandlers(handlers);
   }
@@ -45,7 +60,6 @@ export class OnlineGameService {
   disconnect() {
     this.socket.disconnect();
     this.roomCode = null;
-    this.playerId = null;
   }
 
   isConnected() {

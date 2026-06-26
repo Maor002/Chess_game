@@ -11,12 +11,54 @@
   <body>
     <!-- Language Switcher -->
     <div class="language-switcher">
-      <button class="lang-btn active" data-lang="he">עברית</button>
-      <button class="lang-btn" data-lang="en">English</button>
+      <button class="lang-btn active" data-lang="he" data-translate="lang-he">עברית</button>
+      <button class="lang-btn" data-lang="en" data-translate="lang-en">English</button>
     </div>
 
     <div class="game-container">
       <h1 data-translate="game-title">♔ משחק שחמט ♛</h1>
+
+      <!-- Room Status Panel (Multiplayer) -->
+      <div class="room-status-panel" id="roomStatusPanel" style="display: none;">
+        <div class="room-info">
+          <div class="room-code-display">
+            <label data-translate="room-code">קוד חדר:</label>
+            <span id="roomCodeDisplay" class="code-value">---</span>
+            <button class="btn-copy" id="copyRoomBtn" data-translate-title="copy-room-code" title="Copy room code">📋</button>
+          </div>
+
+          <div class="game-status">
+            <label data-translate="game-status">סטטוס:</label>
+            <span id="gameStatus" class="status-badge waiting" data-translate="status-waiting">⏳ מחכה</span>
+          </div>
+        </div>
+
+        <div class="players-info">
+          <div class="player-item">
+            <span class="player-color white">⚪</span>
+            <span class="player-name" id="whitePlayerName" data-translate="white-player-name">השחקן הלבן</span>
+            <span class="player-status" id="whitePlayerStatus" data-translate="player-waiting">מחכה...</span>
+          </div>
+          <div class="player-item">
+            <span class="player-color black">⚫</span>
+            <span class="player-name" id="blackPlayerName" data-translate="black-player-name">השחקן השחור</span>
+            <span class="player-status" id="blackPlayerStatus" data-translate="player-waiting">מחכה...</span>
+          </div>
+        </div>
+
+        <div class="room-actions">
+          <button class="btn" id="createRoomBtn" data-translate="create-room">יצירת חדר</button>
+          <button class="btn" id="joinRoomBtn" data-translate="join-room">הצטרפות לחדר</button>
+          <input
+            type="text"
+            id="joinRoomInput"
+            data-translate-placeholder="join-room-placeholder"
+            placeholder="הכנס קוד חדר"
+            maxlength="6"
+            style="display: none;"
+          />
+        </div>
+      </div>
 
       <!-- Game Info -->
       <div class="game-info">
@@ -78,6 +120,7 @@
         <button class="btn" id="save-btn" data-translate="save-game">
           שמור משחק
         </button>
+      </div>
 
       <!-- Status Message -->
       <div class="status-message" id="statusMessage"></div>
@@ -87,7 +130,7 @@
     <div id="alertContainer"></div>
 
     <!-- קישור לקבצי JavaScript -->
-    <script type="module" src="./../../js/ui/pages-manager/ChessGameController.js"></script>
-    
+    <script type="module" src="./../../js/ui/pages-manager/BoardRouter.js"></script>
+
   </body>
 </html>

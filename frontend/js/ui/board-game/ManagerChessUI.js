@@ -64,22 +64,30 @@ export class ChessUI {
     this.gameService = new GameService(); // שירות לתקשורת עם השרת
   }
 
-  createBoard() {
+createBoard() {
     try {
-      this.boardRenderer.render(this.engine.getBoard(), this.handleSquareClick);
+        const clickHandler = this.engine.gameMode === "online" 
+            ? null 
+            : this.handleSquareClick;
+        this.boardRenderer.render(this.engine.getBoard(), clickHandler);
     } catch (error) {
-      logger.error("Error creating board:", error);
+        logger.error("Error creating board:", error);
     }
-  }
+}
 
   bindEvents() {
-    this.handleSquareClick = this.handleSquareClick.bind(this); //קישור לפונקציית לחיצה על ריבוע
+    this.handleSquareClick = this.handleSquareClick.bind(this);
+
+    // ב-online mode, ChessUI לא מטפל בקליקים
+    if (this.engine.gameMode !== "online") {
+        // הקליקים מחוברים דרך BoardRenderer ב-createBoard
+    }
 
     this.newGameButton.addEventListener("click", () => this.startNewGame());
     this.undoButton.addEventListener("click", () => this.engine.undoMove());
     this.redoButton.addEventListener("click", () => this.engine.redoMove());
     this.saveButton.addEventListener("click", () => this.saveGame());
-     }
+}
   
 
   //פעולה בעת לחיצה על אריח

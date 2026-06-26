@@ -1,4 +1,5 @@
 import { API_ENDPOINTS } from "../../config/apiConstants.js";
+import { logger } from "@logger/logger.js";
 
 export class ApiClient {
     constructor(baseUrl) {

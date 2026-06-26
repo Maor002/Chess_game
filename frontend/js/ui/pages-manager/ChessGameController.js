@@ -5,14 +5,13 @@ import { GameService } from "../../service/api/GameService.js";
 import { ChessFENConverter } from "../../../tools/ChessFENConverter.js";
 
 export class ChessGameController {
-  constructor(gameMode) {
+  constructor(gameMode = "local") {                         // FIX 1: default argument prevents undefined mode
     this.gameService = new GameService();
     this.gameMode = gameMode;
     this.currentGame = null;
     this.engine = null;
     this.ui = null;
     logger.debug("ChessGameController constructor called");
-    // אתחול אסינכרוני
     this.initialize().catch((error) => {
       logger.error("Error during initialization:", error);
     });
@@ -29,7 +28,7 @@ export class ChessGameController {
       case "local":
         try {
           await this.loadGameData();
-          this.initEngine();
+          this.initEngine(this.gameMode);
           await this.restoreBoardState();
           this.initUI();
           logger.info("Chess game controller initialized successfully");
@@ -63,7 +62,7 @@ export class ChessGameController {
     }
 
     logger.warn("No saved game in localStorage, trying server...");
-    const gameFromServer = await this.gameService.getCurrentLocalGameData();
+    const gameFromServer = await this.gameService.getGameFromServer();  // FIX 2: was incorrectly calling getCurrentLocalGameData() again
 
     if (gameFromServer) {
       logger.info("Game loaded from server:", gameFromServer);
@@ -76,15 +75,14 @@ export class ChessGameController {
     }
   }
 
-  initEngine() {
-    logger.debug("Initializing chess engine, mode:", this.gameMode);
-    this.engine = new ChessEngine(this.gameMode);
+  initEngine(gameMode) {
+    logger.debug("Initializing chess engine, mode:", gameMode);
+    this.engine = new ChessEngine(gameMode);
   }
 
   async restoreBoardState() {
     if (!this.currentGame?.boardState) return;
 
-    // boardState יכול להגיע כמערך או כ-string
     const fen = Array.isArray(this.currentGame.boardState)
       ? this.currentGame.boardState[0]
       : this.currentGame.boardState;
@@ -133,9 +131,8 @@ export class ChessGameController {
         };
 
         logger.debug("Updating game state:", updatedGame);
-        this.gameService.setCurrentGame(updatedGame);
+        this.gameService.setCurrentLocalGame(updatedGame);  // FIX 3: was setCurrentGame(), inconsistent with loadGameData()
 
-        // שמירה גם בשרת
         if (updatedGame._id) {
           await this.gameService.makeMove({
             fen: this.engine.getFEN(),
@@ -167,4 +164,6 @@ export class ChessGameController {
   }
 }
 
-const gameController = new ChessGameController();
+export function createGameController(gameMode = "local") {  // FIX 4: was bare instantiation with no argument at module level
+  return new ChessGameController(gameMode);
+}

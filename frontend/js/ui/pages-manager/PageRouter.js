@@ -15,16 +15,20 @@ export class PageRouter {
   /**
    * הגדרת נתיבים זמינים
    */
-  defineRoutes() {
-    return {
-      home: "http://localhost:5173/",
-      menu: "http://localhost:5173/",
-      board: "http://localhost:5173/html/pages/Board.html",
-      onlineGame: "http://localhost:5173/html/components/lobbyDialog.html",
-      puzzles: "http://localhost:5173/html/pages/Puzzles.html",
-      vsComputer: "http://localhost:5173/html/pages/VsComputer.html",
-    };
-  }
+ defineRoutes() {
+  const base = process.env.NODE_ENV === 'production' 
+    ? window.location.origin 
+    : 'http://localhost:5173';
+    
+  return {
+    home: `${base}/`,
+    menu: `${base}/`,
+    board: `${base}/html/pages/Board.html`,
+    onlineGame: `${base}/html/components/lobbyDialog.html`,
+    puzzles: `${base}/html/pages/Puzzles.html`,
+    vsComputer: `${base}/html/pages/VsComputer.html`,
+  };
+}
 
   /**
    * ניווט לדף

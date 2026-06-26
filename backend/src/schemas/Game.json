@@ -69,12 +69,13 @@
     "status": {
       "type": "String",
       "enum": [
+        "waiting",
         "in_progress",
         "white_won",
         "black_won",
         "draw"
       ],
-      "default": "in_progress"
+      "default": "waiting"
     },
     "winner": {
       "type": "ObjectId",

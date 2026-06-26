@@ -38,7 +38,7 @@ async function startServer() {
         logger.info('Socket.IO configured successfully');
 
         // הפעלת השרת
-        server.listen(PORT, () => {
+        server.listen(PORT, '127.0.0.1', () => {
             logger.info(`🚀 Chess Server is running on http://localhost:${PORT}`);
             logger.info(`📁 Frontend files served from: /frontend`);
             logger.info(`🎮 Game API available at: http://localhost:${PORT}/api/game`);
@@ -50,13 +50,17 @@ async function startServer() {
         });
 
         // טיפול בסגירה נקייה של השרת
-        const shutdown = () => {
-            logger.info('Closing HTTP server...');
-            server.close(() => {
-                logger.info('HTTP server closed');
-                process.exit(0);
-            });
-        };
+       const shutdown = () => {
+    logger.info('Closing HTTP server...');
+    server.close(() => {
+        logger.info('HTTP server closed');
+        process.exit(0);
+    });
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+process.on('SIGUSR2', shutdown); // ← nodemon משתמש בזה
         process.on('SIGTERM', shutdown);
         process.on('SIGINT', shutdown);
 
@@ -70,6 +74,12 @@ async function startServer() {
             logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
             process.exit(1);
         });
+        server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        logger.error(`Port ${PORT} is already in use. Is another instance running?`);
+        process.exit(1);
+    }
+});
 
     } catch (error) {
         console.error('Failed to start server:', error);

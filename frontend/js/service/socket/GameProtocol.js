@@ -9,8 +9,8 @@ export class GameProtocol {
     });
   }
 // שליחת אירועים לשרת
-  createGame(data) {
-    this.socket.emit("game:create", data);
+  createRoom() {
+    this.socket.emit("game:create");
   }
 
   joinGame(data) {
@@ -28,4 +28,15 @@ export class GameProtocol {
   resign(data) {
     this.socket.emit("game:resign", data);
   }
+handleBoardClick(e) {
+    const engineTurn = this.engine.getCurrentPlayer(); // "w" or "b"
+    const myColor = this.playerColor === "white" ? "w" : "b";
+    
+    console.log("[OnlineGame] turn check:", { engineTurn, myColor, isGameStarted: this.isGameStarted });
+    
+  //  if (!this.isGameStarted || engineTurn !== myColor) {
+    //    console.log("[OnlineGame] move blocked");
+      //  return;
+    //}
+}
 }

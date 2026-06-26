@@ -8,8 +8,8 @@ import { ROUTES } from "../../config/routesConstants.js";
 
 export class GameService {
   constructor() {
-    this.api = new ApiClient("http://localhost:3001");
-  }
+  this.api = new ApiClient(""); 
+}
 
   // =====================================================
   // 🔹 Local Storage Helpers
@@ -211,6 +211,11 @@ async getGameStatus() {
   } 
   async joinRoom(roomId) {
     return this.api.joinRoom(roomId);
+  }
+  async getGameFromServer() {
+    const gameId = this.load(STORAGE_KEYS.GAME_ID);
+    if (!gameId) return null;
+    return this.api.getGame(gameId);
   }
 }
 

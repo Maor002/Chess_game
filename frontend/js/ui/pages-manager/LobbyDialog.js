@@ -11,11 +11,12 @@ import { LobbyUI } from "../menu/LobbyUI.js";
 import { GameService } from "../../service/api/GameService.js";
 import { OnlineGameService } from "../../service//socket/OnlineGameService.js";
 import { logger } from "@logger/logger.js";
+import { pageRouter } from "./PageRouter.js";
 
 const DEBOUNCE_MS = 300;
 
 export async function initLobby(container) {
-  const response = await fetch("/html/components/lobby-dialog.html");
+const response = await fetch("/html/components/lobby-dialog.html");
   container.innerHTML = await response.text();
   const els = LobbyUI.getElements();
   const gameService = new GameService();
@@ -64,34 +65,58 @@ export async function initLobby(container) {
   });
 
   // --- Create Room: REST → then join via WS ---
-  // We need the server to generate a roomId first, then open a WS connection.
   els.createBtn?.addEventListener("click", async () => {
     try {
-      const { code } = await gameService.createRoom(); // server generates the code
-      await onlineService.connect();
-      onlineService.joinGame(code, await gameService.getPlayerName());
-      logger.info("Created and joined room:", code);
+      LobbyUI.setStatus(els.roomStatus, "⏳ Creating room...", "checking");
+      const result = await gameService.createRoom();
+      const roomCode = result.code;
+
+      logger.info("Room created:", roomCode);
+
+      // Store game mode as online
+      gameService.save("GAME_MODE", "online");
+      gameService.save("PLAYER_COLOR", "white");
+      gameService.save("ROOM_CODE", roomCode);
+
+      // Close lobby and navigate to board
+      close();
+      pageRouter.navigateTo("board");
+
+      logger.info("Navigating to board with room code:", roomCode);
     } catch (err) {
       logger.error("Create room failed:", err);
+      LobbyUI.setStatus(els.roomStatus, "❌ Failed to create room", "invalid");
     }
   });
 
-  // --- Join Room: WS only ---
-  // Room already exists (confirmed by the input handler via REST),
-  // so go straight to opening the WS connection.
+  // --- Join Room: REST confirmation then navigate ---
   els.joinBtn?.addEventListener("click", async () => {
-    const roomId = els.roomInput.value.trim();
+    const roomCode = els.roomInput.value.trim();
     try {
-      const result = gameService.joinOnlineRoom(roomId);
+      LobbyUI.setStatus(els.roomStatus, "⏳ Joining room...", "checking");
+      const result = await gameService.joinRoom(roomCode);
+
       if (!result.success) {
         logger.error("Join room failed:", result.message);
+        LobbyUI.setStatus(els.roomStatus, "❌ " + result.message, "invalid");
         return;
       }
-      await onlineService.connect();
-      onlineService.joinGame(roomId, await gameService.getPlayerName());
-      logger.info("Joined room:", roomId);
+
+      logger.info("Room joined:", roomCode);
+
+      // Store game mode as online
+      gameService.save("GAME_MODE", "online");
+      gameService.save("PLAYER_COLOR", "black");
+      gameService.save("ROOM_CODE", roomCode);
+
+      // Close lobby and navigate to board
+      close();
+      pageRouter.navigateTo("board");
+
+      logger.info("Navigating to board with room code:", roomCode);
     } catch (err) {
       logger.error("Join room failed:", err);
+      LobbyUI.setStatus(els.roomStatus, "❌ Failed to join room", "invalid");
     }
   });
 }
